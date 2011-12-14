@@ -1,3 +1,8 @@
-I grabbed source from https://sourceforge.net/projects/v2kparse/
-(thanx kpfalzer), and embelished it w/ some improvements:
-SystemVerilog and Vhdl parsers.
+14-dec-2011
+===========
++ grabbed source from https://sourceforge.net/projects/v2kparse/
+  (thanx kpfalzer), and embelished it w/ some improvements:
+  SystemVerilog and Vhdl parsers.
+
++ Imported into netbeans: http://netbeans.org (v7.0.1)
++ Projects uses antlr-2.7.7: http://www.antlr2.org
