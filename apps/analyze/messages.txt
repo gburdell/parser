@@ -1,0 +1,21 @@
+//	Format is: code format_string
+//  Do ***NOT*** use tabs in this file!!
+
+ARG-4.1   %s:%d: %s: invalid option.
+
+ARG-5            %s: option already specified.
+ARG-5.1   %s:%d: %s: option already specified.
+
+DEFN-5    %s:%d: definition for module '%s' overrides +nodefn+%s.
+
+FILE-2.1  %s:%d: %s: cannot %s file.
+
+FILE-5           %s: %s: cannot %s %s.
+FILE-5.1  %s:%d: %s: %s: cannot %s %s.
+
+FILE-6    %s: -y %s: +libext+%s: could not read file
+
+REQD-1    At least 1 <file> required  (use -h for help).
+
+SPEC-1    %s: invalid %s option to %s: must be %s.
+

@@ -1,0 +1,73 @@
+//	Format is: code format_string
+//  Do ***NOT*** use tabs in this file!!
+
+ARG-1  %s: missing required argument.
+ARG-2  %s: %s: not a readable directory.
+//
+// This one is a bit specific and %snot is not a typo!!
+ARG-3  %s: %snot a readable file.
+ARG-4  %s: invalid option.
+
+DBG-1   %s:%d: token=%s
+DBG-2   %s:%d: token=%s
+DBG-3   %s
+
+DECL-1  %s:%d: in module '%s': symbol '%s' undefined.
+
+DEFN-1  %s:%d: module '%s' previously defined (at %s).
+DEFN-2  %s:%d: in module '%s': symbol '%s' previously defined (at %s).
+DEFN-3  %s:%d: in module '%s': symbol '%s' previously defined as port (at %s).
+DEFN-4  %s:%d: in module '%s': symbol '%s' previously defined as parameter (at %s).
+
+DIR-1   %s:%d: in module '%s': port '%s' direction already defined.
+
+EOF-1   %s:%d: unexpected end-of-file.
+
+ERR-1   %s:%d: %s
+ERR-2   %s
+
+FILE-1  %s:%d: %s: file already processed.
+// cannot read|write|... file
+FILE-2  %s: cannot %s file.
+FILE-3  %s: processing...
+FILE-4  %s: creating...
+
+INCL-1  %s:%d: include file %s.
+INCL-2  %s:%d: %s: could not find include file.
+
+INCL-3   %s:%d: %s: include file found in %d (>1) search path locations:
+INCL-3.1 %s: candidate location #%d
+
+LINK-1  Unresolved: %s.
+LINK-2  Link status: %s.
+LINK-3  Pass %d: %s.
+LINK-4  %s: resolved using +no_defn+ (%d occurence(s)).
+LINK-5  %s: no definition for module.
+
+MACRO-1 %s:%d: `%s: not defined.
+MACRO-2 %s:%d: undef %s: macro never defined.
+MACRO-3 %s:%d: macro '%s' redefined.  First defined at %s.
+MACRO-4 %s:%d: `ifdef '%s' is %s.
+MACRO-5 %s:%d: `ifndef '%s' is %s.
+MACRO-6 %s:%d: `else is %s.
+MACRO-7 %s:%d: `elsif '%s' is %s.
+
+PARSE-1 %s:%d: %s
+
+PORT-1 %s:%d: in module '%s': port '%s' not declared in port list.
+PORT-2 %s:%d: in module '%s': port '%s' already defined (at %s).
+PORT-3 %s:%d: in module '%s': port '%s' already defined as reg|wire.
+PORT-4 %s:%d: in module '%s': input port '%s' cannot be declared as reg.
+PORT-5 %s:%d: in module '%s': port '%s' already defined as signed.
+PORT-6 %s:%d: in module '%s': port '%s' already defined as reg (at %s).
+
+TYPE-1 %s:%d: in module '%s': '%s': symbol type of %s (lhs) must be '%s'.
+
+VPP-1  %s: creating pre-processed file ...
+VPP-2  %s: could not create file.
+VPP-3  %s: expecting '%c' found '%s'
+VPP-4  %s: expecting %s found '%s'
+VPP-5  %s: unexpected '%s'
+
+
+

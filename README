@@ -1,0 +1,3 @@
+I grabbed source from https://sourceforge.net/projects/v2kparse/
+(thanx kpfalzer), and embelished it w/ some improvements:
+SystemVerilog and Vhdl parsers.
