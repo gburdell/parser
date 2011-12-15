@@ -83,25 +83,12 @@ tokens {
 
 {
 	private boolean m_expectFilename	= false;
-	private Helper	m_helper;
-
-	/**
-	 * Create lexer with ability to push-back `macro expansions.
-	 */
-	public static PreprocLexer create(Reader rdr) {
-		PreprocLexer lexer = null;
-		CharBufferX buf = new CharBufferX(rdr);
-		LexerSharedInputState sis = new LexerSharedInputState(buf);
-		lexer = new PreprocLexer(sis);
-		lexer.m_helper = new Helper(lexer);
-		return lexer;
-	}
 
 	/**
 	 * This method must be called to get tokens (not nextToken()).
 	 */
 	public Token getNextToken() throws TokenStreamException {
-		return m_helper.nextToken();
+		return Helper.getTheOne().nextToken();
 	}
 
     public boolean getExpectFilename() {
@@ -120,7 +107,7 @@ tokens {
 	private Token processTicOp(Token tok) 
 			throws RecognitionException, CharStreamException, TokenStreamException {
 		String txt = tok.getText();
-		return m_helper.processTicOp(getTicCode(txt), txt);
+		return m_Helper.getTheOne().processTicOp(getTicCode(txt), txt);
 	}
 
 	private static final HashMap<String,Integer> stTicCodes = 
