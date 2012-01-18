@@ -182,6 +182,7 @@ public class Helper implements PreprocLexerTokenTypes {
             type = m_lastToken.getType();
             stay = (skipWS && (type == NL || type == WS))
                     || (skipComments && type == COMMENT);
+            //TODO: detect EOF and pop
         }
         return m_lastToken;
     }
@@ -323,7 +324,8 @@ public class Helper implements PreprocLexerTokenTypes {
         String ifn = tok.getText();
         String fn = getInclFile(ifn);
         if (null != fn) {
-            //TODO: `line and include file
+            //TODO: `line
+            push(fn);
         } else {
             warn("INCL-2", ifn);
         }

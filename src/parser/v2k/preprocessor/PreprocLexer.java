@@ -82,7 +82,7 @@ public class PreprocLexer extends antlr.CharScanner implements PreprocLexerToken
 	private Token processTicOp(Token tok) 
 			throws RecognitionException, CharStreamException, TokenStreamException {
 		String txt = tok.getText();
-		return m_Helper.getTheOne().processTicOp(getTicCode(txt), txt);
+		return Helper.getTheOne().processTicOp(getTicCode(txt), txt);
 	}
 
 	private static final HashMap<String,Integer> stTicCodes = 
