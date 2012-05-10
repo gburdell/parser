@@ -1,8 +1,8 @@
 # 
 #   The MIT License
 #  
-#   Copyright 2006-2011 Karl W. Pfalzer.
-#   Copyright 2011-     George P. Burdell
+#   Copyright 2006-2010 Karl W. Pfalzer.
+#   Copyright 2012-     George P. Burdell
 #  
 #   Permission is hereby granted, free of charge, to any person obtaining a copy
 #   of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,9 @@ class Analyze
 
   Usage: #{@cmd} -m <topModule> [option] <file>...
 
-  Analyze one or more SystemVerilog, VHDL or Liberty <file> and quick link <topModule>.
+  Analyze one or more SystemVerilog, VHDL or Liberty <file> 
+  and quick link <topModule>.
+
   Options:
     -h|--help           This message.
     -f <file>           Read options from <file>.
@@ -77,7 +79,8 @@ class Analyze
                           Verilog `include file(s).
                           <dir> may be repeated, as in +incdir+<dir1>+<dir2>+...
     -v <file>           Specify Verilog library <file>.
-    -y <dir>            Specify directory <dir> for finding unresolved references.
+    -y <dir>            Specify directory <dir> for finding unresolved 
+                          references.
                           For any missing <module>, directory <dir> will be
                           searched for a file name <module><sfx>, where <sfx>
                           is specified by +libext+<sfx>
@@ -90,14 +93,16 @@ class Analyze
                           Such <file> are analyzed for leaf cell definitions.
                           <file> may be repeated, as in +slf+<file1>+<file2>+...
     +vhdl+<file>        Specify a VHDL source file to analyze.
-                          <file> may be repeated, as in +vhdl+<file1>+<file2>+...
+                          <file> may be repeated, 
+                          as in +vhdl+<file1>+<file2>+...
     --slf <file>...     Specify Synopsys Libery (aka. ".lib") <file>s.
                           Such <file> are analyzed for leaf cell definitions.
     --vhdl <file>...    Specify VHDL source <file>s to analyze.
     -- <file>...        Subsequent <file>... read as SystemVerilog.
     --flatf <file>      Generate flattened .f file into <file> immediately
                           after option processing.
-    --yvhdl <dir>       Specify directory <dir> for finding unresolved references.
+    --yvhdl <dir>       Specify directory <dir> for finding unresolved 
+                          references.
                           For any missing <module>, directory <dir> will be
                           searched for a file name <module><sfx>, where <sfx>
                           is specified by +libextvhdl+<sfx>
@@ -107,7 +112,8 @@ class Analyze
                           described for --yvhdl option.
                           <sfx> may be repeated,
                           as in +libextvhdl+<sfx1>+<sfx2>+...
-    --yslf <dir>        Specify directory <dir> for finding unresolved references.
+    --yslf <dir>        Specify directory <dir> for finding unresolved 
+                          references.
                           For any missing <module>, directory <dir> will be
                           searched for a file name <module><sfx>, where <sfx>
                           is specified by +libextslf+<sfx>

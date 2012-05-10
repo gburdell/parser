@@ -1,8 +1,8 @@
 # 
 #   The MIT License
 #  
-#   Copyright 2006-2011 Karl W. Pfalzer.
-#   Copyright 2011-     George P. Burdell
+#   Copyright 2006-2010 Karl W. Pfalzer.
+#   Copyright 2012-     George P. Burdell
 #  
 #   Permission is hereby granted, free of charge, to any person obtaining a copy
 #   of this software and associated documentation files (the "Software"), to deal
