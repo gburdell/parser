@@ -44,6 +44,7 @@ public abstract class Module {
     public String getName() {
         return m_name;
     }
+
     public Location getDeclLoc() {
         return m_declared;
     }

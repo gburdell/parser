@@ -22,34 +22,32 @@
 //THE SOFTWARE.
 
 package parser.sv;
-import java.util.HashMap;
-import java.util.Map;
+import parser.Location;
+import  parser.v2k.VlogLocation;
 import  antlr.Token;
-import static parser.Utils.downCast;
-
 /**
  *
  * @author kpfalzer
  */
-public class Tracker extends parser.Tracker {
-    public void addModule(Token name) {
-        super.addModule(new Module(name));
+public class InterfaceInstance  {
+    public InterfaceInstance(Token refName, Token instName) {
+        m_intrfcNm = refName.getText();
+        m_instNm = instName.getText();
+        m_loc = new VlogLocation(instName);
     }
-    public void addUdp(Token name) {
-        super.addModule(new Module(name, true));
+    
+    public String getRefNm() {
+        return m_intrfcNm;
     }
-    public void addInstance(Token refNm, Token instNm) {
-        super.addInstance(new ModuleInstance(refNm, instNm));
+    
+    public String getInstNm() {
+        return m_instNm;
     }
-    public void addInterface(InterfaceDeclaration intrc) {
-        m_interfacesByName.put(intrc.getName(), intrc);
+    
+    public Location getDeclared() {
+        return m_loc;
     }
-    public void addInterface(InterfaceInstance inst) {
-        Module mod = downCast(m_currentModule);
-        mod.addInstance(inst);
-    }
-    public Map<String,InterfaceDeclaration> getInterfacesByName() {
-        return m_interfacesByName;
-    }
-    private Map<String,InterfaceDeclaration> m_interfacesByName = new HashMap<String, InterfaceDeclaration>();
+    
+    private final String m_intrfcNm, m_instNm;
+    private final VlogLocation m_loc;
 }

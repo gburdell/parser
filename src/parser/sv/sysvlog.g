@@ -245,8 +245,13 @@ module_keyword
 ;
 
 interface_header_prefix
+{Token id=null;}
 :	attribute_instances "interface" ( lifetime )? 
-		interface_identifier ( parameter_port_list )?
+            id=interface_identifier
+            {
+                stTracker.addInterface(new InterfaceDeclaration(id));
+            }
+            ( parameter_port_list )?
 ;
 
 interface_nonansi_header
@@ -269,7 +274,11 @@ interface_declaration_2
 		( COLON interface_identifier )?
 ;
 interface_declaration_3
-: 	attribute_instances "interface" interface_identifier 
+{Token id=null;}
+: 	attribute_instances "interface" id=interface_identifier 
+                {
+                    stTracker.addInterface(new InterfaceDeclaration(id));
+                }
 		LPAREN DOT_STAR RPAREN SEMI
  		(options{greedy=true;}: timeunits_declaration )? 
 		( interface_item )*
@@ -1913,8 +1922,11 @@ named_port_connection
 
 //A.4.1.2 Interface instantiation
 interface_instantiation
-:	interface_identifier ( parameter_value_assignment )?
-	hierarchical_instance ( COMMA hierarchical_instance )* SEMI
+{Token ref=null, i1=null, i2=null;}
+:	ref=interface_identifier ( parameter_value_assignment )?
+	i1=hierarchical_instance {stTracker.addInterface(new InterfaceInstance(ref,i1));}
+        ( COMMA i2=hierarchical_instance {stTracker.addInterface(new InterfaceInstance(ref,i2));} )* 
+        SEMI
 ;
 
 //A.4.1.3 Program instantiation
@@ -3183,11 +3195,13 @@ hierarchical_variable_identifier
 index_variable_identifier
 :	identifier
 ;
-interface_identifier
-:	identifier
+interface_identifier returns [Token id]
+{ id = null;}
+:	id=identifier
 ;
-interface_instance_identifier
-:	identifier
+interface_instance_identifier returns [Token id]
+{ id = null;}
+:	id=identifier
 ;
 inout_port_identifier
 :	identifier
@@ -3208,8 +3222,9 @@ member_identifier
 method_identifier
 :	identifier
 ;
-modport_identifier
-:	identifier
+modport_identifier returns [Token id]
+{ id = null;}
+:	id=identifier
 ;
 module_identifier returns [Token id]
 { id = null;}

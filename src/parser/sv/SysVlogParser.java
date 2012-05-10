@@ -2765,6 +2765,7 @@ inputState.guessing--;
 	
 	public final void interface_header_prefix() throws RecognitionException, TokenStreamException {
 		
+		Token id=null;
 		
 		try {      // for error handling
 			attribute_instances();
@@ -2788,7 +2789,12 @@ inputState.guessing--;
 			}
 			}
 			}
-			interface_identifier();
+			id=interface_identifier();
+			if ( inputState.guessing==0 ) {
+				
+				stTracker.addInterface(new InterfaceDeclaration(id));
+				
+			}
 			{
 			switch ( LA(1)) {
 			case POUND:
@@ -2818,11 +2824,13 @@ inputState.guessing--;
 		}
 	}
 	
-	public final void interface_identifier() throws RecognitionException, TokenStreamException {
+	public final Token  interface_identifier() throws RecognitionException, TokenStreamException {
+		Token id;
 		
+		id = null;
 		
 		try {      // for error handling
-			identifier();
+			id=identifier();
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -2832,6 +2840,7 @@ inputState.guessing--;
 			  throw ex;
 			}
 		}
+		return id;
 	}
 	
 	public final void interface_nonansi_header() throws RecognitionException, TokenStreamException {
@@ -3307,11 +3316,17 @@ inputState.guessing--;
 			
 	public final void interface_declaration_3() throws RecognitionException, TokenStreamException {
 		
+		Token id=null;
 		
 		try {      // for error handling
 			attribute_instances();
 			match(LITERAL_interface);
-			interface_identifier();
+			id=interface_identifier();
+			if ( inputState.guessing==0 ) {
+				
+				stTracker.addInterface(new InterfaceDeclaration(id));
+				
+			}
 			match(LPAREN);
 			match(DOT_STAR);
 			match(RPAREN);
@@ -6266,11 +6281,13 @@ inputState.guessing--;
 		}
 	}
 	
-	public final void modport_identifier() throws RecognitionException, TokenStreamException {
+	public final Token  modport_identifier() throws RecognitionException, TokenStreamException {
+		Token id;
 		
+		id = null;
 		
 		try {      // for error handling
-			identifier();
+			id=identifier();
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -6280,6 +6297,7 @@ inputState.guessing--;
 			  throw ex;
 			}
 		}
+		return id;
 	}
 	
 	public final void ansi_port_declaration_1() throws RecognitionException, TokenStreamException {
@@ -6853,9 +6871,10 @@ inputState.guessing--;
 	
 	public final void interface_instantiation() throws RecognitionException, TokenStreamException {
 		
+		Token ref=null, i1=null, i2=null;
 		
 		try {      // for error handling
-			interface_identifier();
+			ref=interface_identifier();
 			{
 			switch ( LA(1)) {
 			case POUND:
@@ -6874,13 +6893,19 @@ inputState.guessing--;
 			}
 			}
 			}
-			hierarchical_instance();
+			i1=hierarchical_instance();
+			if ( inputState.guessing==0 ) {
+				stTracker.addInterface(new InterfaceInstance(ref,i1));
+			}
 			{
 			_loop955:
 			do {
 				if ((LA(1)==COMMA)) {
 					match(COMMA);
-					hierarchical_instance();
+					i2=hierarchical_instance();
+					if ( inputState.guessing==0 ) {
+						stTracker.addInterface(new InterfaceInstance(ref,i2));
+					}
 				}
 				else {
 					break _loop955;
@@ -11800,11 +11825,13 @@ inputState.guessing--;
 		}
 	}
 	
-	public final void interface_instance_identifier() throws RecognitionException, TokenStreamException {
+	public final Token  interface_instance_identifier() throws RecognitionException, TokenStreamException {
+		Token id;
 		
+		id = null;
 		
 		try {      // for error handling
-			identifier();
+			id=identifier();
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -11814,6 +11841,7 @@ inputState.guessing--;
 			  throw ex;
 			}
 		}
+		return id;
 	}
 	
 	public final void list_of_variable_decl_assignments() throws RecognitionException, TokenStreamException {

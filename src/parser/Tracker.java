@@ -57,7 +57,7 @@ public abstract class Tracker {
         return m_moduleDefnByName;
     }
     
-    private Module  m_currentModule;
+    protected Module  m_currentModule;
     private Map<String,Module>  m_moduleDefnByName =
         new HashMap<String,Module>();
 }
