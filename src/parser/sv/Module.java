@@ -22,8 +22,6 @@
 //THE SOFTWARE.
 
 package parser.sv;
-import  java.util.LinkedList;
-import  java.util.List;
 import  antlr.Token;
 import  parser.v2k.VlogLocation;
 
@@ -38,15 +36,4 @@ public class Module extends parser.Module {
     public Module(Token modName, boolean isUdp) {
         super(isUdp ? EType.eUdp : EType.eVlog, modName.getText(), new VlogLocation(modName));
     }
-    public void addInstance(InterfaceInstance inst) {
-        if (null == m_intrfcInsts) {
-            m_intrfcInsts = new LinkedList<InterfaceInstance>();
-        }
-        m_intrfcInsts.add(inst);
-    }
-    public List<InterfaceInstance> getInterfaceInstances() {
-        return m_intrfcInsts;
-    }
-    
-    private List<InterfaceInstance> m_intrfcInsts;
 }

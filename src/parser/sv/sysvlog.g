@@ -1921,11 +1921,11 @@ named_port_connection
 ;
 
 //A.4.1.2 Interface instantiation
+//NOTE/TODO: syntactically, this is indistinguishable from module-instance.
 interface_instantiation
-{Token ref=null, i1=null, i2=null;}
-:	ref=interface_identifier ( parameter_value_assignment )?
-	i1=hierarchical_instance {stTracker.addInterface(new InterfaceInstance(ref,i1));}
-        ( COMMA i2=hierarchical_instance {stTracker.addInterface(new InterfaceInstance(ref,i2));} )* 
+:	interface_identifier ( parameter_value_assignment )?
+	hierarchical_instance 
+        ( COMMA hierarchical_instance )* 
         SEMI
 ;
 

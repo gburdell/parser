@@ -6871,10 +6871,9 @@ inputState.guessing--;
 	
 	public final void interface_instantiation() throws RecognitionException, TokenStreamException {
 		
-		Token ref=null, i1=null, i2=null;
 		
 		try {      // for error handling
-			ref=interface_identifier();
+			interface_identifier();
 			{
 			switch ( LA(1)) {
 			case POUND:
@@ -6893,19 +6892,13 @@ inputState.guessing--;
 			}
 			}
 			}
-			i1=hierarchical_instance();
-			if ( inputState.guessing==0 ) {
-				stTracker.addInterface(new InterfaceInstance(ref,i1));
-			}
+			hierarchical_instance();
 			{
 			_loop955:
 			do {
 				if ((LA(1)==COMMA)) {
 					match(COMMA);
-					i2=hierarchical_instance();
-					if ( inputState.guessing==0 ) {
-						stTracker.addInterface(new InterfaceInstance(ref,i2));
-					}
+					hierarchical_instance();
 				}
 				else {
 					break _loop955;

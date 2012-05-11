@@ -44,10 +44,6 @@ public class Tracker extends parser.Tracker {
     public void addInterface(InterfaceDeclaration intrc) {
         m_interfacesByName.put(intrc.getName(), intrc);
     }
-    public void addInterface(InterfaceInstance inst) {
-        Module mod = downCast(m_currentModule);
-        mod.addInstance(inst);
-    }
     public Map<String,InterfaceDeclaration> getInterfacesByName() {
         return m_interfacesByName;
     }
