@@ -30,7 +30,7 @@ import  java.util.List;
  */
 public abstract class Module {
     public static enum EType {
-        eVlog, eUdp, eVhdl, eLib
+        eVlog, eUdp, eVhdl, eLib, eSvInterface
     };
     protected Module(EType type, String name, Location declared) {
         m_type = type;

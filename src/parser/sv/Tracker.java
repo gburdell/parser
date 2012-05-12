@@ -22,10 +22,8 @@
 //THE SOFTWARE.
 
 package parser.sv;
-import java.util.HashMap;
-import java.util.Map;
 import  antlr.Token;
-import static parser.Utils.downCast;
+import parser.Module.EType;
 
 /**
  *
@@ -41,11 +39,7 @@ public class Tracker extends parser.Tracker {
     public void addInstance(Token refNm, Token instNm) {
         super.addInstance(new ModuleInstance(refNm, instNm));
     }
-    public void addInterface(InterfaceDeclaration intrc) {
-        m_interfacesByName.put(intrc.getName(), intrc);
+    public void addInterface(Token name) {
+        super.addModule(new Module(name, EType.eSvInterface));
     }
-    public Map<String,InterfaceDeclaration> getInterfacesByName() {
-        return m_interfacesByName;
-    }
-    private Map<String,InterfaceDeclaration> m_interfacesByName = new HashMap<String, InterfaceDeclaration>();
 }

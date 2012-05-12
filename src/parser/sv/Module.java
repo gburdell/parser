@@ -36,4 +36,7 @@ public class Module extends parser.Module {
     public Module(Token modName, boolean isUdp) {
         super(isUdp ? EType.eUdp : EType.eVlog, modName.getText(), new VlogLocation(modName));
     }
+    public Module(Token modName, EType type) {
+        super(type, modName.getText(), new VlogLocation(modName));
+    }
 }

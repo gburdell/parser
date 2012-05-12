@@ -2792,7 +2792,7 @@ inputState.guessing--;
 			id=interface_identifier();
 			if ( inputState.guessing==0 ) {
 				
-				stTracker.addInterface(new InterfaceDeclaration(id));
+				stTracker.addInterface(id);
 				
 			}
 			{
@@ -3324,7 +3324,7 @@ inputState.guessing--;
 			id=interface_identifier();
 			if ( inputState.guessing==0 ) {
 				
-				stTracker.addInterface(new InterfaceDeclaration(id));
+				stTracker.addInterface(id);
 				
 			}
 			match(LPAREN);

@@ -14,7 +14,7 @@ DBG-3   %s
 
 DECL-1  %s:%d: in module '%s': symbol '%s' undefined.
 
-DEFN-1  %s:%d: module '%s' previously defined (at %s).
+DEFN-1  %s:%d: module/interface '%s' previously defined (at %s).
 DEFN-2  %s:%d: in module '%s': symbol '%s' previously defined (at %s).
 DEFN-3  %s:%d: in module '%s': symbol '%s' previously defined as port (at %s).
 DEFN-4  %s:%d: in module '%s': symbol '%s' previously defined as parameter (at %s).

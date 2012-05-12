@@ -249,7 +249,7 @@ interface_header_prefix
 :	attribute_instances "interface" ( lifetime )? 
             id=interface_identifier
             {
-                stTracker.addInterface(new InterfaceDeclaration(id));
+                stTracker.addInterface(id);
             }
             ( parameter_port_list )?
 ;
@@ -277,7 +277,7 @@ interface_declaration_3
 {Token id=null;}
 : 	attribute_instances "interface" id=interface_identifier 
                 {
-                    stTracker.addInterface(new InterfaceDeclaration(id));
+                    stTracker.addInterface(id);
                 }
 		LPAREN DOT_STAR RPAREN SEMI
  		(options{greedy=true;}: timeunits_declaration )? 
