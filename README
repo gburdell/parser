@@ -1,3 +1,10 @@
+14-may-2012
+===========
++ pushed tag analyze_r1.1.5 which adds support for interface instance
+  tracking in apps/analyze (run as bin/analyze).
+
++ only required minor perturbations to sysvlog.g and Tracker.java.
+
 14-dec-2011
 ===========
 + grabbed source from https://sourceforge.net/projects/v2kparse/
