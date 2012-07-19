@@ -456,6 +456,16 @@ tryAgain:
 				match('/');
 				break;
 			}
+			case '+':
+			{
+				match('+');
+				break;
+			}
+			case '-':
+			{
+				match('-');
+				break;
+			}
 			default:
 			{
 				break _loop54;

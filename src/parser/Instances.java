@@ -49,7 +49,7 @@ public class Instances {
 
     private void begin() {
         Module top = m_modulesByName.get(m_topModule);
-        invariant(null != top);
+        if (null == top) return;
         if (!top.isLeaf()) {
             m_stack.addLast(new P(new Insterator(top), null));
         }
