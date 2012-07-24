@@ -142,12 +142,6 @@ tryAgain:
 					theRetToken=_returnToken;
 					break;
 				}
-				case '+':
-				{
-					mPLUS(true);
-					theRetToken=_returnToken;
-					break;
-				}
 				case 'A':  case 'B':  case 'C':  case 'D':
 				case 'E':  case 'F':  case 'G':  case 'H':
 				case 'I':  case 'J':  case 'K':  case 'L':
@@ -164,14 +158,6 @@ tryAgain:
 				case 'z':
 				{
 					mIDENT(true);
-					theRetToken=_returnToken;
-					break;
-				}
-				case '-':  case '0':  case '1':  case '2':
-				case '3':  case '4':  case '5':  case '6':
-				case '7':  case '8':  case '9':
-				{
-					mNUMBER(true);
 					theRetToken=_returnToken;
 					break;
 				}
@@ -196,7 +182,15 @@ tryAgain:
 						mML_COMMENT(true);
 						theRetToken=_returnToken;
 					}
-					else if ((_tokenSet_0.member(LA(1)))) {
+					else if ((LA(1)=='+') && (true)) {
+						mPLUS(true);
+						theRetToken=_returnToken;
+					}
+					else if ((_tokenSet_0.member(LA(1))) && (true)) {
+						mNUMBER(true);
+						theRetToken=_returnToken;
+					}
+					else if ((_tokenSet_1.member(LA(1)))) {
 						mWS(true);
 						theRetToken=_returnToken;
 					}
@@ -487,7 +481,7 @@ tryAgain:
 		int _saveIndex;
 		
 		boolean synPredMatched60 = false;
-		if (((_tokenSet_1.member(LA(1))) && (true))) {
+		if (((_tokenSet_0.member(LA(1))) && (true))) {
 			int _m60 = mark();
 			synPredMatched60 = true;
 			inputState.guessing++;
@@ -542,7 +536,7 @@ inputState.guessing--;
 		if ( synPredMatched60 ) {
 			mFLOAT(false);
 		}
-		else if ((_tokenSet_1.member(LA(1))) && (true)) {
+		else if ((_tokenSet_0.member(LA(1))) && (true)) {
 			mINTEGER(false);
 		}
 		else {
@@ -566,6 +560,11 @@ inputState.guessing--;
 		case '-':
 		{
 			match('-');
+			break;
+		}
+		case '+':
+		{
+			match('+');
 			break;
 		}
 		case '0':  case '1':  case '2':  case '3':
@@ -688,13 +687,13 @@ inputState.guessing--;
 		{
 		_loop77:
 		do {
-			if ((LA(1)=='\\') && (_tokenSet_0.member(LA(2)))) {
+			if ((LA(1)=='\\') && (_tokenSet_1.member(LA(2)))) {
 				match('\\');
 				{
 				int _cnt75=0;
 				_loop75:
 				do {
-					if ((_tokenSet_0.member(LA(1))) && ((LA(2) >= '\u0000' && LA(2) <= '\u00ff'))) {
+					if ((_tokenSet_1.member(LA(1))) && ((LA(2) >= '\u0000' && LA(2) <= '\u00ff'))) {
 						mWS(false);
 					}
 					else {
@@ -960,15 +959,15 @@ inputState.guessing--;
 	
 	
 	private static final long[] mk_tokenSet_0() {
-		long[] data = new long[8];
-		data[0]=8589934591L;
-		data[1]=-9223372036854775808L;
-		for (int i = 2; i<=3; i++) { data[i]=-1L; }
+		long[] data = { 287992881640112128L, 0L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 287984085547089920L, 0L, 0L, 0L, 0L};
+		long[] data = new long[8];
+		data[0]=8589934591L;
+		data[1]=-9223372036854775808L;
+		for (int i = 2; i<=3; i++) { data[i]=-1L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());

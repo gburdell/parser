@@ -2794,12 +2794,12 @@ module_path_primary
 
 primary
 :	primary_literal
+| 	(function_subroutine_call)=> function_subroutine_call
 | 	( (implicit_class_handle DOT) | class_scope | package_scope )? hierarchical_identifier select
 | 	empty_queue
 | 	(LCURLY expression LCURLY)=> multiple_concatenation
 | 	concatenation
 //infinite recursion| 	function_subroutine_call
-| 	function_subroutine_call
 | 	LPAREN mintypmax_expression RPAREN
 | 	cast
 | 	streaming_expression

@@ -208,7 +208,7 @@ NUMBER:
 |	INTEGER
 ;
 
-protected INTEGER: ('-')? (DIGIT)+ ;
+protected INTEGER: ('-'|'+')? (DIGIT)+ ;
 
 protected FLOAT: (INTEGER) ('.' (DIGIT)+)? (('e'|'E') INTEGER)? ;
 
