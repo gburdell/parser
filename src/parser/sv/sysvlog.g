@@ -2792,10 +2792,14 @@ module_path_primary
 ;
 */
 
+primary_1
+:   ( (implicit_class_handle DOT) | class_scope | package_scope )? hierarchical_identifier select
+;
+
 primary
 :	primary_literal
+| 	(primary_1)=> primary_1
 | 	(function_subroutine_call)=> function_subroutine_call
-| 	( (implicit_class_handle DOT) | class_scope | package_scope )? hierarchical_identifier select
 | 	empty_queue
 | 	(LCURLY expression LCURLY)=> multiple_concatenation
 | 	concatenation
