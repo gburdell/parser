@@ -659,10 +659,12 @@ L1
         dump_list('defines',@opts.define,true)
         dump_list('inclDirs',@opts.incdir)
         dump_list('inclFiles',included_files)
-        ixs.each { |k,vnm| dump_list(vnm,data[k]) }
+        ixs.each { |k,vnm| dump_list(vnm,{}) } #reset all
+        #Excluded to emit always first
         {:sv=>'sysvlogSrcs',:vhdl=>'vhdlSrcs'}.each do |k,vnm| 
           dump_list(vnm, @opts.excl_emit[k][:files], false, false)
         end
+        ixs.each { |k,vnm| dump_list(vnm,data[k],false,false) }
         dump_list('unresolved',@parser.unresolved)
       end
     end
