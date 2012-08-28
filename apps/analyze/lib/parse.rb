@@ -48,9 +48,9 @@ class Parse
     #Process seekers in this order
     #Pair of seeker and parser
     @seekers = []
+    @seekers << [@opts.slf_seeker, @slf]
     @seekers << [@opts.sv_seeker, @sysvlog]
     @seekers << [@opts.vhdl_seeker, @vhdl]
-    @seekers << [@opts.slf_seeker, @slf]
   end
 
   def has_unresolved?
@@ -75,7 +75,7 @@ class Parse
   public
   def get_used_srcs(type=:sv)
     used = @linker.get_used_srcs(@top)
-    bases = {:sv=>@sysvlog,:vhdl=>@vhdl,:slf=>@slf}
+    bases = {:slf=>@slf,:sv=>@sysvlog,:vhdl=>@vhdl}
     base = bases[type]
     in_order = base.processed_srcs & used
   end
@@ -89,7 +89,7 @@ class Parse
   public
   def get_used_srcs_by_type
     r = Hash.new
-    [:sv,:vhdl,:slf].each do |type|
+    [:slf,:sv,:vhdl].each do |type|
       r[type] = get_used_srcs(type)
     end
     r
@@ -98,7 +98,7 @@ class Parse
   public
   def link
     #list of Base to collect from
-    bases = [@sysvlog,@vhdl,@slf]
+    bases = [@slf,@sysvlog,@vhdl]
     @linker = Linker.new(bases, @opts.nodefn) #1st pass
     unresolved = []
     while true
@@ -168,7 +168,7 @@ class Parse
 
   public
   def get_trackers
-    [@sysvlog.jtracker, @vhdl.jtracker, @slf.jtracker]
+    [@slf.jtracker, @sysvlog.jtracker, @vhdl.jtracker]
   end
 
   private

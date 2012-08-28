@@ -36,11 +36,11 @@ class Main < Analyze
     super
     usage=<<L1
     --inst_tcl <file>        Dump {reference instance} pair to <file> in 
-		                           Tcl format.  Can use --inst_rex to dump only 
-															 specific reference(s).
+                               Tcl format.  Can use --inst_rex to dump only 
+                               specific reference(s).
     --inst_rex <rex|@file>   Only dump instances matching (Ruby-style)
                                regular expression <rex>.  @file is file
-															 containing single-line regular expression.
+                               containing single-line regular expression.
 L1
     STDERR << "#{usage}"
   end
@@ -49,15 +49,15 @@ L1
     super {|argv| @opts = MainOpts.new(argv)}
     ofn = @opts.more_opts[:inst_tcl]
     rex = @opts.more_opts[:inst_rex]
-		if rex
-			if rex =~ /^@(.+)/
-				nrex = ""
-				IO.foreach($1) {|ln| nrex += ln}
-				rex = nrex.strip
-			end
-    	rex = Regexp.new(rex)
-			puts "Info: inst_rex: #{rex}"
-		end
+    if rex
+      if rex =~ /^@(.+)/
+        nrex = ""
+        IO.foreach($1) {|ln| nrex += ln}
+        rex = nrex.strip
+      end
+      rex = Regexp.new(rex)
+      puts "Info: inst_rex: #{rex}"
+    end
     insts = Instances.new(@opts.top_mod, @parser.get_trackers)
     unless ofn.nil?
       Message.message('I', 'FILE-4', ofn)
