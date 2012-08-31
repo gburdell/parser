@@ -31,8 +31,12 @@ import  parser.ILexer;
 import  antlr.TokenStreamException;
 import  antlr.RecognitionException;
 import  java.io.FileReader;
+import  java.io.Reader;
+import  java.io.FileInputStream;
+import  java.io.InputStreamReader;
 import  java.io.FileNotFoundException;
 import  java.io.IOException;
+import  java.util.zip.GZIPInputStream;
 
 /**
  *
@@ -56,15 +60,19 @@ public class Parser implements ILexer {
 
     protected void parse(String fname)
             throws TokenStreamException, RecognitionException {
-        FileReader rdr = null;
         LibraryFactory libFactory = new LibraryFactory() {
            public Library createLibrary(String name) {
                return new Library(name);
            }
         };
         try {
+            Reader rdr = null;
             MessageMgr.message('I', "FILE-3", fname);
-            rdr = new FileReader(fname);
+            if (fname.endsWith(".gz")) {
+                rdr = new InputStreamReader(new GZIPInputStream(new FileInputStream(fname)));
+            } else {
+                rdr = new FileReader(fname);
+            }
             m_lexer = new SlfLexer(rdr);
             m_lexer.setFilename(fname);
             m_parser = new SlfParser(m_lexer);
