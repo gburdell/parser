@@ -27,8 +27,11 @@ require 'parse'
 class Instances
   java_import 'parser.Instances'
 
-  def initialize(top_module, trackers)
+	#mode=0: dump instances; 1:only lib (once)
+  def initialize(top_module, trackers, mode=0)
+		@mode = mode.to_i
     @instances = Instances.new(top_module, trackers)
+		@ref_cnts = {}
   end
 
   def dump_insts(ofid = STDOUT)
@@ -43,7 +46,16 @@ class Instances
     while @instances.has_more
       jmodule_inst = @instances.next
       ref_name = jmodule_inst.get_ref_name
-      yield(ref_name,@instances)
+			case @mode
+			when 1
+				if @instances.is_lib(jmodule_inst)
+					@ref_cnts[ref_name] = 0 unless @ref_cnts.has_key?(ref_name)
+      		yield(ref_name,@instances) if @ref_cnts[ref_name] < 1
+					@ref_cnts[ref_name] += 1
+				end
+			else
+      	yield(ref_name,@instances)
+			end
     end
   end
 end

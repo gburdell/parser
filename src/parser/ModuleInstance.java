@@ -45,7 +45,7 @@ public abstract class ModuleInstance {
     public String getRefName() {
         return m_refName;
     }
-
+    
     private final String    m_refName;
     private final String    m_instName;
     private final Location  m_declared;

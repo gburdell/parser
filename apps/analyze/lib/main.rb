@@ -38,7 +38,15 @@ class Main < Analyze
     --inst_tcl <file>        Dump {reference instance} pair to <file> in 
                                Tcl format.  Can use --inst_rex to dump only 
                                specific reference(s).
-    --inst_rex <rex|@file>   Only dump instances matching (Ruby-style)
+    --inst_mode 0|1          When 0 (default), dump {reference instance} 
+                               pair for all instances.  
+                               When 1, dump pair for first reference
+                               to a module defined in SLF.
+                               inst_mode==1 useful for detecting which cell
+                               definitions in SLF file(s) used.
+                               In both cases, --inst_rex can further filter
+                               references.
+    --inst_rex <rex|@file>   Only dump references matching (Ruby-style)
                                regular expression <rex>.  @file is file
                                containing single-line regular expression.
 L1
@@ -49,6 +57,7 @@ L1
     super {|argv| @opts = MainOpts.new(argv)}
     ofn = @opts.more_opts[:inst_tcl]
     rex = @opts.more_opts[:inst_rex]
+    inst_mode = @opts.more_opts[:inst_mode] || 0
     if rex
       if rex =~ /^@(.+)/
         nrex = ""
@@ -58,7 +67,7 @@ L1
       rex = Regexp.new(rex)
       puts "Info: inst_rex: #{rex}"
     end
-    insts = Instances.new(@opts.top_mod, @parser.get_trackers)
+    insts = Instances.new(@opts.top_mod, @parser.get_trackers, inst_mode)
     unless ofn.nil?
       Message.message('I', 'FILE-4', ofn)
       File.open(ofn, 'w') do |f|
@@ -86,6 +95,14 @@ class MainOpts < Opts
         expect_arg do |v|
           unless @more_opts[:inst_tcl]
             @more_opts[:inst_tcl] = v if as_writable_file(v, @ai)
+          else
+            error('ARG-5',@ai)
+          end
+        end
+      when '--inst_mode'
+        expect_arg do |v|
+          unless @more_opts[:inst_mode]
+            @more_opts[:inst_mode] = v
           else
             error('ARG-5',@ai)
           end

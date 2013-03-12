@@ -22,8 +22,8 @@
 //THE SOFTWARE.
 
 package parser;
-import  java.util.*;
-import  static parser.Utils.invariant;
+import java.util.*;
+import static parser.Utils.invariant;
 /**
  * An object for iterating through the module/instance hierarchy.
  *
@@ -79,6 +79,11 @@ public class Instances {
         return inst;
     }
 
+    public boolean isLib(final ModuleInstance minst) {
+        Module ref = m_modulesByName.get(minst.getRefName());
+        return (null != ref) && ref.isLib();
+    }
+    
     public String getFullName() {
         StringBuilder bld = new StringBuilder();
         for (P ele : m_stack) {

@@ -44,7 +44,9 @@ public abstract class Module {
     public String getName() {
         return m_name;
     }
-
+    public boolean isLib() {
+        return getType() == EType.eLib;
+    }
     public Location getDeclLoc() {
         return m_declared;
     }
