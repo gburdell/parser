@@ -1,3 +1,7 @@
+11-mar-2013
+===========
++ added --inst_mode 0|1 to analyze to track cell instances from SLF files.
+
 23-jul-2012
 ===========
 
