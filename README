@@ -1,3 +1,7 @@
+23-mar-2013
+===========
++ fixed: remove space from full-instance name generated into --inst_tcl.
+
 11-mar-2013
 ===========
 + added --inst_mode 0|1 to analyze to track cell instances from SLF files.
