@@ -76,7 +76,8 @@ L1
         f.puts "set #{vnm} \{\}"
         insts.foreach do |refnm,jinst|
           if (rex.nil? or rex.match(refnm))
-            f.puts "lappend #{vnm} \{#{refnm} #{jinst.get_full_name}\}"
+            finm = jinst.get_full_name.gsub(' ','')
+            f.puts "lappend #{vnm} \{#{refnm} #{finm}\}"
           end
         end
       end
