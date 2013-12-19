@@ -1,3 +1,8 @@
+19-dec-2013
+===========
++ fixed: case where file a/b/c/d.v has `include "./e.vh".
+         Need to implicitly add dir of including-source a/b/c to incdir.
+
 23-mar-2013
 ===========
 + fixed: remove space from full-instance name generated into --inst_tcl.

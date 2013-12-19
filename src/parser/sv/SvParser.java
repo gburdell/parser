@@ -20,23 +20,26 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
-
 package parser.sv;
-import  java.io.Reader;
-import  parser.v2k.IPipedLexer;
-import  parser.ILexer;
-import  parser.v2k.Lexer;
-import  parser.v2k.Parser;
-import  parser.MessageMgr;
-import  antlr.TokenStreamException;
-import  antlr.RecognitionException;
-import  antlr.LexerSharedInputState;
+
+import java.io.Reader;
+import parser.v2k.IPipedLexer;
+import parser.ILexer;
+import parser.v2k.Lexer;
+import parser.v2k.Parser;
+import parser.MessageMgr;
+import antlr.TokenStreamException;
+import antlr.RecognitionException;
+import antlr.LexerSharedInputState;
+import java.io.File;
+import parser.v2k.Preproc;
 
 /**
  *
  * @author kpfalzer
  */
 public class SvParser extends Parser {
+
     public SvParser() {
     }
 
@@ -44,6 +47,18 @@ public class SvParser extends Parser {
             throws TokenStreamException, RecognitionException {
         if (false == fname.equals("<cmdline>")) {
             MessageMgr.message('I', "FILE-3", fname);
+        }
+        {
+            /*
+             * Fix bug to create analyze/r1.3
+             * Case where d/e/g.v has `include ./h.vh.
+             * Need to implicitly add path of source (of g.v): d/e
+             */
+            File f = new File(fname);
+            String dir = f.getParent();
+            if (null != dir) {
+                Preproc.getTheOne().addSearchPath(dir);
+            }
         }
         m_lexer = new SvLexer(fname);
         m_parser = new SysVlogParser(m_lexer);
@@ -57,21 +72,23 @@ public class SvParser extends Parser {
     public SysVlogParser getParser() {
         return m_parser;
     }
-    
-    private SvLexer         m_lexer;
-    private SysVlogParser   m_parser;
+    private SvLexer m_lexer;
+    private SysVlogParser m_parser;
 
     private static class SvLexer extends SysVlogLexer implements IPipedLexer {
+
         public SvLexer(String fname) {
-            super((LexerSharedInputState)null); //a bogus constructor
+            super((LexerSharedInputState) null); //a bogus constructor
             m_lexer = new Lexer(fname, this);
         }
+
         public void setReader(Reader rdr) {
             super.inputState = new LexerSharedInputState(rdr);
         }
+
         public Lexer getLexer() {
             return m_lexer;
         }
-        private Lexer   m_lexer;
+        private Lexer m_lexer;
     }
 }

@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r1.2.1"
+  VERSION = "r1.3"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
