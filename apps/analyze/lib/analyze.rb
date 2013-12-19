@@ -65,6 +65,8 @@ class Analyze
 
   Usage: #{@cmd} -m <topModule> [option] <file>...
 
+  Version #{VERSION}.
+
   Analyze one or more SystemVerilog, VHDL or Liberty <file> 
   and quick link <topModule>.
 
