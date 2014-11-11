@@ -126,7 +126,7 @@ class Parse
           @state = :try_seekers
           @changed_state = true
         else
-          added = @sysvlog.parse_incr(@v.delete_at(0).to_a)  #pop -v file
+          added = @sysvlog.parse_incr(@v.delete_at(0).split)  #pop -v file
           @linker.add(added)
         end
       when :try_seekers
@@ -148,7 +148,7 @@ class Parse
           break if fn
         end
         if fn
-          added = parser.parse_incr(fn.to_a)
+          added = parser.parse_incr(fn.split)
           @linker.add(added)
         else
           @state = :try_seekers
