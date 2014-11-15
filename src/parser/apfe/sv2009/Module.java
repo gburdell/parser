@@ -1,7 +1,6 @@
 //The MIT License
 //
-//Copyright (c) 2006-2010  Karl W. Pfalzer
-//Copyright (c) 2011-      George P. Burdell
+//Copyright (c) 2014-      George P. Burdell
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +20,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
-package parser.sv;
+package parser.apfe.sv2009;
 
-/**
- *
- * @author kpfalzer
- */
-public class Parser {
+import apfe.runtime.Token;
 
-    public Parser() {
-        m_parser = new Main();
+public class Module extends parser.Module {
+    public Module(Token modName) {
+        this(modName, false);
     }
-
-    public parser.v2k.Parser getParser() {
-        return m_parser.getParser();
+    public Module(Token modName, boolean isUdp) {
+        super(isUdp ? EType.eUdp : EType.eVlog, modName.getText(), new Location(modName));
     }
-
-    public void parse(String argv[]) {
-        m_parser.initAndParse(argv);
+    public Module(Token modName, EType type) {
+        super(type, modName.getText(), new Location(modName));
     }
-
-    private final Main    m_parser;
 }

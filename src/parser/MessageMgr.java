@@ -61,15 +61,15 @@ public class MessageMgr {
     		return m_message;
     	}
     	/**Message type*/
-    	private IMessenger.EType	m_type;
+    	private final IMessenger.EType	m_type;
     	/**Formatted message.*/
-    	private String	m_message;
+    	private final String	m_message;
     }
     /**Format message.*/
     private static String format(IMessenger.EType type, String code, Object ... args) {
         String fmt = getTheOne().getFormat(code);
     	Utils.invariant(null != fmt);
-        StringBuffer buf = new StringBuffer(type.getPfx());
+        StringBuilder buf = new StringBuilder(type.getPfx());
         buf.append(": ");
         buf.append(String.format(fmt, args));
         buf.append(String.format("  (%s)", code));
@@ -104,6 +104,14 @@ public class MessageMgr {
     
     private static MessageMgr getTheOne() {
         return stTheOne;
+    }
+    
+    /**
+     * Get reference to counters to be shared.
+     * @return counter references.
+     */
+    public static int[] getMessageCounters() {
+        return getTheOne().m_msgCnts;
     }
     
     /** Creates a new instance of MessageMgr */
@@ -150,7 +158,7 @@ public class MessageMgr {
                 Utils.invariant(null == m_msgs.put(msgCode, msg));
             }
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             Utils.abnormalExit(ex);
         }
     }
@@ -199,6 +207,7 @@ public class MessageMgr {
     }
     
     public static class DefaultMessenger extends IMessenger {
+        @Override
         public void message(Message msg) {
             PrintStream os = msg.getType().getOstrm();
             os.println(msg.getMessage());
@@ -216,7 +225,7 @@ public class MessageMgr {
     private static final String stFname  = "parser.msg.txt";
     private static MessageMgr stTheOne = null;
 
-    private Map<String, String> m_msgs = new HashMap<String, String>();
-    private IMessenger m_messenger = new DefaultMessenger();
-    private int m_msgCnts[] = new int[] {0, 0, 0};
+    private final Map<String, String> m_msgs = new HashMap<>();
+    private final IMessenger m_messenger = new DefaultMessenger();
+    private final int m_msgCnts[] = new int[] {0, 0, 0};
 }
