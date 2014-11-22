@@ -31,6 +31,6 @@ module Initialize
   p = SYSTEM.getProperty("tool.root");
   p = '.' unless p
   TOOL_ROOT = File.expand_path(p)
-  jars = ["#{TOOL_ROOT}/dist/parser.jar", "#{TOOL_ROOT}/dist/lib/antlr.jar"]
+  jars = Dir.glob(File.join("#{TOOL_ROOT}","**", "*.jar"))
   jars.each { |jar| require jar }
 end

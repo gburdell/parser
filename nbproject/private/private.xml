@@ -1,7 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
+        <file>
+            <url>src/parser/v2k/Parser.java</url>
+            <bookmark id="3">
+                <name/>
+                <line>62</line>
+                <key/>
+            </bookmark>
+            <bookmark id="2">
+                <name/>
+                <line>84</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/parser/v2k/Preproc.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>71</line>
+                <key/>
+            </bookmark>
+            <bookmark id="7">
+                <name/>
+                <line>98</line>
+                <key/>
+            </bookmark>
+            <bookmark id="9">
+                <name/>
+                <line>108</line>
+                <key/>
+            </bookmark>
+            <bookmark id="10">
+                <name/>
+                <line>449</line>
+                <key/>
+            </bookmark>
+            <bookmark id="8">
+                <name/>
+                <line>505</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/parser/Location.java</url>
+            <bookmark id="6">
+                <name/>
+                <line>105</line>
+                <key/>
+            </bookmark>
+        </file>
         <file>
             <url>src/parser/sv/Main.java</url>
             <bookmark id="5">
@@ -18,50 +67,10 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>src/parser/v2k/Parser.java</url>
-            <bookmark id="3">
-                <name/>
-                <line>62</line>
-                <key/>
-            </bookmark>
-            <bookmark id="2">
-                <name/>
-                <line>84</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/parser/Location.java</url>
-            <bookmark id="6">
-                <name/>
-                <line>105</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/parser/v2k/Preproc.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>71</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Main.java</file>
             <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Parser.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Module.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/Tracker.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/sv/Parser.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/ModuleInstance.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/sv/Main.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/ModuleInstance.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Tracker.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/sv/Module.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/Module.java</file>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Location.java</file>
         </group>
     </open-files>
 </project-private>

@@ -86,7 +86,7 @@ public class Utils {
     }
 
     public static List<String> arrayToList(String s[]) {
-        List<String> rval = new LinkedList<String>();
+        List<String> rval = new LinkedList<>();
         for (String i : s) {
             rval.add(i);
         }
@@ -120,8 +120,8 @@ public class Utils {
     public static Pair<File,File> findFile(List<File> dirs, String fname, boolean getCanon,
             int reportDuplSvr)
     {
-        Pair<File,File> rval = new Pair<File,File>(null,null);
-        List<Pair<File,File>> locs = new LinkedList<Pair<File,File>>();
+        Pair<File,File> rval = new Pair<>(null,null);
+        List<Pair<File,File>> locs = new LinkedList<>();
         for (File d : dirs)
         {
             File f = new File(d, fname);
@@ -132,7 +132,7 @@ public class Utils {
                         f = f.getCanonicalFile();
                         d = d.getCanonicalFile();
                     }
-                    rval = new Pair<File,File>(d,f);
+                    rval = new Pair<>(d,f);
                     if (0 < reportDuplSvr) {
                         if ( ! locs.contains(rval)) {
                             locs.add(rval); //no duplicates
@@ -140,7 +140,7 @@ public class Utils {
                     } else {
                         break; //for
                     }
-                } catch (Exception ex) {
+                } catch (IOException ex) {
                     //do nothing
                 }
             }

@@ -48,7 +48,7 @@ public class Main
             //SysVlogParser.stQuick = false;
             parse();
         }
-        catch (Exception ex) {
+        catch (ProcArgs.ArgException ex) {
             fatal(ex);
         }
     }

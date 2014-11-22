@@ -23,30 +23,101 @@ package parser.apfe.sv2009;
 
 import apfe.runtime.Acceptor;
 import apfe.runtime.Acceptor.Listener;
+import apfe.runtime.PrioritizedChoice;
+import apfe.runtime.Repetition;
+import apfe.runtime.Terminal;
+import apfe.runtime.Token;
+import apfe.runtime.Util;
+import static apfe.runtime.Util.extractEle;
+import static apfe.runtime.Util.extractList;
+import apfe.sv2009.generated.hierarchical_instance;
 import apfe.sv2009.generated.module_identifier;
+import apfe.sv2009.generated.udp_identifier;
 import apfe.sv2009.generated.module_declaration;
+import apfe.sv2009.generated.module_instantiation;
+import apfe.sv2009.generated.identifier;
+import apfe.sv2009.generated.name_of_instance;
+import apfe.sv2009.generated.interface_identifier;
+import static gblib.Util.downCast;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Parser {
+
     public Parser() {
         init();
     }
+    
+    public Tracker getTracker() {
+        return m_tracker;
+    }
+
     /**
      * Initialize Parser by settings up Listeners to apfe.sv2009.
      */
     private void init() {
         module_identifier.addListener(stModuleIdent);
         module_declaration.addListener(stModuleDecl);
+        module_instantiation.addListener(stModuleInst);
+        udp_identifier.addListener(stUdpIdent);
+        interface_identifier.addListener(stInterfaceIdent);
     }
 
     /**
-     * Track definitions fro this parser.
+     * Track definitions for this parser.
      */
     private final Tracker m_tracker = new Tracker();
 
+    /**
+     * Get Token from identifier.
+     *
+     * @param id identifier.
+     * @return Token from identifier.
+     */
+    private static Token getToken(identifier id) {
+        PrioritizedChoice pc = downCast(id.getBaseAccepted());
+        Terminal asTerm = downCast(pc.getAccepted().getBaseAccepted());
+        return asTerm.getAccepted();
+    }
+
+    /**
+     * Get instance name as Token.
+     *
+     * @param inst instance.
+     * @return instance name as Token.
+     */
+    private static Token getInstName(hierarchical_instance inst) {
+        identifier instId = extractEle(Util.<name_of_instance>extractEle(
+                inst.getBaseAccepted(), 0).getBaseAccepted(), 0);
+        return getToken(instId);
+    }
+
     private class ModuleIdentifierListener implements Listener {
 
+        @Override
         public void onAccept(Acceptor accepted) {
-            String dbg = accepted.toString();
+            Token tok = getToken((identifier) accepted);
+            m_tracker.addModule(tok);
+        }
+
+    }
+
+    private class UdpIdentifierListener implements Listener {
+
+        @Override
+        public void onAccept(Acceptor accepted) {
+            Token tok = getToken((identifier) accepted);
+            m_tracker.addUdp(tok);
+        }
+
+    }
+
+    private class InterfaceIdentifierListener implements Listener {
+
+        @Override
+        public void onAccept(Acceptor accepted) {
+            Token tok = getToken((identifier) accepted);
+            m_tracker.addInterface(tok);
         }
 
     }
@@ -58,12 +129,39 @@ public class Parser {
          *
          * @param unused not used.
          */
+        @Override
         public void onAccept(Acceptor unused) {
             m_tracker.endModule();
         }
 
     }
 
+    private class ModuleInstantiationListener implements Listener {
+
+        /**
+         * Add instances from module instantiation.
+         *
+         * @param acc module_instantiation.
+         */
+        @Override
+        public void onAccept(Acceptor acc) {
+            identifier ref = extractEle(acc, 0);
+            Token refTok = getToken(ref);
+            hierarchical_instance inst = extractEle(acc, 2);
+            List<hierarchical_instance> insts = new LinkedList<>();
+            insts.add(inst);
+            extractList(Util.<Repetition>extractEle(acc, 3), 1, insts);
+            for (hierarchical_instance hi : insts) {
+                Token instTok = getInstName(hi);
+                m_tracker.addInstance(refTok, instTok);
+            }
+        }
+
+    }
+
     private final Listener stModuleIdent = new ModuleIdentifierListener(),
-            stModuleDecl = new ModuleDeclarationListener();
+            stModuleDecl = new ModuleDeclarationListener(),
+            stModuleInst = new ModuleInstantiationListener(),
+            stUdpIdent = new UdpIdentifierListener(),
+            stInterfaceIdent = new InterfaceIdentifierListener();
 }

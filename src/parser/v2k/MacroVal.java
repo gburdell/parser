@@ -34,9 +34,10 @@ public class MacroVal
         /*
          * Get parameter names in descending order of length
          */
-        List<String> sorted = new LinkedList<String>(parms);
+        List<String> sorted = new LinkedList<>(parms);
         Collections.sort(sorted, new Comparator<String>() {
 
+            @Override
             public int compare(String t, String t1) {
                 //return by descending order
                 int n = t.length(), n1 = t1.length();

@@ -24,7 +24,6 @@
 
 package parser.apfe.sv2009;
 import apfe.sv2009.MtMain;
-import parser.MessageMgr;
 
 /**
  * A wrapper around apfe.sv2009.MtMain.
@@ -34,8 +33,6 @@ public class Main {
     public static void main(String argv[]) {
         //Parser to contain parse-tree.
         Parser parser = new Parser();
-        //share the message counters
-        apfe.runtime.MessageMgr.setMessageCountRef(MessageMgr.getMessageCounters());
         MtMain.main(argv);
         int dbg = 0;
     }

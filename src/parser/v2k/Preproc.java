@@ -242,6 +242,13 @@ public class Preproc {
         return has != null;
     }
 
+    /**
+     * Search for include file 'fn' using search path.
+     * 
+     * @param fn
+     * @throws TokenStreamRetryException
+     * @throws RecognitionException 
+     */
     public void includeFile(String fn) /*"fn"*/ 
             throws TokenStreamRetryException,
                    RecognitionException {
@@ -374,11 +381,11 @@ public class Preproc {
     }
     
     /**Stack of lexer states*/
-    private Stack<LexState> m_lexStack = new Stack<LexState>();
+    private Stack<LexState> m_lexStack = new Stack<>();
 
     /**Stack of ifdef states*/
-    private Stack<IfdefState> m_ifdefStack = new Stack<IfdefState>();
-    private Map<String,MacroVal> m_defines = new HashMap<String,MacroVal>();
+    private Stack<IfdefState> m_ifdefStack = new Stack<>();
+    private Map<String,MacroVal> m_defines = new HashMap<>();
 
     /**
      * Track where macros are defined and if they are used.
@@ -441,8 +448,8 @@ public class Preproc {
          *         but are not in usedSrcs.
          */
         List<String> getMacroDefnFiles(final List<String> usedSrcs) {
-            List<String> rval = new LinkedList<String>();
-            List<String> allUsed = new LinkedList<String>(usedSrcs);
+            List<String> rval = new LinkedList<>();
+            List<String> allUsed = new LinkedList<>(usedSrcs);
             int lastAllUsedSize = 0;
             do {
                 lastAllUsedSize = allUsed.size();
@@ -454,10 +461,10 @@ public class Preproc {
         }
 
         private List<String> getMacroDefnFilesIter(final List<String> usedSrcs) {
-            List<String> rval = new LinkedList<String>();
-            List<MyFile> usedFiles = new LinkedList<MyFile>();
+            List<String> rval = new LinkedList<>();
+            List<MyFile> usedFiles = new LinkedList<>();
             //Hash/keys of used macros
-            Map<String,Object> usedMacros = new HashMap<String,Object>();
+            Map<String,Object> usedMacros = new HashMap<>();
             //1) get macros used
             for (String fn : usedSrcs) {
                 MyFile f = new MyFile(fn);
@@ -483,24 +490,24 @@ public class Preproc {
         /**
          * Map of file which defined macro/key.
          */
-        Map<String,List<MyFile>> m_filesByMacro = new HashMap<String,List<MyFile>>();
+        Map<String,List<MyFile>> m_filesByMacro = new HashMap<>();
         /**
          * Map of macros used by File/key.
          */
-        Map<MyFile,List<String>> m_macrosUsed = new HashMap<MyFile,List<String>>();
+        Map<MyFile,List<String>> m_macrosUsed = new HashMap<>();
     }
 
     private MacrosUsed m_macroUsed = new MacrosUsed();
 
-    private List<File>  m_searchPath = new LinkedList<File>();
+    private List<File>  m_searchPath = new LinkedList<>();
     /**
      * Keep track of any include files processed (in no particular order).
      */
-    private Map<String,Integer> m_includes = new HashMap<String,Integer>();
+    private Map<String,Integer> m_includes = new HashMap<>();
     /**
      * Keep track of searchPath dirs actually used.
      */
-    private Map<String,Integer> m_usedPaths = new HashMap<String,Integer>();
+    private Map<String,Integer> m_usedPaths = new HashMap<>();
 
     private static Preproc  stTheOne = new Preproc();
 	/**
