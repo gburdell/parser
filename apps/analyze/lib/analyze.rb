@@ -132,9 +132,8 @@ class Analyze
                           Common use would be for DesignWare parts: e.g.,
                             +nodefn+DW02_mult.
     --tcl <file>        Dump analyze details to <file> in Tcl format.
-    -E                  Dump intermediate, pre-processor output to <file>.E.
+    -E <file>           Dump intermediate, pre-processor output to <file>.
     --exit_on_err       Exit if any parser errors (no output files generated).
-    --full_sv           Use full SystemVerilog parser.
     --excl_emit <spec>  Specify file suffixes to exclude from parsing.
                           However, any matched files will be emitted
                           into the specified <file> of "--tcl <file>".  The
@@ -157,7 +156,7 @@ class Opts
 
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
     :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
-    :exit_on_err, :full_sv, :more_opts, :excl_emit
+    :exit_on_err, :more_opts, :excl_emit
   
   private
   def init(args)
@@ -181,8 +180,7 @@ class Opts
     @flatf = nil
     @nodefn = []
     @tcl = nil
-    @opt_e = false
-    @full_sv = false
+    @opt_e = nil
     process_args
     #Get rid of duplicates
     @define.uniq!
@@ -241,7 +239,13 @@ class Opts
         usage
         exit 1
       when '-E'
-        @opt_e = true;
+        expect_arg do |v|
+          unless @opt_e
+            @opt_e = v
+          else
+            error('ARG-5',@ai)
+          end
+        end
       when '-m'
         expect_arg do |v|
           unless @top_mod
@@ -279,12 +283,6 @@ class Opts
       when '--exit_on_err'
         unless @exit_on_err
           @exit_on_err = true
-        else
-          error('ARG-5',@ai)
-        end
-      when '--full_sv'
-        unless @full_sv
-          @full_sv = true
         else
           error('ARG-5',@ai)
         end

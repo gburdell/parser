@@ -40,7 +40,10 @@ cd $cdir
 set ROOT=${dir:h}
 set analyzeLib=${ROOT}/apps/analyze/lib
 
-exec jruby -J-ea -J-Dtool.root=${ROOT} \
+exec jruby -J-ea \
+	-J-Dtool.root=${ROOT} \
+	-J-Dparser.messages=${ROOT}/props/parser.msg.txt \
+	-J-Dvlogpp.messages=${ROOT}/props/vlogpp.msg.txt \
 	-I${analyzeLib} \
 	-- \
 	${analyzeLib}/main.rb ${*}

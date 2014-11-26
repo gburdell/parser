@@ -1,6 +1,8 @@
 //	Format is: code format_string
 //  Do ***NOT*** use tabs in this file!!
 
+APFE-STAT-1 Memoize hit rate: %d / %d (%.2f%%)
+
 ARG-1  %s: missing required argument.
 ARG-2  %s: %s: not a readable directory.
 //
@@ -53,6 +55,8 @@ MACRO-6 %s:%d: `else is %s.
 MACRO-7 %s:%d: `elsif '%s' is %s.
 
 PARSE-1 %s:%d: %s
+PARSE-3 %s: unexpected char '%c'.
+PARSE-5 %s:%s: found '%s', expected %s.
 
 PORT-1 %s:%d: in module '%s': port '%s' not declared in port list.
 PORT-2 %s:%d: in module '%s': port '%s' already defined (at %s).
@@ -63,11 +67,11 @@ PORT-6 %s:%d: in module '%s': port '%s' already defined as reg (at %s).
 
 TYPE-1 %s:%d: in module '%s': '%s': symbol type of %s (lhs) must be '%s'.
 
-VPP-1  %s: creating pre-processed file ...
 VPP-2  %s: could not create file.
 VPP-3  %s: expecting '%c' found '%s'
 VPP-4  %s: expecting %s found '%s'
 VPP-5  %s: unexpected '%s'
 
+VPPE-1 %s: post-preprocessor output.
 
 

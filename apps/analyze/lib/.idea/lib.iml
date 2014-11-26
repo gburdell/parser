@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RUBY_MODULE" version="4">
   <component name="ModuleRunConfigurationManager">
-    <configuration default="false" name="main" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
+    <configuration default="false" name="main" type="RubyRunConfigurationType" factoryName="Ruby">
       <module name="lib" />
-      <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="-J-ea -J-Dtool.root=../../.. -J-Dparser.messages=$MODULE_DIR$/../../../props/parser.msg.txt -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
+      <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="-J-ea -J-Dtool.root=../../.. -J-Dparser.messages=../../../props/parser.msg.txt -J-Dvlogpp.messages=../../../props/vlogpp.msg.txt -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
       <RUBY_RUN_CONFIG NAME="WORK DIR" VALUE="$MODULE_DIR$" />
       <RUBY_RUN_CONFIG NAME="SHOULD_USE_SDK" VALUE="false" />
       <RUBY_RUN_CONFIG NAME="ALTERN_SDK_NAME" VALUE="" />
@@ -18,7 +18,7 @@
       </EXTENSION>
       <EXTENSION ID="org.jetbrains.plugins.ruby.motion.run.MotionSimulatorRunExtension" />
       <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="$MODULE_DIR$/main.rb" />
-      <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="-m alu2V2  $MODULE_DIR$/../../../../alu2.sv" />
+      <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="-m alu2V2  $MODULE_DIR$/../../../test/alu2.sv" />
       <RunnerSettings RunnerId="RubyDebugRunner" />
       <RunnerSettings RunnerId="RubyRunner" />
       <ConfigurationWrapper RunnerId="RubyDebugRunner" />
@@ -28,7 +28,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="jruby-1.7.13-p392" jdkType="JRUBY_SDK" />
+    <orderEntry type="jdk" jdkName="jruby-1.7.16.1-p392" jdkType="JRUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

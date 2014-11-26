@@ -428,7 +428,7 @@ public class Preproc {
                 MyFile f = new MyFile(loc);
                 List<String> l = null;
                 if (!m_macrosUsed.containsKey(f)) {
-                    l = new LinkedList<String>();
+                    l = new LinkedList<>();
                     m_macrosUsed.put(f, l);
                 } else {
                     l = m_macrosUsed.get(f);

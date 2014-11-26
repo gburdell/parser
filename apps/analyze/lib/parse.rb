@@ -32,10 +32,9 @@ class Parse
   attr_reader :unresolved, :nodefn
   
   def initialize(opts)
-    Java::parser::Message.stExceptionAddLineno = true
     @opts = opts
-    Java::parser.v2k.Parser.setDumpPP(true) if @opts.opt_e
-    Java::parser.sv.SysVlogParser.stQuick = false if @opts.full_sv
+    Java::ApfeDslVlogpp::Main.setDumpVpp(@opts.opt_e) if @opts.opt_e
+    #todo
     @sysvlog = SysVlog.new(@opts.sv, @opts.define, @opts.incdir)
     @vhdl = Vhdl.new(@opts.vhdl)
     @slf = Slf.new(@opts.slf)
@@ -366,8 +365,8 @@ class Parse
 
   private
   class SysVlog < Base
-		java_import 'parser.sv.Parser'
-		java_import 'parser.sv.SysVlogParser'
+		java_import 'parser.apfe.sv2009.Main'
+		java_import 'apfe.dsl.vlogpp.Helper'
 
 		def initialize(sv,defs,incdirs)
 			parse(sv,defs,incdirs)
@@ -382,13 +381,13 @@ class Parse
       args += Parse::prefix('-D',defs) unless defs.empty?
       args += Parse::prefix('-I',incdirs) unless incdirs.empty?
       args += srcs
-      @jparser = Parser.new
-      @jparser.parse(args)
-      @jtracker = SysVlogParser.stTracker
+      @jparser = Main.getParser
+      Main.main(args)
+      @jtracker = @jparser.getTracker
 	  end
 
     def get_define_only_files(used)
-      def_only_files = @jparser.get_parser.get_define_only_files(used)
+      def_only_files = Helper.getTheOne.getMacroDefns.getDefineOnlyFiles(used)
       #reconcile again processed_srcs to get order correct
       rval = []
       @processed_srcs.each do |f|
@@ -399,10 +398,8 @@ class Parse
 
     def get_included_files
       included = []
-      incl_count_by_name = @jparser.get_parser.get_include_files
-      incl_count_by_name.each do |k,v|
-        included << k if v>0
-      end
+      files = Helper.getTheOne.getIncludeDirs.getIncludedFiles
+      files.each {|k| included << k}
       included
     end
 	end

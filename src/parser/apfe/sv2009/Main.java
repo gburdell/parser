@@ -31,9 +31,12 @@ import apfe.sv2009.MtMain;
  */
 public class Main {
     public static void main(String argv[]) {
-        //Parser to contain parse-tree.
-        Parser parser = new Parser();
         MtMain.main(argv);
-        int dbg = 0;
     }
+    
+    public static Parser getParser() {
+        return stParser;
+    }
+    
+    private static final Parser stParser = new Parser();
 }

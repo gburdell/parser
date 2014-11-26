@@ -41,6 +41,10 @@ public class MessageMgr {
         gblib.MessageMgr.addMessages(fname);
     }
     
+    public static int getErrorCnt() {
+        return gblib.MessageMgr.getErrorCnt();
+    }
+    
     static {
         String fn = System.getProperty("parser.messages");
         if (null != fn) {

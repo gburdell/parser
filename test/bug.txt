@@ -1,0 +1,1 @@
+~/projects/parser/bin/analyze -m alu2 alu2.sv -E /tmp/foo.v --tcl alu2.used.tcl
