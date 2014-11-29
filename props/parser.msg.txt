@@ -40,6 +40,8 @@ INCL-2  %s:%d: %s: could not find include file.
 INCL-3   %s:%d: %s: include file found in %d (>1) search path locations:
 INCL-3.1 %s: candidate location #%d
 
+LEXER-1 %s
+
 LINK-1  Unresolved: %s.
 LINK-2  Link status: %s.
 LINK-3  Pass %d: %s.
