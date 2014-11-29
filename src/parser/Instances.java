@@ -23,7 +23,7 @@
 
 package parser;
 import java.util.*;
-import static parser.Utils.invariant;
+import static gblib.Util.invariant;
 /**
  * An object for iterating through the module/instance hierarchy.
  *

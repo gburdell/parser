@@ -33,7 +33,7 @@ class Parse
   
   def initialize(opts)
     @opts = opts
-    Java::ApfeDslVlogpp::Main.setDumpVpp(@opts.opt_e) if @opts.opt_e
+    Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e) if @opts.opt_e
     #todo
     @sysvlog = SysVlog.new(@opts.sv, @opts.define, @opts.incdir)
     @vhdl = Vhdl.new(@opts.vhdl)
@@ -365,7 +365,7 @@ class Parse
 
   private
   class SysVlog < Base
-		java_import 'parser.apfe.sv2009.Main'
+		java_import 'parser.apfe.sv2009.SvMain'
 		java_import 'apfe.dsl.vlogpp.Helper'
 
 		def initialize(sv,defs,incdirs)
@@ -381,8 +381,8 @@ class Parse
       args += Parse::prefix('-D',defs) unless defs.empty?
       args += Parse::prefix('-I',incdirs) unless incdirs.empty?
       args += srcs
-      @jparser = Main.getParser
-      Main.main(args)
+      @jparser = SvMain.getParser
+      SvMain.main(args)
       @jtracker = @jparser.getTracker
 	  end
 

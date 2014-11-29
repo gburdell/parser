@@ -64,8 +64,8 @@ public class ProcArgs {
 				while (toks.hasMoreElements())
 					args.add(toks.nextToken());
 			}
-		} catch (Exception ex) {
-			Utils.fatal(ex);
+		} catch (IOException ex) {
+			gblib.Util.fatal(ex);
 		}
 		return parse(args.toArray(new String[0]));
 	}

@@ -28,13 +28,16 @@ package parser;
  * @author gburdell
  */
 public class MessageMgr {
-
-    public static void message(String severity, String code, Object... args) {
+    public static int setMessageLevel(int lvl) {
+        return gblib.MessageMgr.setMessageLevel(lvl);
+    }
+    
+    public static void message(char severity, String code, Object... args) {
         gblib.MessageMgr.message(severity, code, args);
     }
 
-    public static void message(char severity, String code, Object... args) {
-        gblib.MessageMgr.message(severity, code, args);
+    public static void message(String severity, String code, Object... args) {
+        gblib.MessageMgr.message(severity.charAt(0), code, args);
     }
 
     public static void addMessages(String fname) {
@@ -44,11 +47,19 @@ public class MessageMgr {
     public static int getErrorCnt() {
         return gblib.MessageMgr.getErrorCnt();
     }
-    
-    static {
+
+    /**
+     * Method to allow other factions to load messages.
+     * @return true if messages loaded here.
+     */
+    public static boolean loadMessages() {
+        if (stLoadMessages) {return false;}
         String fn = System.getProperty("parser.messages");
         if (null != fn) {
             gblib.MessageMgr.addMessages(fn);
         }
+        return true;
     }
+
+    private static final boolean stLoadMessages = loadMessages();
 }

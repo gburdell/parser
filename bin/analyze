@@ -40,7 +40,9 @@ cd $cdir
 set ROOT=${dir:h}
 set analyzeLib=${ROOT}/apps/analyze/lib
 
-exec jruby -J-ea \
+exec jruby \
+	-J-Xmx4096M \
+	-J-ea \
 	-J-Dtool.root=${ROOT} \
 	-J-Dparser.messages=${ROOT}/props/parser.msg.txt \
 	-J-Dvlogpp.messages=${ROOT}/props/vlogpp.msg.txt \

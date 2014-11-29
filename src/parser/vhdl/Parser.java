@@ -77,16 +77,19 @@ public class Parser implements ILexer {
         MessageMgr.message('E', "FILE-2", fname, "read");
     }
 
+    @Override
     public String getFilename() {
         return m_parser.getFilename();
     }
 
+    @Override
     public int getLine() {
         return m_lexer.getLine();
     }
 
+    @Override
     public Token nextToken() throws TokenStreamException {
-        Utils.invariant(false); //should never use
+        gblib.Util.invariant(false); //should never use
         return null;
     }
 
@@ -106,7 +109,7 @@ public class Parser implements ILexer {
                 }
             } catch (Exception ex) {
                 if (false == ExceptionBase.class.isInstance(ex)) {
-                    Utils.abnormalExit(ex);
+                    gblib.Util.abnormalExit(ex);
                 }
             }
         }

@@ -24,6 +24,7 @@ package parser;
 
 import antlr.ANTLRException;
 import antlr.TokenStreamException;
+import gblib.Util;
 
 /**
  *
@@ -47,7 +48,7 @@ public class Message {
         if (stExceptionAddLineno) {
             msg = fname + ":" + lineno + ": " + msg;
         }
-        MessageMgr.message('E', "ERR-2", msg);
+        Util.error("ERR-2", msg);
         stErrorCnt++;
     }
 

@@ -24,14 +24,17 @@
 
 package parser.apfe.sv2009;
 import apfe.sv2009.MtMain;
+import parser.MessageMgr;
+import static gblib.Util.info;
 
 /**
  * A wrapper around apfe.sv2009.MtMain.
  * @author gburdell
  */
-public class Main {
+public class SvMain {
     public static void main(String argv[]) {
-        MtMain.main(argv);
+        MessageMgr.loadMessages();
+        MtMain.process(argv);
     }
     
     public static Parser getParser() {

@@ -21,51 +21,42 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
 
-
-package parser.sv;
-
-import  java.util.*;
-import  parser.v2k.Parser;
-import  parser.ProcArgs;
-import  parser.ProcArgs.Spec.EType;
-import  parser.Pair;
+package parser.vhdl;
 import  parser.Message;
-import  static parser.Utils.asEmpty;
-import  static parser.Utils.nl;
-import  static parser.Utils.fatal;
-import  static parser.Utils.getPropertyAsInt;
+import  parser.ProcArgs;
+import  static gblib.Util.fatal;
+import  static gblib.Util.nl;
+import  static gblib.Util.asEmpty;
+import  java.util.List;
+import  java.util.LinkedList;
+import  java.util.Map;
 
 /**
  *
- * @author karl
+ * @author kpfalzer
  */
-public class Main
-{
+public class VhdlMain {
     private void init(String argv[]) {
         try {
             m_args = new Args(argv);
-            //SysVlogParser.stDebug = true;
-            //SysVlogParser.stQuick = false;
+            //VhdlParser.stDebug = true;
+            //VhdlParser.stQuick = false;
             parse();
         }
-        catch (ProcArgs.ArgException ex) {
+        catch (Exception ex) {
             fatal(ex);
         }
     }
 
-    public Main(String argv[]) {
+    public VhdlMain(String argv[]) {
         init(argv);
     }
-    public Main() {
+    protected VhdlMain() {
         //nothing
     }
 
-    void initAndParse(String argv[]) {
-        init(argv);
-    }
-
     public static void main(String argv[])  {
-        Main notUsed = new Main(argv);
+        VhdlMain notUsed = new VhdlMain(argv);
         int code = Message.hasParseError() ? 1 : 0;
         System.exit(code);
     }
@@ -76,43 +67,30 @@ public class Main
     }
 
     private static void usage() {
-        final String progName = "parser.sv.Main";
+        final String progName = "parser.vhdl.Main";
         final String usage =
               "Usage: " + progName + " [options] infile..." + nl()
             + nl()
             + "Options:" + nl()
             + nl()
-            + "  -I <dir>    Add <dir> (must be readable) to `include file search path." + nl()
-            + "" + nl()
-            + "  -D name     Predefine name as a macro with value 1." + nl()
-            + "" + nl()
-            + "  -D name=defn    Predefine name as a macro with value defn." + nl()
-			+ "" + nl()
-			+ "  -f cmdfile  \"cmdfile\" contains -I, -D and/or infile options." + nl()
+			+ "  -f cmdfile  \"cmdfile\" contains infile ..." + nl()
             ;
         System.err.println(usage);
     }
 
-    private SvParser  m_parser = null;
+    private Parser  m_parser = null;
 
     private void parse() {
-        setAntlrLineFormatter();    //we do in Message.
+        //TODO? setAntlrLineFormatter();    //we do in Message.
         m_srcFiles = m_args.getOptVals(".");
-        List<String> inclDirs = m_args.getOptVals("-I");
-        List<Pair<String,String> > defs = Pair.factory(m_args.getOptVals("-D"));
-        m_parser = new SvParser();
-        m_parser.parse(m_srcFiles, inclDirs, defs);
+        if (1 > m_srcFiles.size()) {
+            usageErr("Must specify at least one \"infile\".");
+        }
+        m_parser = new Parser();
+        m_parser.parse(m_srcFiles.toArray(new String[0]));
     }
 
-    public void parse(String srcs[]) {
-        m_parser.parse(srcs);
-    }
-
-    public Parser getParser() {
-        return m_parser;
-    }
-
-/**/
+/*TODO?
     private static void setAntlrLineFormatter() {
         antlr.FileLineFormatter.setFormatter(
             new antlr.FileLineFormatter() {
@@ -123,16 +101,14 @@ public class Main
             }
         );
     }
-/**/
+*/
 
     private Args            m_args;
     private List<String>    m_srcFiles;
 
     private static class Args extends ProcArgs {
         public Args(final String argv[]) throws ArgException {
-            this.add(new ProcArgs.Spec("-I*", EType.eReadableDir))
-                .add(new ProcArgs.Spec("-D*", EType.eString))
-                .add(new ProcArgs.Spec(".+", EType.eReadableFile))  //filenames
+            this.add(new ProcArgs.Spec(".+", ProcArgs.Spec.EType.eReadableFile))  //filenames
                 ;
 			if ((2==argv.length) && argv[0].equals("-f")) {
 				m_args = parse(argv[1]);
@@ -140,6 +116,8 @@ public class Main
 				m_args = parse(argv);
 			}
         }
+
+		//TODO: this is exactly same as sv.Main.  So perhaps puch into base?
 
         public boolean hasOpt(String opt) {
             return (null != m_args) ? m_args.containsKey(opt) : false;
@@ -160,41 +138,5 @@ public class Main
         }
 
         private Map<String, List<String>> m_args;
-    }
-
-    /**
-     * Configure properties used to control parser, debug, ...
-     */
-    private static class Config extends Properties {
-        Config() {
-            super(m_defaults);
-        }
-        private final static Properties m_defaults = new Properties();
-        static {
-            m_defaults.setProperty("dumpSymbols", "0");
-            m_defaults.setProperty("symbolsFname", "symbols.txt");
-            m_defaults.setProperty("enableSSI", "0");
-        }
-    }
-
-    private static Config   m_config = new Config();
-
-    public static int getIntProperty(String nm) {
-        int rval = getPropertyAsInt(nm);
-        if (Integer.MIN_VALUE == rval) {
-            rval = 0;
-            String str = m_config.getProperty(nm);
-            if (null != str) {
-                rval = Integer.parseInt(str);
-            }
-        }
-        return rval;
-    }
-    public static String getStringProperty(String nm) {
-        String v = System.getProperty(nm);
-        if (null == v) {
-            v = m_config.getProperty(nm);
-        }
-        return v;
     }
 }

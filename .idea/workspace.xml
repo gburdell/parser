@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="00004edc-be0c-4f54-94af-5d9c4a034d97" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apfe/apfe-runtime.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../gblib/gblib.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apfe/sv2009/sv2009.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../apfe/vlogpp/vlogpp.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../apfe/src/apfe/runtime/MessageMgr.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/Main.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/Module.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/ModuleInstance.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/Parser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/SvParser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/SysVlogLexer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/SysVlogParser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/SysVlogTokenTypes.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/Tracker.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/sv/sysvlog.g" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/IPipedLexer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/Lexer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/MacroVal.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/Parser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/Preproc.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/VlogLocation.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/VlogppLexer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/VlogppLexerTokenTypes.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/FileReader.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/FormalArgsParser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Helper.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Location.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/MacroDefns.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Makefile" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Parm.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/PreprocLexer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/PreprocLexerTokenTypes.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Reader.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/StringReader.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/Tokenizer.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/antlrx/CharBufferX.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/antlrx/CharQueueX.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/antlrx/InputBufferX.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/preprocessor/preproc.g" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/vlog.g" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/parser/v2k/vlogpp.g" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/x.used.tcl" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/Main.java" afterPath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/VppMain.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/parser/apfe/sv2009/Main.java" afterPath="$PROJECT_DIR$/src/parser/apfe/sv2009/SvMain.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/parser/slf/Main.java" afterPath="$PROJECT_DIR$/src/parser/slf/SlfMain.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/parser/vhdl/Main.java" afterPath="$PROJECT_DIR$/src/parser/vhdl/VhdlMain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Analyze.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Analyze.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/CodeBlock.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/CodeBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Definition.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Definition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/slf/ExprVal.java" afterPath="$PROJECT_DIR$/src/parser/slf/ExprVal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../gblib/src/gblib/File.java" afterPath="$PROJECT_DIR$/../gblib/src/gblib/File.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Generate.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Generate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/Helper.java" afterPath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/Helper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/Instances.java" afterPath="$PROJECT_DIR$/src/parser/Instances.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/slf/LibaryWithPins.java" afterPath="$PROJECT_DIR$/src/parser/slf/LibaryWithPins.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/slf/Library.java" afterPath="$PROJECT_DIR$/src/parser/slf/Library.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Literal.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Literal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Main.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/generate/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/MessageMgr.java" afterPath="$PROJECT_DIR$/src/parser/MessageMgr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/src/apfe/sv2009/MtMain.java" afterPath="$PROJECT_DIR$/../apfe/sv2009/src/apfe/sv2009/MtMain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/slf/Number.java" afterPath="$PROJECT_DIR$/src/parser/slf/Number.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/apfe/sv2009/Parser.java" afterPath="$PROJECT_DIR$/src/parser/apfe/sv2009/Parser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/slf/Parser.java" afterPath="$PROJECT_DIR$/src/parser/slf/Parser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/vhdl/Parser.java" afterPath="$PROJECT_DIR$/src/parser/vhdl/Parser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/PegClass.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/PegClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Prefix.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Prefix.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Primary.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Primary.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/ProcArgs.java" afterPath="$PROJECT_DIR$/src/parser/ProcArgs.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/src/apfe/runtime/State.java" afterPath="$PROJECT_DIR$/../apfe/src/apfe/runtime/State.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Suffix.java" afterPath="$PROJECT_DIR$/../apfe/peg/src/apfe/peg/Suffix.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/src/apfe/sv2009/SvScanner.java" afterPath="$PROJECT_DIR$/../apfe/sv2009/src/apfe/sv2009/SvScanner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/src/apfe/runtime/Util.java" afterPath="$PROJECT_DIR$/../apfe/src/apfe/runtime/Util.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../gblib/src/gblib/Util.java" afterPath="$PROJECT_DIR$/../gblib/src/gblib/Util.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/parser/Utils.java" afterPath="$PROJECT_DIR$/src/parser/Utils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/WriterThread.java" afterPath="$PROJECT_DIR$/../apfe/vlogpp/src/apfe/dsl/vlogpp/WriterThread.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/alu2.used.tcl" afterPath="$PROJECT_DIR$/test/alu2.used.tcl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/analyze/lib/analyze.rb" afterPath="$PROJECT_DIR$/apps/analyze/lib/analyze.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/analyze" afterPath="$PROJECT_DIR$/bin/analyze" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/nbproject/build-impl.xml" afterPath="$PROJECT_DIR$/../apfe/peg/nbproject/build-impl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/config.properties" afterPath="$PROJECT_DIR$/nbproject/private/config.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/bin/generate" afterPath="$PROJECT_DIR$/../apfe/bin/generate" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/nbproject/genfiles.properties" afterPath="$PROJECT_DIR$/../apfe/peg/nbproject/genfiles.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/analyze/lib/.idea/lib.iml" afterPath="$PROJECT_DIR$/apps/analyze/lib/.idea/lib.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/vlogpp/nbproject/configs/local_include.properties" afterPath="$PROJECT_DIR$/../apfe/vlogpp/nbproject/configs/local_include.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/test/m1.v" afterPath="$PROJECT_DIR$/../apfe/sv2009/test/m1.v" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/analyze/lib/.idea/runConfigurations/main.xml" afterPath="$PROJECT_DIR$/apps/analyze/lib/.idea/runConfigurations/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/nbproject/configs/mt-sv2009_top.f.properties" afterPath="$PROJECT_DIR$/../apfe/sv2009/nbproject/configs/mt-sv2009_top.f.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/analyze/lib/parse.rb" afterPath="$PROJECT_DIR$/apps/analyze/lib/parse.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/props/parser.msg.txt" afterPath="$PROJECT_DIR$/props/parser.msg.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/../apfe/nbproject/private/private.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../gblib/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/../gblib/nbproject/private/private.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/nbproject/project.properties" afterPath="$PROJECT_DIR$/../apfe/peg/nbproject/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/nbproject/project.properties" afterPath="$PROJECT_DIR$/../apfe/sv2009/nbproject/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/nbproject/project.xml" afterPath="$PROJECT_DIR$/../apfe/peg/nbproject/project.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/sv2009.flex" afterPath="$PROJECT_DIR$/../apfe/sv2009/sv2009.flex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/sv2009/sv2009.peg" afterPath="$PROJECT_DIR$/../apfe/sv2009/sv2009.peg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../apfe/peg/nbproject/configs/sv2009.properties" afterPath="$PROJECT_DIR$/../apfe/peg/nbproject/configs/sv2009.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/configs/sv2009_alu2.properties" afterPath="$PROJECT_DIR$/nbproject/configs/sv2009_alu2.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/configs/sv2009_alu2.properties" afterPath="$PROJECT_DIR$/nbproject/private/configs/sv2009_alu2.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/analyze/lib/.idea/workspace.xml" afterPath="$PROJECT_DIR$/apps/analyze/lib/.idea/workspace.xml" />
+    </list>
+    <ignored path="svparser.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="svparser" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="MessageMgr.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../gblib/src/gblib/MessageMgr.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.32629108" vertical-offset="1961" max-vertical-offset="3330">
+              <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+              <folding>
+                <element signature="e#4399#4400#0" expanded="true" />
+                <element signature="e#4443#4444#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessageMgr.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/MessageMgr.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="227" max-vertical-offset="645">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SvMain.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/parser/apfe/sv2009/SvMain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../gblib" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/parser/MessageMgr.java" />
+        <option value="$PROJECT_DIR$/src/parser/apfe/sv2009/SvMain.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="292" />
+    <option name="y" value="44" />
+    <option name="width" value="1400" />
+    <option name="height" value="904" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gblib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gblib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gblib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="svparser" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="/opt/antlr-2.7.7/antlr.jar!/" />
+    <property name="recentsLimit" value="5" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="FullScreen" value="false" />
+  </component>
+  <component name="RunManager" selected="Application.alu2.sv">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application" editBeforeRun="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="parser.apfe.sv2009.SvMain" />
+      <option name="VM_PARAMETERS" value="-ea -Dparser.messages=$PROJECT_DIR$/props/parser.msg.txt -Dapfe.messages=$PROJECT_DIR$/../apfe/messages.txt -Dvlogpp.messages=$PROJECT_DIR$/../apfe/vlogpp/messages.txt" />
+      <option name="PROGRAM_PARAMETERS" value="alu2.sv" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/test" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="false" name="alu2.sv" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="parser.apfe.sv2009.SvMain" />
+      <option name="VM_PARAMETERS" value="-ea -Dparser.messages=$PROJECT_DIR$/props/parser.msg.txt -Dvlogpp.messages=$PROJECT_DIR$/../apfe/vlogpp/messages.txt" />
+      <option name="PROGRAM_PARAMETERS" value="alu2.sv" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/test" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="parser" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Application.alu2.sv" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="00004edc-be0c-4f54-94af-5d9c4a034d97" name="Default" comment="" />
+      <created>1417193075042</created>
+      <option name="number" value="Default" />
+      <updated>1417193075042</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="292" y="44" width="1400" height="904" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908162" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41292876" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908162" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25737464" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40237468" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="fmt == null" language="JAVA" custom="" />
+          <url>file://$PROJECT_DIR$/../gblib/src/gblib/MessageMgr.java</url>
+          <line>99</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../gblib/src/gblib/MessageMgr.java</url>
+          <line>152</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/parser/MessageMgr.java</url>
+          <line>52</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="4" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/parser/apfe/sv2009/Module.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
+          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1530">
+          <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/MessageMgr.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="227" max-vertical-offset="645">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parser/apfe/sv2009/SvMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../gblib/src/gblib/MessageMgr.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32629108" vertical-offset="1961" max-vertical-offset="3330">
+          <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+          <folding>
+            <element signature="e#4399#4400#0" expanded="true" />
+            <element signature="e#4443#4444#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>parser</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

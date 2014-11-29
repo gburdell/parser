@@ -1,0 +1,20 @@
+#!/bin/csh -f
+
+set cmd=$0
+if (1 > `echo $cmd | egrep -c '^/'`) then
+	set cmd=$PWD/${cmd}
+endif
+set rdir=$cmd:h:h
+#echo "DBG: $rdir"
+
+set memo="-Dapfe.runtime.EnableMemoize=true"
+set cls="parser.apfe.sv2009.SvMain"
+set apfe=${rdir:h}/apfe
+set props="-Dapfe.messages=${apfe}/messages.txt"
+set props="${props} -Dvlogpp.messages=${apfe}/vlogpp/messages.txt"
+set jars=${rdir}/dist/lib/gblib.jar
+set jars=${jars}:${rdir}/dist/lib/apfe.jar
+set jars=${jars}:${rdir}/dist/lib/vlogpp.jar
+set jars=${jars}:${rdir}/dist/lib/sv2009.jar
+set jars=${jars}:${rdir}/dist/parser.jar
+exec java -Xms4G -ea -Dtool.root=${rdir} ${props} -cp ${jars} ${cls} ${*}

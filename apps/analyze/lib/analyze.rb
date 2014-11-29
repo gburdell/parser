@@ -198,7 +198,7 @@ class Opts
 
   #Delimiter used to stylize location of +define+ in .f files
   public
-  DEFINE_LOC_DELIM = Java::parser.v2k.Preproc.stDefineDelimitLoc
+  DEFINE_LOC_DELIM = Java::apfe.dsl.vlogpp.MacroDefns.stDefineDelimitLoc
 
   private
   def dump_outf(ofn)

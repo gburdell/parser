@@ -54,6 +54,8 @@ MACRO-5 %s:%d: `ifndef '%s' is %s.
 MACRO-6 %s:%d: `else is %s.
 MACRO-7 %s:%d: `elsif '%s' is %s.
 
+MOD-1 %s: processing module '%s' ...
+
 PARSE-1 %s:%d: %s
 PARSE-3 %s: unexpected char '%c'.
 PARSE-5 %s:%s: found '%s', expected %s.

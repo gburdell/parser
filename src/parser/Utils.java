@@ -29,86 +29,6 @@ import  java.io.*;
  * @author karl
  */
 public class Utils {
-
-    /** Creates a new instance of Utils */
-    public static String stripDoubleQuotes (final String s) {
-        int len = s.length();
-        String ns = s.substring(1, len-1);
-        return ns;
-    }
-
-    public static void invariant(boolean c) {
-        if (false == c) {
-            Thread.dumpStack();
-            System.exit(1);
-        }
-    }
-
-    private final static String stDOT = ".";
-
-    public static String getToolRoot() {
-        String root = System.getProperty("tool.root");
-        if (null == root) {
-            root = stDOT;
-        }
-        return root;
-    }
-
-    public static void fatal(Exception ex) {
-        PrintStream err = System.err;
-        err.print(ex.getMessage());
-        ex.printStackTrace(err);
-        System.exit(1);
-    }
-
-    /**Lookup property value.
-     *
-     * @param prop  property name
-     * @return true if property exists and set to "true" or else false.
-     */
-    public static boolean getPropertyAsBool(String prop) {
-        String pv = System.getProperty(prop);
-        boolean v = (null == pv) ? false : Boolean.parseBoolean(pv);
-        return v;
-    }
-    public static int getPropertyAsInt(String nm) {
-        int rval = Integer.MIN_VALUE;
-        String str = System.getProperty(nm);
-        if (null != str) {
-            rval = Integer.parseInt(str);
-        }
-        return rval;
-    }
-    public static void abnormalExit(Exception ex) {
-        System.err.println(ex.getMessage());
-        ex.printStackTrace(System.err);
-        System.exit(1);
-    }
-
-    public static List<String> arrayToList(String s[]) {
-        List<String> rval = new LinkedList<>();
-        for (String i : s) {
-            rval.add(i);
-        }
-        return rval;
-    }
-
-    public static int streamCopy(BufferedInputStream from, BufferedOutputStream to) throws IOException {
-        final int bufSz = 2048;
-        byte buf[] = new byte[bufSz];
-        int tlCnt = 0, cnt = 0;
-        while (0 <= (cnt = from.read(buf, 0, bufSz))) {
-            tlCnt += cnt;
-            to.write(buf, 0, cnt);
-        }
-        to.flush();
-        return tlCnt;
-    }
-
-    public static String nl() {
-        return m_nl;
-    }
-
     /**
      * Look for file in specified directories.
      * @param dirs
@@ -161,28 +81,4 @@ public class Utils {
         return findFile(dirs, fname, true, 1);
     }
 
-    /** Return a null x as an empty collection. */
-    public static <T> T asEmpty(T x, T empty) {
-        return (null != x) ? x : empty;
-    }
-
-	public static <T> T downCast(Object o) {
-		return (T)o;
-	}
-
-    /**
-     * Add only new elements to list.
-     * @param <T> type of list element.
-     * @param to list to update with only new elements.
-     * @param from list to get new elements from.
-     */
-    public static <T> void addAllNoDups(List<T> to, List<T> from) {
-        for (T ele : from) {
-            if (! to.contains(ele)){
-                to.add(ele);
-            }
-        }
-    }
-
-    private final static String m_nl = System.getProperty("line.separator");
 }

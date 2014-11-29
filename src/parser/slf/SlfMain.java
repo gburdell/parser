@@ -27,18 +27,18 @@ import  java.io.*;
  *
  * @author karl
  */
-public class Main {
+public class SlfMain {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Main m = new Main(args);
+        SlfMain m = new SlfMain(args);
     }
     public void parse(String srcs[]) {
         m_parser.parse(srcs);
     }
-    public Main(String srcs[]) {
+    public SlfMain(String srcs[]) {
         m_parser = new Parser();
         init(srcs);
     }

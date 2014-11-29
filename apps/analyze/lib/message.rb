@@ -35,7 +35,17 @@ class Message
 
   new_msgs = "#{Initialize::TOOL_ROOT}/apps/analyze/messages.txt"
   MessageMgr.addMessages(new_msgs)
-  
+
+  def self.set_message_level(lvl)
+    MessageMgr.setMessageLevel(lvl)
+  end
+
+  def self.get_message_level
+    MessageMgr.getMessageLevel
+  end
+
+  Message.set_message_level(1)
+
   def self.warning(code, args)
     Message.message('W', code, args)
   end
