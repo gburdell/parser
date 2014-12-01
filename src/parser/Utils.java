@@ -70,7 +70,7 @@ public class Utils {
             Message.message(svr, "INCL-3", fname, locs.size());
             int cnt = 1;
             for (Pair<File,File> dirf : locs) {
-                MessageMgr.message(svr, "INCL-3.1", dirf.v2.getPath(), cnt++);
+                MessageMgr.message(svr, "INCL-3.1", new Object[]{dirf.v2.getPath(), cnt++});
             }
             rval = locs.get(0); //return 1st one
         }

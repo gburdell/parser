@@ -33,6 +33,7 @@ class Parse
   
   def initialize(opts)
     @opts = opts
+    Message.set_message_level(@opts.msg_lvl) if @opts.msg_lvl
     Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e) if @opts.opt_e
     #todo
     @sysvlog = SysVlog.new(@opts.sv, @opts.define, @opts.incdir)

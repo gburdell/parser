@@ -140,6 +140,8 @@ class Analyze
                           <spec> is type:sfx, where type is sv|vhdl and sfx is 
                           a filename suffix (e.g.: .dc.vp).  Multiple sfx can be
                           specified, separated by :, as in: vhd:.sfx1:.sfx2
+    --msg_lvl 0..3      Set message level.
+                          0 is less verbose, 3 is most verbose. (Default: 1).
 L1
     STDERR << "#{usage}"
   end
@@ -156,7 +158,7 @@ class Opts
 
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
     :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
-    :exit_on_err, :more_opts, :excl_emit
+    :exit_on_err, :more_opts, :excl_emit, :msg_lvl
   
   private
   def init(args)
@@ -181,6 +183,7 @@ class Opts
     @nodefn = []
     @tcl = nil
     @opt_e = nil
+    @msg_lvl = nil
     process_args
     #Get rid of duplicates
     @define.uniq!
@@ -203,7 +206,7 @@ class Opts
   private
   def dump_outf(ofn)
     return unless ofn
-    Message.message('I', 'FILE-4', ofn)
+    Message.info(1, 'FILE-4', ofn)
     ofid = File.new(ofn,'w')
     ofid << "// Created #{Time::now}\n//\n"
     ofid << "-m #{@top_mod}\n"
@@ -244,6 +247,18 @@ class Opts
             @opt_e = v
           else
             error('ARG-5',@ai)
+          end
+          end
+      when '--msg_lvl'
+        expect_arg do |v|
+          unless @msg_lvl
+            if ('0'..'3').member?(v)
+              @msg_lvl = v.to_i
+            else
+              error('ARG-6', [v, @ai, '0..3'])
+            end
+          else
+            error('ARG-5', @ai)
           end
         end
       when '-m'
@@ -579,7 +594,7 @@ class Opts
       #Read entire file into array of pair: [lnum [toks ...]]
       @eles = []
       lnum = 0
-      Message.message('I', 'FILE-3', fname)
+      Message.info(1, 'FILE-3', fname)
       IO.foreach(fname) do |line|
         lnum += 1
         line = line.strip.sub(/\/\/.*$/,"")    #only line comments handled
@@ -651,7 +666,7 @@ L1
       data[:sv] = define_only_files + data[:sv]
       updated_sv = add_includes_as_src(data[:sv],included_files)
       data[:sv] = updated_sv
-      Message.message('I', 'FILE-4', @fnm)
+      Message.info(1, 'FILE-4', @fnm)
       File.open(@fnm, 'w') do |f|
         @ofid = f
         f << HEADER.gsub('@!',@line_cmnt)

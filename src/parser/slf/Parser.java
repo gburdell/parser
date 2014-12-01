@@ -67,7 +67,7 @@ public class Parser implements ILexer {
         };
         try {
             Reader rdr = null;
-            MessageMgr.message('I', "FILE-3", fname);
+            MessageMgr.message(2, 'I', "FILE-3", fname);
             if (fname.endsWith(".gz")) {
                 rdr = new InputStreamReader(new GZIPInputStream(new FileInputStream(fname)));
             } else {
@@ -87,7 +87,7 @@ public class Parser implements ILexer {
     }
 
     private static void badFile(String fname) {
-        MessageMgr.message('E', "FILE-2", fname, "read");
+        MessageMgr.message('E', "FILE-2", new Object[]{fname, "read"});
     }
 
     public String getFilename() {

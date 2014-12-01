@@ -36,8 +36,16 @@ public class MessageMgr {
         gblib.MessageMgr.message(severity, code, args);
     }
 
+    public static void message(int minLvl, char severity, String code, Object... args) {
+        gblib.MessageMgr.message(minLvl, severity, code, args);
+    }
+
     public static void message(String severity, String code, Object... args) {
         gblib.MessageMgr.message(severity.charAt(0), code, args);
+    }
+
+    public static void message(int minLvl, String severity, String code, Object... args) {
+        message(minLvl, severity.charAt(0), code, args);
     }
 
     public static void addMessages(String fname) {

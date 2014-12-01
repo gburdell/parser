@@ -58,7 +58,7 @@ public class Parser implements ILexer {
             throws TokenStreamException, RecognitionException {
         FileReader rdr = null;
         try {
-            MessageMgr.message('I', "FILE-3", fname);
+            MessageMgr.message(2, 'I', "FILE-3", fname);
             rdr = new FileReader(fname);
             m_lexer = new VhdlLexer(rdr);
             m_lexer.setFilename(fname);
@@ -74,7 +74,7 @@ public class Parser implements ILexer {
     }
 
     private static void badFile(String fname) {
-        MessageMgr.message('E', "FILE-2", fname, "read");
+        MessageMgr.message('E', "FILE-2", new Object[]{fname, "read"});
     }
 
     @Override

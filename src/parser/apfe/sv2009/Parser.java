@@ -99,7 +99,7 @@ public class Parser {
         @Override
         public void onAccept(Acceptor accepted) {
             Token tok = getToken((identifier) accepted);
-            info("MOD-1", tok.getLocation(), tok.getText());
+            info(2, "MOD-1", tok.getLocation(), tok.getText());
             m_tracker.addModule(tok);
         }
 

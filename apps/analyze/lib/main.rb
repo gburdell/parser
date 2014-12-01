@@ -69,7 +69,7 @@ L1
     end
     insts = Instances.new(@opts.top_mod, @parser.get_trackers, inst_mode)
     unless ofn.nil?
-      Message.message('I', 'FILE-4', ofn)
+      Message.info(1, 'FILE-4', ofn)
       File.open(ofn, 'w') do |f|
         f << Dump::HEADER.gsub('@!','#')
         vnm = "refInsts"

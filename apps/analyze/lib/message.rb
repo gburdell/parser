@@ -64,6 +64,11 @@ class Message
     MessageMgr.message(severity, code, jargs)
   end
 
+  def self.info(min_lvl, code, args)
+    jargs = args.to_java
+    MessageMgr.message(min_lvl, 'I', code, jargs)
+  end
+
   def self.fatal(msg)
     STDERR << "Fatal: #{msg}\n"
     exit 666

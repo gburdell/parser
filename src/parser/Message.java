@@ -80,7 +80,6 @@ public class Message {
      * "ERR-1"; String m = ex.toString().trim(); LocationBase loc = new
      * LocationBase(stLexer.getFilename(), ex.getLine()); stErrorCnt++;
      * message(loc, 'E', code, m); }
- *
      */
     public static void message(char severity, String code, Object... args) {
         String fn = stLexer.getFilename();
@@ -108,13 +107,17 @@ public class Message {
      */
     public static void message(boolean doMsg, char svr, String code, String msg) {
         if (doMsg) {
-            String fn = stLexer.getFilename();
-            Integer ln = stLexer.getLine();
-            MessageMgr.message(svr, code, fn, ln, msg);
+            message(svr, code, msg);
         }
     }
 
-    /**
+    public static void message(char svr, String code, String msg) {
+        String fn = stLexer.getFilename();
+        Integer ln = stLexer.getLine();
+        MessageMgr.message(svr, code, new Object[]{fn, ln, msg});
+    }
+
+     /**
      * Display message iff. doMsg==true.
      */
     public static void message(boolean doMsg, Location loc, char svr,
@@ -124,13 +127,7 @@ public class Message {
         }
     }
 
-    public static void message(char svr, String code, String msg) {
-        String fn = stLexer.getFilename();
-        Integer ln = stLexer.getLine();
-        MessageMgr.message(svr, code, fn, ln, msg);
-    }
-
-    public static void syntaxError(String msg) {
+   public static void syntaxError(String msg) {
         message('E', stStax, msg);
     }
 
