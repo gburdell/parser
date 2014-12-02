@@ -1,3 +1,13 @@
+02-dec-2014
+===========
++ Major refactor to replace antlr-based SysVlog parser with one from apfe
+  (which used PEG-type parser runtime.  See gburdell/apfe.)
+
++ Pushed tag analyze_r2.0 (consider beta quality).
+
++ Added '--msg_lvl 0..3' option to analyze (ruby side) to support finer-grained
+  messaging.
+
 19-dec-2013
 ===========
 + fixed: case where file a/b/c/d.v has `include "./e.vh".
