@@ -399,7 +399,7 @@ class Opts
     loc = @arg_i.where
     if loc
       code += '.1' #code suffix prefix's w/ location
-      args = args.split.insert(0, loc).flatten
+      args = args.insert(0, loc).flatten
     end
     Message.smessage(svr, code, args)
   end
@@ -409,7 +409,7 @@ class Opts
     pos = @arg_i.where
     if pos
       code += '.1'
-      args = args.split.insert(0, pos).flatten
+      args = args.insert(0, pos).flatten
     end
     Message.error(code, args)
   end
