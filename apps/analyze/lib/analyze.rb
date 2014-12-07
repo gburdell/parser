@@ -34,12 +34,12 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0"
+  VERSION = "r2.0.1"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
     @cmd = cmd
-    @opts,@parser = nil,nil
+    @opts, @parser = nil, nil
   end
 
   def process
@@ -142,6 +142,9 @@ class Analyze
                           specified, separated by :, as in: vhd:.sfx1:.sfx2
     --msg_lvl 0..3      Set message level.
                           0 is less verbose, 3 is most verbose. (Default: 1).
+    --redefn_lvl 1..2   Set macro re-definition check level.
+                          1 checks for different value, 2 checks for different
+                          location (Default: 1.  2 is more conservative).
 L1
     STDERR << "#{usage}"
   end
@@ -149,7 +152,7 @@ end
 
 class Opts
   def initialize(args)
-    @more_opts = {}  #hash for use by subclasses
+    @more_opts = {} #hash for use by subclasses
     init(args)
     validate
   end
@@ -157,9 +160,9 @@ class Opts
   attr_accessor :define
 
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
-    :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
-    :exit_on_err, :more_opts, :excl_emit, :msg_lvl
-  
+              :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
+              :exit_on_err, :more_opts, :excl_emit, :msg_lvl, :redefn_lvl
+
   private
   def init(args)
     #Initialize instance vars in order of usage.
@@ -168,22 +171,23 @@ class Opts
     @define = []
     @incdir = []
     @v = []
-    @sv_seeker = Util::FileSeeker.new([],['.v']); #+libext+.v default
+    @sv_seeker = Util::FileSeeker.new([], ['.v']); #+libext+.v default
     @slf = []
     @slf_seeker = Util::FileSeeker.new
     @vhdl = []
     @vhdl_seeker = Util::FileSeeker.new
     @sv = []
-    @excl_emit = {:sv=>{},:vhdl=>{}}
-    @excl_emit.each_key {|k| @excl_emit[k] = {:sfxs=>[],:files=>[]}}
+    @excl_emit = {:sv => {}, :vhdl => {}}
+    @excl_emit.each_key { |k| @excl_emit[k] = {:sfxs => [], :files => []} }
     #Process options
     @arg_i = OptIter.new(args)
-    @file_as = :sysvlog  #:vhdl or :slf
+    @file_as = :sysvlog #:vhdl or :slf
     @flatf = nil
     @nodefn = []
     @tcl = nil
     @opt_e = nil
     @msg_lvl = nil
+    @redefn_lvl = nil
     process_args
     #Get rid of duplicates
     @define.uniq!
@@ -207,7 +211,7 @@ class Opts
   def dump_outf(ofn)
     return unless ofn
     Message.info(1, 'FILE-4', ofn)
-    ofid = File.new(ofn,'w')
+    ofid = File.new(ofn, 'w')
     ofid << "// Created #{Time::now}\n//\n"
     ofid << "-m #{@top_mod}\n"
     @define.each do |d|
@@ -216,14 +220,14 @@ class Opts
       ofid << " // #{d[0]}" if 1 < d.length
       ofid << "\n"
     end
-    @incdir.each {|i| ofid << "+incdir+#{i}\n"}
-    @v.each {|i| ofid << "-v #{i}\n"}
+    @incdir.each { |i| ofid << "+incdir+#{i}\n" }
+    @v.each { |i| ofid << "-v #{i}\n" }
     @slf_seeker.dump_outf(ofid)
-    @sv.each {|i| ofid << "#{i}\n"}
-    @vhdl.each {|i| ofid << "+vhdl+#{i}\n"}
-    @vhdl_seeker.dump_outf(ofid,'vhdl')
-    @slf.each {|i| ofid << "+slf+#{i}\n"}
-    @slf_seeker.dump_outf(ofid,'slf')
+    @sv.each { |i| ofid << "#{i}\n" }
+    @vhdl.each { |i| ofid << "+vhdl+#{i}\n" }
+    @vhdl_seeker.dump_outf(ofid, 'vhdl')
+    @slf.each { |i| ofid << "+slf+#{i}\n" }
+    @slf_seeker.dump_outf(ofid, 'slf')
     ofid.close
   end
 
@@ -238,124 +242,136 @@ class Opts
     while (@arg_i.has_more?)
       @ai = @arg_i.next
       case @ai
-      when /^(\-h|\-\-help)$/
-        usage
-        exit 1
-      when '-E'
-        expect_arg do |v|
-          unless @opt_e
-            @opt_e = v
-          else
-            error('ARG-5',@ai)
-          end
-          end
-      when '--msg_lvl'
-        expect_arg do |v|
-          unless @msg_lvl
-            if ('0'..'3').member?(v)
-              @msg_lvl = v.to_i
+        when /^(\-h|\-\-help)$/
+          usage
+          exit 1
+        when '-E'
+          expect_arg do |v|
+            unless @opt_e
+              @opt_e = v
             else
-              error('ARG-6', [v, @ai, '0..3'])
+              error('ARG-5', @ai)
             end
+          end
+        when '--msg_lvl'
+          expect_arg do |v|
+            unless @msg_lvl
+              if ('0'..'3').member?(v)
+                @msg_lvl = v.to_i
+              else
+                error('ARG-6', [v, @ai, '0..3'])
+              end
+            else
+              error('ARG-5', @ai)
+            end
+          end
+        when '--redefn_lvl'
+          expect_arg do |v|
+            unless @redefn_lvl
+              if ('1'..'2').member?(v)
+                @redefn_lvl = v.to_i
+              else
+                error('ARG-6', [v, @ai, '1..2'])
+              end
+            else
+              error('ARG-5', @ai)
+            end
+          end
+        when '-m'
+          expect_arg do |v|
+            unless @top_mod
+              @top_mod = v
+            else
+              error('ARG-5', @ai)
+            end
+          end
+        when '-f'
+          expect_arg_as_file do |dotf|
+            @arg_i.switch_to_dotf(dotf)
+          end
+        when '-v'
+          expect_arg_as_file { |f| @v << f }
+        when '-y'
+          expect_arg_as_dir { |yd| @sv_seeker.add_path(yd); }
+        when '--yvhdl'
+          expect_arg_as_dir { |yd| @vhdl_seeker.add_path(yd); }
+        when '--yslf'
+          expect_arg_as_dir { |yd| @slf_seeker.add_path(yd); }
+        when '--vhdl'
+          @file_as = :vhdl
+        when '--slf'
+          @file_as = :slf
+        when '--'
+          @file_as = :sysvlog
+        when '--flatf'
+          expect_arg do |v|
+            unless @flatf
+              @flatf = v if as_writable_file(v, @ai)
+            else
+              error('ARG-5', @ai)
+            end
+          end
+        when '--exit_on_err'
+          unless @exit_on_err
+            @exit_on_err = true
           else
             error('ARG-5', @ai)
           end
-        end
-      when '-m'
-        expect_arg do |v|
-          unless @top_mod
-            @top_mod = v
-          else
-            error('ARG-5',@ai)
+        when '--tcl'
+          expect_arg do |v|
+            unless @tcl
+              @tcl = v if as_writable_file(v, @ai)
+            else
+              error('ARG-5', @ai)
+            end
           end
-        end
-      when '-f'
-        expect_arg_as_file do |dotf|
-          @arg_i.switch_to_dotf(dotf)
-        end
-      when '-v'
-        expect_arg_as_file {|f| @v << f}
-      when '-y'
-        expect_arg_as_dir {|yd| @sv_seeker.add_path(yd);}
-      when '--yvhdl'
-        expect_arg_as_dir {|yd| @vhdl_seeker.add_path(yd);}
-      when '--yslf'
-        expect_arg_as_dir {|yd| @slf_seeker.add_path(yd);}
-      when '--vhdl'
-        @file_as = :vhdl
-      when '--slf'
-        @file_as = :slf
-      when '--'
-        @file_as = :sysvlog
-      when '--flatf'
-        expect_arg do |v|
-          unless @flatf
-            @flatf = v if as_writable_file(v, @ai)
-          else
-            error('ARG-5',@ai)
+        when '--excl_emit'
+          expect_arg do |spec|
+            lang = spec.split(':')[0]
+            sfxs = spec.sub(/^[^:]+:/, '').split(':')
+            case lang
+              when 'sv', 'vhdl'
+                ix = lang.to_sym
+                vals = @excl_emit[ix][:sfxs] + sfxs
+                @excl_emit[ix][:sfxs] = vals.flatten.uniq
+              else
+                error('SPEC-1', [lang, 'lang', @ai, 'sv|vhdl'])
+            end
           end
-        end
-      when '--exit_on_err'
-        unless @exit_on_err
-          @exit_on_err = true
+        when /^\+nodefn\+/
+          plusarg('+nodefn+', @nodefn) { |m| m } #always append
+          @nodefn.uniq!
+        when /^\+libext\+/
+          plusarg('+libext+') { |sfx| @sv_seeker.add_sfx(sfx) }
+        when /^\+libextvhdl\+/
+          plusarg('+libextvhdl+') { |sfx| @vhdl_seeker.add_sfx(sfx) }
+        when /^\+libextslf\+/
+          plusarg('+libextslf+') { |sfx| @slf_seeker.add_sfx(sfx) }
+        when /^\+define\+/
+          plusarg('+define+', @define) do |m|
+            where = @arg_i.where
+            m = "#{where.join(':')}#{DEFINE_LOC_DELIM}#{m}" if where
+            m #block return value
+          end
+        when /^\+incdir\+/
+          plusarg('+incdir+', @incdir) { |d| as_abs_dirname(d, '+incdir+') }
+        when /^\+slf\+/
+          plusarg('+slf+', @slf) { |f| as_abs_filename(f, '+slf+') }
+        when /^\+vhdl\+/
+          plusarg('+vhdl+', @vhdl) { |f| as_abs_filename(f, '+vhdl+') }
         else
-          error('ARG-5',@ai)
-        end
-      when '--tcl'
-        expect_arg do |v|
-          unless @tcl
-            @tcl = v if as_writable_file(v, @ai)
-          else
-            error('ARG-5',@ai)
-          end
-        end
-      when '--excl_emit'
-        expect_arg do |spec|
-          lang = spec.split(':')[0]
-          sfxs = spec.sub(/^[^:]+:/,'').split(':')
-          case lang
-          when 'sv', 'vhdl'
-            ix = lang.to_sym
-            vals = @excl_emit[ix][:sfxs] + sfxs
-            @excl_emit[ix][:sfxs] = vals.flatten.uniq
-          else
-            error('SPEC-1',[lang,'lang',@ai,'sv|vhdl'])
-          end
-        end
-      when /^\+nodefn\+/
-        plusarg('+nodefn+', @nodefn) { |m| m }  #always append
-        @nodefn.uniq!
-      when /^\+libext\+/
-        plusarg('+libext+') { |sfx| @sv_seeker.add_sfx(sfx) }
-      when /^\+libextvhdl\+/
-        plusarg('+libextvhdl+') { |sfx| @vhdl_seeker.add_sfx(sfx) }
-      when /^\+libextslf\+/
-        plusarg('+libextslf+') { |sfx| @slf_seeker.add_sfx(sfx) }
-      when /^\+define\+/
-        plusarg('+define+',@define) do |m|
-          where = @arg_i.where
-          m = "#{where.join(':')}#{DEFINE_LOC_DELIM}#{m}" if where
-          m #block return value
-        end
-      when /^\+incdir\+/
-        plusarg('+incdir+', @incdir) {|d| as_abs_dirname(d, '+incdir+')}
-      when /^\+slf\+/
-        plusarg('+slf+',@slf) {|f| as_abs_filename(f, '+slf+')}
-      when /^\+vhdl\+/
-        plusarg('+vhdl+',@vhdl) {|f| as_abs_filename(f, '+vhdl+')}
-      else
-        option_else
-      end if @ai  #qualify w/ valid @ai, since nil could be returned from next
+          option_else
+      end if @ai #qualify w/ valid @ai, since nil could be returned from next
     end
   end
 
   #Move any files matching excl suffix from filelists for later emit.
   private
   def skim_excl_emit
-    {:sv=>@sv,:vhdl=>@vhdl}.each do |key,vals|
+    {:sv => @sv, :vhdl => @vhdl}.each do |key, vals|
       vals.each do |fn|
         @excl_emit[key][:sfxs].each do |sfx|
-          if File.fnmatch("*#{sfx}",fn)
+          if File.fnmatch("*#{sfx}", fn)
             @excl_emit[key][:files] << fn
             break #dont check more suffix
           end
@@ -365,31 +381,31 @@ class Opts
         @excl_emit[key][:files].uniq!
         to_rm = @excl_emit[key][:files]
         case key
-        when :sv
-          @sv = @sv - to_rm
-        else
-          @vhdl = @vhdl - to_rm
+          when :sv
+            @sv = @sv - to_rm
+          else
+            @vhdl = @vhdl - to_rm
         end
       end
     end
   end
-  
+
   protected
   def option_else
     case @ai
-    when /^(\-|\+)/ #invalid opts
-      error('ARG-4', @ai)   #TODO: add fname+lnum
-      break
-    else
-      v = as_abs_filename(@ai)
-      case @file_as
-      when :sysvlog
-        @sv << v
-      when :vhdl
-        @vhdl << v
+      when /^(\-|\+)/ #invalid opts
+        error('ARG-4', @ai) #TODO: add fname+lnum
+        break
       else
-        @slf << v
-      end if v
+        v = as_abs_filename(@ai)
+        case @file_as
+          when :sysvlog
+            @sv << v
+          when :vhdl
+            @vhdl << v
+          else
+            @slf << v
+        end if v
     end
   end
 
@@ -409,6 +425,10 @@ class Opts
     pos = @arg_i.where
     if pos
       code += '.1'
+      unless args.is_a? Array
+        args = args.to_s unless args.is_a? String
+        args = [args]
+      end
       args = args.insert(0, pos).flatten
     end
     Message.error(code, args)
@@ -417,13 +437,13 @@ class Opts
   private
   def as_abs_filename(fname, of_opt=nil, svr=:warn)
     dir = get_dir
-    efname = File::expand_path(fname,dir)
+    efname = File::expand_path(fname, dir)
     if File::file?(efname) && File::readable?(efname)
       return efname
     elsif of_opt
-      smessage(svr,'FILE-5',[of_opt,fname,'read','file'])
+      smessage(svr, 'FILE-5', [of_opt, fname, 'read', 'file'])
     else
-      smessage(svr,'FILE-2',[fname,'read'])
+      smessage(svr, 'FILE-2', [fname, 'read'])
     end
     return nil
   end
@@ -434,9 +454,9 @@ class Opts
     bad = File::file?(efname) && !File::writable?(efname)
     bad = !File::writable?(File::dirname(efname)) unless bad
     if of_opt
-      error('FILE-5',[of_opt,fname,'write','file'])
+      error('FILE-5', [of_opt, fname, 'write', 'file'])
     else
-      error('FILE-2',[fname,'write'])
+      error('FILE-2', [fname, 'write'])
     end if bad
     return bad ? nil : fname
   end
@@ -444,9 +464,9 @@ class Opts
   private
   def as_abs_dirname(d, of_opt, svr=:warn)
     dir = get_dir
-    edir = File::expand_path(d,dir)
+    edir = File::expand_path(d, dir)
     return edir if File.directory?(edir) && File.readable?(edir)
-    smessage(svr,'FILE-5',[of_opt,d,'read','directory'])
+    smessage(svr, 'FILE-5', [of_opt, d, 'read', 'directory'])
     return nil
   end
 
@@ -454,15 +474,14 @@ class Opts
   protected
   def validate
     Message.error('ARG-1', '-m') unless @top_mod
-    Message.error('REQD-1') unless
-      0 < (@v+@slf+@vhdl+@sv).length
+    Message.error('REQD-1') unless 0 < (@v+@slf+@vhdl+@sv).length
   end
 
   #Yield next/expected arg or nil
   protected
   def expect_arg
     v = @arg_i.next
-    Message.error('ARG-1',@ai) unless v
+    Message.error('ARG-1', @ai) unless v
     yield v
   end
 
@@ -489,7 +508,7 @@ class Opts
   #is accepted or not.
   protected
   def plusarg(opt, list=nil)
-    @ai.sub(opt,'').split('+').each do |v|
+    @ai.sub(opt, '').split('+').each do |v|
       if v && v != ""
         if block_given?
           v = yield(v)
@@ -500,7 +519,7 @@ class Opts
       end
     end
   end
- 
+
   private
   #Return args based on cmdline or dotf files
   class OptIter < Iter
@@ -531,7 +550,7 @@ class Opts
     #Return [file,lnum] if dotf, else nil
     def where
       return nil unless @dotf
-      return [@dotf.fname,@dotf.lnum]
+      return [@dotf.fname, @dotf.lnum]
     end
 
     #Get dir of current context
@@ -559,10 +578,11 @@ class Opts
   private
   class Dotf < Iter
     attr_reader :fname, :lnum, :dir
-    def initialize(fname,pdir=nil)
+
+    def initialize(fname, pdir=nil)
       @fname = fname
       @lnum = 0
-      @dir = File::expand_path(File::dirname(fname),pdir)
+      @dir = File::expand_path(File::dirname(fname), pdir)
       @fname = File::expand_path(@fname, pdir) if pdir
       read(@fname)
       @irow = 0
@@ -597,9 +617,9 @@ class Opts
       Message.info(1, 'FILE-3', fname)
       IO.foreach(fname) do |line|
         lnum += 1
-        line = line.strip.sub(/\/\/.*$/,"")    #only line comments handled
+        line = line.strip.sub(/\/\/.*$/, "") #only line comments handled
         #allow ${VAR} substitutions
-        line = line.gsub(/(\$\{)([^\}]+)(\})/) { ENV[$2]}
+        line = line.gsub(/(\$\{)([^\}]+)(\})/) { ENV[$2] }
         unless line.empty?
           leles = line.split(/\s+/)
           @eles << [lnum, leles] unless leles.empty?
@@ -617,15 +637,15 @@ class Dump
 L1
 
   public
-  def self.tcl(opts,parser)
-    dmp = Tcl.new(opts,parser)
+  def self.tcl(opts, parser)
+    dmp = Tcl.new(opts, parser)
     dmp.dump
   end
 
   protected
   class Base
-    def initialize(line_cmnt,fnm,opts,parser)
-      @line_cmnt,@fnm,@opts,@parser = line_cmnt,fnm,opts,parser
+    def initialize(line_cmnt, fnm, opts, parser)
+      @line_cmnt, @fnm, @opts, @parser = line_cmnt, fnm, opts, parser
       @ofid = nil
     end
 
@@ -644,10 +664,10 @@ L1
     #file C could `include A.  Without this fix, only the included version
     #would be accounted for.  Here, we determine intersection of included sources
     #with file read and add the intersection.
-    def add_includes_as_src(used_sv,used_incl)
+    def add_includes_as_src(used_sv, used_incl)
       all_sv = (@opts.sv + used_sv).uniq
       candidates = (all_sv & used_incl) - used_sv
-      return used_sv if (candidates.empty?)   #nothing to do
+      return used_sv if (candidates.empty?) #nothing to do
       #return in order of original list
       new_sv = []
       todo = (candidates + used_sv).flatten
@@ -659,39 +679,39 @@ L1
 
     public
     def dump
-      ixs = {:sv=>'sysvlogSrcs',:vhdl=>'vhdlSrcs',:slf=>'libSrcs'}
+      ixs = {:sv => 'sysvlogSrcs', :vhdl => 'vhdlSrcs', :slf => 'libSrcs'}
       data = @parser.get_used_srcs_by_type
       included_files = @parser.get_included_files
       define_only_files = get_define_only_files(data[:sv], included_files)
       data[:sv] = define_only_files + data[:sv]
-      updated_sv = add_includes_as_src(data[:sv],included_files)
+      updated_sv = add_includes_as_src(data[:sv], included_files)
       data[:sv] = updated_sv
       Message.info(1, 'FILE-4', @fnm)
       File.open(@fnm, 'w') do |f|
         @ofid = f
-        f << HEADER.gsub('@!',@line_cmnt)
-        dump_scalar('topModule',@opts.top_mod)
-        dump_list('defines',@opts.define,true)
-        dump_list('inclDirs',@opts.incdir)
-        dump_list('inclFiles',included_files)
-        ixs.each { |k,vnm| dump_list(vnm,{}) } #reset all
+        f << HEADER.gsub('@!', @line_cmnt)
+        dump_scalar('topModule', @opts.top_mod)
+        dump_list('defines', @opts.define, true)
+        dump_list('inclDirs', @opts.incdir)
+        dump_list('inclFiles', included_files)
+        ixs.each { |k, vnm| dump_list(vnm, {}) } #reset all
         #Excluded to emit always first
-        {:sv=>'sysvlogSrcs',:vhdl=>'vhdlSrcs'}.each do |k,vnm| 
+        {:sv => 'sysvlogSrcs', :vhdl => 'vhdlSrcs'}.each do |k, vnm|
           dump_list(vnm, @opts.excl_emit[k][:files], false, false)
         end
-        ixs.each { |k,vnm| dump_list(vnm,data[k],false,false) }
-        dump_list('unresolved',@parser.unresolved)
+        ixs.each { |k, vnm| dump_list(vnm, data[k], false, false) }
+        dump_list('unresolved', @parser.unresolved)
       end
     end
   end
 
   private
   class Tcl < Base
-    def initialize(opts,parser)
-      super('#',opts.tcl,opts,parser)
+    def initialize(opts, parser)
+      super('#', opts.tcl, opts, parser)
     end
 
-    def dump_list(vnm,vals,rm_loc=false,reset=true)
+    def dump_list(vnm, vals, rm_loc=false, reset=true)
       did = Hash.new
       @ofid << "\nset #{vnm} \{\}\n" if reset
       vals.each do |v|
@@ -703,7 +723,7 @@ L1
       end if vals
     end
 
-    def dump_scalar(vnm,val)
+    def dump_scalar(vnm, val)
       @ofid << "\nset #{vnm} \{#{val}\}\n"
     end
   end

@@ -1,3 +1,15 @@
+07-dec-2014
+===========
++ Continue testing, release r2.0.1.
++ added support for token-paste '``' operator in sysvlog.
++ added '--redefn_lvl' option to analyze to control macro redefinition check.
++ NOTE: tested on *Nix system with:
+    + jruby 1.7.13 (1.9.3p392) 2014-06-24 43f133c i
+	  on Java HotSpot(TM) 64-Bit Server VM 1.7.0_07-b10 [linux-amd64]
+    + java version "1.7.0_07"
+      Java(TM) SE Runtime Environment (build 1.7.0_07-b10)
+      Java HotSpot(TM) 64-Bit Server VM (build 23.3-b01, mixed mode)
+
 02-dec-2014
 ===========
 + Major refactor to replace antlr-based SysVlog parser with one from apfe

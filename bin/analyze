@@ -47,5 +47,6 @@ exec jruby \
 	-J-Dparser.messages=${ROOT}/props/parser.msg.txt \
 	-J-Dvlogpp.messages=${ROOT}/props/vlogpp.msg.txt \
 	-I${analyzeLib} \
+	--1.9 \
 	-- \
 	${analyzeLib}/main.rb ${*}
