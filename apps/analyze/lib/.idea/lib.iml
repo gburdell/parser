@@ -52,7 +52,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="jruby-1.7.13-p392" jdkType="JRUBY_SDK" />
+    <orderEntry type="jdk" jdkName="jruby-1.7.16.1-p392" jdkType="JRUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

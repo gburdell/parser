@@ -4,8 +4,8 @@ VPP-ARGN   %s: macro instance '%s' has %d arguments, definition has %d
 VPP-CLARG-1  %s %s
 VPP-DIR-1  %s: invalid directory
 VPP-DIR-2  %s: cannot '%s' directory
-VPP-DUP-1a %s: replace macro '%s' definition
-VPP-DUP-1b %s: previous definition of macro '%s'
+VPP-DUP-1a %s: replace macro '%s' definition with '%s'
+VPP-DUP-1b %s: previous definition of macro '%s' was '%s'
 VPP-FILE-1 %s: cannot '%s' file
 VPP-INCL-1 %s: include file '%s' found in %d locations:
 VPP-INCL-2 location %d: %s

@@ -52,7 +52,7 @@ public abstract class Module {
     }
     public void addInstance(ModuleInstance inst) {
         if (null == m_insts) {
-             m_insts = new LinkedList<ModuleInstance>();
+             m_insts = new LinkedList<>();
         }
         m_insts.add(inst);
     }
