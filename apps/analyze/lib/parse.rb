@@ -36,6 +36,7 @@ class Parse
     Message.set_message_level(@opts.msg_lvl) if @opts.msg_lvl
     Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e) if @opts.opt_e
     Java::apfe.dsl.vlogpp.MacroDefns.setRedefinedCheck(@opts.redefn_lvl) if @opts.redefn_lvl
+    Java::apfe.dsl.vlogpp.MacroDefns.setSingleCompilationUnits(0 != @opts.sfcu) if @opts.sfcu
     #todo
     @sysvlog = SysVlog.new(@opts.sv, @opts.define, @opts.incdir)
     @vhdl = Vhdl.new(@opts.vhdl)

@@ -6,6 +6,7 @@ VPP-DIR-1  %s: invalid directory
 VPP-DIR-2  %s: cannot '%s' directory
 VPP-DUP-1a %s: replace macro '%s' definition with '%s'
 VPP-DUP-1b %s: previous definition of macro '%s' was '%s'
+VPP-EXIT 'Exiting due to previous error(s)'
 VPP-FILE-1 %s: cannot '%s' file
 VPP-INCL-1 %s: include file '%s' found in %d locations:
 VPP-INCL-2 location %d: %s
@@ -16,4 +17,8 @@ VPP-MAC-1 '-D %s' transformed to '-D %s'
 VPP-NODEFN %s: no definition for macro instance '%s'
 VPP-NODFLT %s: macro '%s' has no default value for parameter '%s' and was not assigned actual value
 VPP-PROC %s: processing
-VPP-EXIT 'Exiting due to previous error(s)'
+VPP-REDEFN-1 %s: macro '%s' redefined from '%s' to '%s'
+VPP-SFCU-1 set single file compilation unit '%s'
+VPP-UNDEF-1 %s: '`undef %s' has no effect since macro '%s' was never defined
+VPP-UNDEF-2 %s: '`undef %s' has no effect since macro '%s' was not defined in compilation unit (filename: %s)
+VPP-UNDEF-3 %s: '`undef %s' removed definition of macro '%s'

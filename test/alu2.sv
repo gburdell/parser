@@ -129,3 +129,11 @@ module t_alu;
 	alu2V2 dutV2 (.z_0(zV2_0),.z_1(zV2_1), .*);
 endmodule
 `endif
+
+//`undef N
+`undef NOT_DEFINED
+
+`define N 64
+module xxx;
+	input [`N:0] a;
+endmodule

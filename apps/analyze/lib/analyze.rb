@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.2"
+  VERSION = "r2.0.3"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -145,6 +145,10 @@ class Analyze
     --redefn_lvl 1..2   Set macro re-definition check level.
                           1 checks for different value, 2 checks for different
                           location (Default: 1.  2 is more conservative).
+    --sfcu 0..1         Set single file compilation unit granularity for
+                          determination of macro undef scope.
+                          Default: 0, which enables all files as compilation
+                          unit (which is less strict, but more common model).
 L1
     STDERR << "#{usage}"
   end
@@ -161,7 +165,8 @@ class Opts
 
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
               :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
-              :exit_on_err, :more_opts, :excl_emit, :msg_lvl, :redefn_lvl
+              :exit_on_err, :more_opts, :excl_emit, :msg_lvl, :redefn_lvl,
+              :sfcu
 
   private
   def init(args)
@@ -188,6 +193,7 @@ class Opts
     @opt_e = nil
     @msg_lvl = nil
     @redefn_lvl = nil
+    @sfcu = nil
     process_args
     #Get rid of duplicates
     @define.uniq!
@@ -272,6 +278,18 @@ class Opts
                 @redefn_lvl = v.to_i
               else
                 error('ARG-6', [v, @ai, '1..2'])
+              end
+            else
+              error('ARG-5', @ai)
+            end
+          end
+        when '--sfcu'
+          expect_arg do |v|
+            unless @sfcu
+              if ('0'..'1').member?(v)
+                @sfcu = v.to_i
+              else
+                error('ARG-6', [v, @ai, '0..1'])
               end
             else
               error('ARG-5', @ai)
