@@ -1,3 +1,9 @@
+11-dec-2014
+===========
++ release r2.0.4.
++ fix redefine checking to squeeze (whitespace) before compare.
+  thus quelch false-messages.
+
 09-dec-2014
 ===========
 + release r2.0.3.
