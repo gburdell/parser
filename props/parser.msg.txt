@@ -58,6 +58,7 @@ MACRO-7 %s:%d: `elsif '%s' is %s.
 
 MOD-1 %s: processing module '%s' ...
 
+PARSE-0 Begin parsing ...
 PARSE-1 %s:%d: %s
 PARSE-3 %s: unexpected char '%c'.
 PARSE-5 %s:%s: found '%s', expected %s.
@@ -68,6 +69,8 @@ PORT-3 %s:%d: in module '%s': port '%s' already defined as reg|wire.
 PORT-4 %s:%d: in module '%s': input port '%s' cannot be declared as reg.
 PORT-5 %s:%d: in module '%s': port '%s' already defined as signed.
 PORT-6 %s:%d: in module '%s': port '%s' already defined as reg (at %s).
+
+TIM-1 %s phase(s) took %s
 
 TYPE-1 %s:%d: in module '%s': '%s': symbol type of %s (lhs) must be '%s'.
 

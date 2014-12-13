@@ -25,7 +25,6 @@
 package parser.apfe.sv2009;
 import apfe.sv2009.MtMain;
 import parser.MessageMgr;
-import static gblib.Util.info;
 
 /**
  * A wrapper around apfe.sv2009.MtMain.

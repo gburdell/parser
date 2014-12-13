@@ -2,6 +2,7 @@
 
 VPP-ARGN   %s: macro instance '%s' has %d arguments, definition has %d
 VPP-CLARG-1  %s %s
+VPP-DEFN-1  %s: define macro '%s' with value '%s'
 VPP-DIR-1  %s: invalid directory
 VPP-DIR-2  %s: cannot '%s' directory
 VPP-DUP-1a %s: replace macro '%s' definition with '%s'
