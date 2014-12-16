@@ -41,7 +41,7 @@ set ROOT=${dir:h}
 set analyzeLib=${ROOT}/apps/analyze/lib
 
 exec jruby \
-	-J-Xmx8192M \
+	-J-Xmx16G \
 	-J-ea \
 	-J-Dtool.root=${ROOT} \
 	-J-Dparser.messages=${ROOT}/props/parser.msg.txt \
