@@ -14,7 +14,7 @@ set props="-Dapfe.messages=${apfe}/messages.txt"
 set props="${props} -Dvlogpp.messages=${apfe}/vlogpp/messages.txt"
 set jars=${rdir}/dist/lib/gblib.jar
 set jars=${jars}:${rdir}/dist/lib/apfe.jar
-set jars=${jars}:${rdir}/dist/lib/vlogpp.jar
+set jars=${jars}:${rdir}/dist/lib/vlogpp2.jar
 set jars=${jars}:${rdir}/dist/lib/sv2009.jar
 set jars=${jars}:${rdir}/dist/parser.jar
 exec java -Xms4G -ea -Dtool.root=${rdir} ${props} -cp ${jars} ${cls} ${*}

@@ -34,7 +34,10 @@ class Parse
   def initialize(opts)
     @opts = opts
     Message.set_message_level(@opts.msg_lvl) if @opts.msg_lvl
-    Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e) if @opts.opt_e
+    if @opts_e
+      File.delete @opts_e if File.exist?(@opts_e)
+      Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e)
+    end
     Java::apfe.dsl.vlogpp.MacroDefns.setRedefinedCheck(@opts.redefn_lvl) if @opts.redefn_lvl
     Java::apfe.dsl.vlogpp.MacroDefns.setSingleCompilationUnits(0 != @opts.sfcu) if @opts.sfcu
     #todo

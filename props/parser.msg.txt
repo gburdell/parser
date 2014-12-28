@@ -79,6 +79,6 @@ VPP-3  %s: expecting '%c' found '%s'
 VPP-4  %s: expecting %s found '%s'
 VPP-5  %s: unexpected '%s'
 
-VPPE-1 %s: post-preprocessor output.
+VPPE-1 %s: preprocessor output.
 
 

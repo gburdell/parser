@@ -2,19 +2,27 @@
 
 VPP-ARGN   %s: macro instance '%s' has %d arguments, definition has %d
 VPP-CLARG-1  %s %s
+VPP-CMNT-1  %s: block comment was not terminated (detected EOF)
 VPP-DEFN-1  %s: define macro '%s' with value '%s'
 VPP-DIR-1  %s: invalid directory
 VPP-DIR-2  %s: cannot '%s' directory
 VPP-DUP-1a %s: replace macro '%s' definition with '%s'
 VPP-DUP-1b %s: previous definition of macro '%s' was '%s'
+VPP-EOF-1 %s: unexpected end-of-file while processing string
+VPP-EOF-2 %s: unexpected end-of-file while processing filename
+VPP-ERR-1 %s: expected one of [%s], found '%c'
 VPP-EXIT 'Exiting due to previous error(s)'
 VPP-FILE-1 %s: cannot '%s' file
+VPP-FNAME-1 %s: unbalanced filename delimiters: '%c' and '%c'
+VPP-FNAME-2 %s: `include filename is empty
 VPP-INCL-1 %s: include file '%s' found in %d locations:
 VPP-INCL-2 location %d: %s
 VPP-INCL-3 include file nesting exceeds %d levels
 VPP-INCL-4 %s: cannot find include file '%s'
 VPP-INCL-5 %s: found include file '%s'
+VPP-INCL-6 include file depth > %d
 VPP-MAC-1 '-D %s' transformed to '-D %s'
+VPP-NL-1 %s: unexpected newline
 VPP-NODEFN %s: no definition for macro instance '%s'
 VPP-NODFLT %s: macro '%s' has no default value for parameter '%s' and was not assigned actual value
 VPP-PROC %s: processing
@@ -23,3 +31,5 @@ VPP-SFCU-1 set single file compilation unit '%s'
 VPP-UNDEF-1 %s: '`undef %s' has no effect since macro '%s' was never defined
 VPP-UNDEF-2 %s: '`undef %s' has no effect since macro '%s' was not defined in compilation unit (filename: %s)
 VPP-UNDEF-3 %s: '`undef %s' removed definition of macro '%s'
+VPP-UNEXPECT-2 %s: unexpected '%s' (only valid after [`ifdef, `ifndef, `elsif])
+VPP-UNEXPECT-3 %s: unexpected '%s' (only valid after [`ifdef, `ifndef, `elsif, `else])
