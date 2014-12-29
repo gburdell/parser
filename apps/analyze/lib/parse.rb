@@ -36,10 +36,10 @@ class Parse
     Message.set_message_level(@opts.msg_lvl) if @opts.msg_lvl
     if @opts_e
       File.delete @opts_e if File.exist?(@opts_e)
-      Java::apfe.dsl.vlogpp.VppMain.setDumpVpp(@opts.opt_e)
+      Java::apfe.vlogpp2.VppMain.setDumpVpp(@opts.opt_e)
     end
-    Java::apfe.dsl.vlogpp.MacroDefns.setRedefinedCheck(@opts.redefn_lvl) if @opts.redefn_lvl
-    Java::apfe.dsl.vlogpp.MacroDefns.setSingleCompilationUnits(0 != @opts.sfcu) if @opts.sfcu
+    Java::apfe.vlogpp2.MacroDefns.setRedefinedCheck(@opts.redefn_lvl) if @opts.redefn_lvl
+    Java::apfe.vlogpp2.MacroDefns.setSingleCompilationUnits(0 != @opts.sfcu) if @opts.sfcu
     #todo
     @sysvlog = SysVlog.new(@opts.sv, @opts.define, @opts.incdir)
     @vhdl = Vhdl.new(@opts.vhdl)
@@ -372,7 +372,7 @@ class Parse
   private
   class SysVlog < Base
 		java_import 'parser.apfe.sv2009.SvMain'
-		java_import 'apfe.dsl.vlogpp.Helper'
+		java_import 'apfe.vlogpp2.Helper'
 
 		def initialize(sv,defs,incdirs)
 			parse(sv,defs,incdirs)

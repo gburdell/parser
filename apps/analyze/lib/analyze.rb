@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.6"
+  VERSION = "r2.0.7"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -211,7 +211,7 @@ class Opts
 
   #Delimiter used to stylize location of +define+ in .f files
   public
-  DEFINE_LOC_DELIM = Java::apfe.dsl.vlogpp.MacroDefns.stDefineDelimitLoc
+  DEFINE_LOC_DELIM = Java::apfe.vlogpp2.MacroDefns.stDefineDelimitLoc
 
   private
   def dump_outf(ofn)
