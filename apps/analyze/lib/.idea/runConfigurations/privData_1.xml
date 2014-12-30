@@ -16,7 +16,7 @@
     </EXTENSION>
     <EXTENSION ID="org.jetbrains.plugins.ruby.motion.run.MotionSimulatorRunExtension" />
     <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="$MODULE_DIR$/main.rb" />
-    <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="-m a5x_rac -f top.vf -E /tmp/postvpp.v" />
+    <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="-m a5x_rac -f top.vf -E /tmp/vpp.v" />
     <RunnerSettings RunnerId="RubyDebugRunner" />
     <RunnerSettings RunnerId="RubyRunner" />
     <ConfigurationWrapper RunnerId="RubyDebugRunner" />

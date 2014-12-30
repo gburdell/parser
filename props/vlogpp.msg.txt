@@ -31,5 +31,6 @@ VPP-SFCU-1 set single file compilation unit '%s'
 VPP-UNDEF-1 %s: '`undef %s' has no effect since macro '%s' was never defined
 VPP-UNDEF-2 %s: '`undef %s' has no effect since macro '%s' was not defined in compilation unit (filename: %s)
 VPP-UNDEF-3 %s: '`undef %s' removed definition of macro '%s'
+VPP-UNEXPECT-1 %s: unexpected '%s' (expected tic-directive)
 VPP-UNEXPECT-2 %s: unexpected '%s' (only valid after [`ifdef, `ifndef, `elsif])
 VPP-UNEXPECT-3 %s: unexpected '%s' (only valid after [`ifdef, `ifndef, `elsif, `else])
