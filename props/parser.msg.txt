@@ -42,7 +42,7 @@ INCL-3.1 %s: candidate location #%d
 
 LEXER-1 %s
 
-LINK-1  Unresolved: %s.
+LINK-1  Unresolved: %s
 LINK-2  Link status: %s.
 LINK-3  Pass %d: %s.
 LINK-4  %s: resolved using +no_defn+ (%d occurence(s)).

@@ -388,7 +388,11 @@ class Parse
       args += Parse::prefix('-I',incdirs) unless incdirs.empty?
       args += srcs
       @jparser = SvMain.getParser
+
+			#NOTE: used to have this as @jparser.parse(argv)
+			#TODO: we do need .parse method for sv2009.Parser.
       SvMain.main(args)
+
       @jtracker = @jparser.getTracker
 	  end
 

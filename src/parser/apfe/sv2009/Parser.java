@@ -30,6 +30,7 @@ import apfe.runtime.Token;
 import apfe.runtime.Util;
 import static apfe.runtime.Util.extractEle;
 import static apfe.runtime.Util.extractList;
+import apfe.sv2009.MtMain;
 import apfe.sv2009.generated.hierarchical_instance;
 import apfe.sv2009.generated.module_identifier;
 import apfe.sv2009.generated.udp_identifier;
@@ -38,7 +39,6 @@ import apfe.sv2009.generated.module_instantiation;
 import apfe.sv2009.generated.identifier;
 import apfe.sv2009.generated.name_of_instance;
 import apfe.sv2009.generated.interface_identifier;
-import static gblib.MessageMgr.message;
 import static gblib.Util.downCast;
 import static gblib.Util.info;
 import java.util.LinkedList;
@@ -48,6 +48,10 @@ public class Parser {
 
     public Parser() {
         init();
+    }
+    
+    public void parse(String argv[]) {
+        MtMain.process(argv);
     }
     
     public Tracker getTracker() {

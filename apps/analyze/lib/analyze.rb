@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.8"
+  VERSION = "r2.0.9"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -542,10 +542,9 @@ class Opts
   #Return args based on cmdline or dotf files
   class OptIter < Iter
     def initialize(args)
-      @cmdline = ArrayIter.new(args)
-      @dotf = nil
-      @iter = @cmdline
-      @saved_dotf = nil
+      @iter = ArrayIter.new(args)
+			@opts_stk = []
+			@dotf = nil
     end
 
     def has_more?
@@ -559,7 +558,7 @@ class Opts
     end
 
     def switch_to_dotf(fname) #push
-      @saved_dotf = @dotf
+			@opts_stk.push(@iter)
       pdir = @dotf ? @dotf.dir : nil
       @dotf = Dotf.new(fname, pdir)
       @iter = @dotf
@@ -580,16 +579,8 @@ class Opts
     private
     #Pop from dotf and return has_more?
     def pop
-      if @dotf
-        if @saved_dotf
-          @iter = @dotf = @saved_dotf
-          @saved_dotf = nil
-        else
-          @dotf = nil
-          @iter = @cmdline
-        end
-      end
-      return @iter.has_more?
+			@iter = @opts_stk.pop
+      return @iter ? @iter.has_more? : nil
     end
   end
 
@@ -612,7 +603,14 @@ class Opts
       @irow < @nrows
     end
 
-    def next
+		def next
+			r = get_next
+#STDERR.puts "DBG3: #{@fname}: #{r}"
+			return r
+		end
+
+		private
+    def get_next
       return nil unless has_more?
       return @line.next if @line.has_more?
       @irow += 1
@@ -638,11 +636,13 @@ class Opts
         line = line.strip.sub(/\/\/.*$/, "") #only line comments handled
         #allow ${VAR} substitutions
         line = line.gsub(/(\$\{)([^\}]+)(\})/) { ENV[$2] }
+				line = line.gsub(/\$([^\/]+)(\/|$)/) { ENV[$1]+$2}
         unless line.empty?
           leles = line.split(/\s+/)
           @eles << [lnum, leles] unless leles.empty?
         end
       end
+#STDERR.puts "DBG2: eles=#{@eles}"
       @nrows = @eles.length
     end
   end
