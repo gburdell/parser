@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.9"
+  VERSION = "r2.0.10"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -462,6 +462,7 @@ class Opts
       smessage(svr, 'FILE-5', [of_opt, fname, 'read', 'file'])
     else
       smessage(svr, 'FILE-2', [fname, 'read'])
+#STDERR.puts "DBG: dir=#{dir} : efname=#{efname}\n#{caller.join("\n")}"
     end
     return nil
   end
@@ -580,6 +581,7 @@ class Opts
     #Pop from dotf and return has_more?
     def pop
 			@iter = @opts_stk.pop
+			@dotf = nil
       return @iter ? @iter.has_more? : nil
     end
   end
@@ -636,13 +638,14 @@ class Opts
         line = line.strip.sub(/\/\/.*$/, "") #only line comments handled
         #allow ${VAR} substitutions
         line = line.gsub(/(\$\{)([^\}]+)(\})/) { ENV[$2] }
+        #allow $VAR substitutions
 				line = line.gsub(/\$([^\/]+)(\/|$)/) { ENV[$1]+$2}
         unless line.empty?
           leles = line.split(/\s+/)
           @eles << [lnum, leles] unless leles.empty?
         end
       end
-#STDERR.puts "DBG2: eles=#{@eles}"
+#STDERR.puts "DBG2: fname=#{fname} : eles=#{@eles}"
       @nrows = @eles.length
     end
   end
