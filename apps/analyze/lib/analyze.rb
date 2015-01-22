@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.10"
+  VERSION = "r2.0.11"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -627,6 +627,13 @@ class Opts
       @line = ArrayIter.new(@eles[@irow][1])
     end
 
+		private
+		def get_env(ix,fname,lnum)
+			return ENV[ix] if ENV.key?(ix)
+			Message.error('ENV-1', [fname, lnum, ix])
+			errmsg_and_exit
+		end
+
     private
     def read(fname)
       #Read entire file into array of pair: [lnum [toks ...]]
@@ -637,9 +644,9 @@ class Opts
         lnum += 1
         line = line.strip.sub(/\/\/.*$/, "") #only line comments handled
         #allow ${VAR} substitutions
-        line = line.gsub(/(\$\{)([^\}]+)(\})/) { ENV[$2] }
+        line = line.gsub(/(\$\{)([^\}]+)(\})/) { get_env($2,fname,lnum) }
         #allow $VAR substitutions
-				line = line.gsub(/\$([^\/]+)(\/|$)/) { ENV[$1]+$2}
+				line = line.gsub(/\$([^\/]+)(\/|$)/) { get_env($1,fname,lnum)+$2}
         unless line.empty?
           leles = line.split(/\s+/)
           @eles << [lnum, leles] unless leles.empty?

@@ -10,6 +10,8 @@ ARG-6     %s: invalid option to '%s'.  Expected %s.
 
 DEFN-5    %s:%d: definition for module '%s' overrides +nodefn+%s.
 
+ENV-1     %s:%d: no definition for env. var. '%s'
+
 FILE-2.1  %s:%d: %s: cannot %s file.
 
 FILE-5           %s: %s: cannot %s %s.
