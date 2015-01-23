@@ -1,3 +1,10 @@
+17-jan-2015
+===========
++ release r2.0.9.
++ continue testing.
++ the -E <postvpp> option is pretty cool: allows you to flatten out the
+  complete (post) preprocessor output into one single file.
+
 11-dec-2014
 ===========
 + release r2.0.4.
