@@ -40,8 +40,14 @@ cd $cdir
 set ROOT=${dir:h}
 set analyzeLib=${ROOT}/apps/analyze/lib
 
+if ( `hostname` =~ *vbox ) then
+	set mem=1G; #not lots of mem in our virtual box
+else
+	set mem=8G
+endif
+
 exec jruby \
-	-J-Xmx8G \
+	-J-Xmx${mem} \
 	-J-ea \
 	-J-Dtool.root=${ROOT} \
 	-J-Dparser.messages=${ROOT}/props/parser.msg.txt \
