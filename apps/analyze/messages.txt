@@ -19,6 +19,8 @@ FILE-5.1  %s:%d: %s: %s: cannot %s %s.
 
 FILE-6    %s: -y %s: +libext+%s: could not read file
 
+FLATF-1   Exit after generating --flatf '%s' (due to %s).
+
 REQD-1    At least 1 <file> required  (use -h for help).
 
 SPEC-1    %s: invalid %s option to %s: must be %s.

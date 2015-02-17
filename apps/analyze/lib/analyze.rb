@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.21"
+  VERSION = "r2.0.22"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -49,6 +49,10 @@ class Analyze
     end
     @opts = block_given? ? yield(@argv) : Opts.new(@argv)
     errmsg_and_exit if Util.has_error?
+    if @opts.exit_after_flatf && @opts.flatf
+      Message.message('W', 'FLATF-1', [@opts.flatf, '--exit_after_flatf'])
+      exit 0
+    end
     @parser = Parse.new(@opts)
     @parser.link
     errmsg_and_exit if Util.has_error? && @opts.exit_on_err
@@ -103,6 +107,7 @@ class Analyze
     -- <file>...        Subsequent <file>... read as SystemVerilog.
     --flatf <file>      Generate flattened .f file into <file> immediately
                           after option processing.
+    --exit_after_flatf  Exit after generating <file> specifed by --flatf option.
     --yvhdl <dir>       Specify directory <dir> for finding unresolved 
                           references.
                           For any missing <module>, directory <dir> will be
@@ -166,7 +171,7 @@ class Opts
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
               :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
               :exit_on_err, :more_opts, :excl_emit, :msg_lvl, :redefn_lvl,
-              :sfcu
+              :sfcu, :flatf, :exit_after_flatf
 
   private
   def init(args)
@@ -188,6 +193,7 @@ class Opts
     @arg_i = OptIter.new(args)
     @file_as = :sysvlog #:vhdl or :slf
     @flatf = nil
+    @exit_after_flatf = false
     @nodefn = []
     @tcl = nil
     @opt_e = nil
@@ -219,7 +225,7 @@ class Opts
     Message.info(1, 'FILE-4', ofn)
     ofid = File.new(ofn, 'w')
     ofid << "// Created #{Time::now}\n//\n"
-    ofid << "-m #{@top_mod}\n"
+    ofid << "// -m #{@top_mod}\n"
     @define.each do |d|
       d = d.split(DEFINE_LOC_DELIM)
       ofid << "+define+#{d.last}"
@@ -328,6 +334,12 @@ class Opts
             else
               error('ARG-5', @ai)
             end
+          end
+        when '--exit_after_flatf'
+          unless @exit_after_flatf
+            @exit_after_flatf = true
+          else
+            error('ARG-5', @ai)
           end
         when '--exit_on_err'
           unless @exit_on_err
