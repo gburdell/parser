@@ -1,3 +1,9 @@
+6-may-2015
+==========
++ release r2.0.29.
++ continue testing.
++ adds support for undef-only source files.
+
 17-jan-2015
 ===========
 + release r2.0.9.
