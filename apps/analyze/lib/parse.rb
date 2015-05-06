@@ -62,6 +62,10 @@ class Parse
     !@unresolved.empty?
   end
 
+  def merge_undef_only_files(into)
+    @sysvlog.merge_undef_only_files(into)
+  end
+
   def get_define_only_files(srcs)
     @sysvlog.get_define_only_files(srcs)
   end
@@ -396,13 +400,33 @@ class Parse
       @jtracker = @jparser.getTracker
 	  end
 
+		# Go through getUndefOnlyFiles and merge into
+		# in proper order as they appeared in processed_srcs
+		def merge_undef_only_files(into)
+			rval = []
+			undef_files = Helper.getTheOne.getMacroDefns.getUndefOnlyFiles
+			if undef_files.empty?
+				rval = into
+			else
+				all = (into + undef_files).uniq
+      	@processed_srcs.each do |f|
+        	rval << f if Util::has_same_file(all, f)
+      	end
+			end
+STDERR.puts "DBG: merge_undef_only_files returns:"+rval.to_s
+			return rval
+		end
+
     def get_define_only_files(used)
       def_only_files = Helper.getTheOne.getMacroDefns.getDefineOnlyFiles(used)
-      #reconcile again processed_srcs to get order correct
+      #reconcile against processed_srcs to get order correct
       rval = []
+STDERR.puts "DBG: def_only_files="+def_only_files.to_s
+STDERR.puts "DBG: processed_srcs="+@processed_srcs.to_s
       @processed_srcs.each do |f|
         rval << f if Util::has_same_file(def_only_files, f)
       end
+STDERR.puts "DBG: get_define_only_files returns:"+rval.to_s
       rval
     end
 

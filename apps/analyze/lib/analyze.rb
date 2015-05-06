@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.28"
+  VERSION = "r2.0.29"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -697,6 +697,10 @@ L1
       @parser.get_define_only_files(all_used)
     end
 
+    def merge_undef_only_files(into)
+      @parser.merge_undef_only_files(into)
+    end
+
     private
     #Handle case where a file containing `define is read as a source and
     #also included.  Due file ordering (and bad code style), and file B
@@ -726,6 +730,8 @@ L1
       data[:sv] = define_only_files + data[:sv]
       updated_sv = add_includes_as_src(data[:sv], included_files)
       data[:sv] = updated_sv
+			updated_sv = merge_undef_only_files(data[:sv])
+			data[:sv] = updated_sv
       Message.info(1, 'FILE-4', @fnm)
       File.open(@fnm, 'w') do |f|
         @ofid = f
