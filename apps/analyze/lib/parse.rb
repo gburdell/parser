@@ -413,7 +413,7 @@ class Parse
         	rval << f if Util::has_same_file(all, f)
       	end
 			end
-STDERR.puts "DBG: merge_undef_only_files returns:"+rval.to_s
+#STDERR.puts "DBG: merge_undef_only_files returns:"+rval.to_s
 			return rval
 		end
 
@@ -421,12 +421,12 @@ STDERR.puts "DBG: merge_undef_only_files returns:"+rval.to_s
       def_only_files = Helper.getTheOne.getMacroDefns.getDefineOnlyFiles(used)
       #reconcile against processed_srcs to get order correct
       rval = []
-STDERR.puts "DBG: def_only_files="+def_only_files.to_s
-STDERR.puts "DBG: processed_srcs="+@processed_srcs.to_s
+#STDERR.puts "DBG: def_only_files="+def_only_files.to_s
+#STDERR.puts "DBG: processed_srcs="+@processed_srcs.to_s
       @processed_srcs.each do |f|
         rval << f if Util::has_same_file(def_only_files, f)
       end
-STDERR.puts "DBG: get_define_only_files returns:"+rval.to_s
+#STDERR.puts "DBG: get_define_only_files returns:"+rval.to_s
       rval
     end
 
