@@ -41,7 +41,7 @@ set ROOT=${dir:h}
 set analyzeLib=${ROOT}/apps/analyze/lib
 
 if ( `hostname` =~ *vbox ) then
-	set mem=1G; #not lots of mem in our virtual box
+	set mem=8G; #not lots of mem in our virtual box
 else
 	set mem=8G
 endif

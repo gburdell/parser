@@ -6,7 +6,7 @@
       <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="-J-ea -J-Dtool.root=$MODULE_DIR$/../../.. -J-Dparser.messages=$MODULE_DIR$/../../../props/parser.msg.txt -J-Dvlogpp.messages=$MODULE_DIR$/../../../props/vlogpp.msg.txt -I/home/gburdell/projects/parser/apps/analyze/lib -e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
       <RUBY_RUN_CONFIG NAME="WORK DIR" VALUE="$MODULE_DIR$/../../../test" />
       <RUBY_RUN_CONFIG NAME="SHOULD_USE_SDK" VALUE="true" />
-      <RUBY_RUN_CONFIG NAME="ALTERN_SDK_NAME" VALUE="jruby-1.7.13-p392" />
+      <RUBY_RUN_CONFIG NAME="ALTERN_SDK_NAME" VALUE="jruby-1.7.18-p551" />
       <RUBY_RUN_CONFIG NAME="myPassParentEnvs" VALUE="true" />
       <envs />
       <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
@@ -52,7 +52,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="jruby-1.7.17-p392" jdkType="JRUBY_SDK" />
+    <orderEntry type="jdk" jdkName="jruby-1.7.18-p551" jdkType="JRUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

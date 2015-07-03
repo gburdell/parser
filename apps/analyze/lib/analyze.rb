@@ -34,7 +34,7 @@ def errmsg_and_exit
 end
 
 class Analyze
-  VERSION = "r2.0.29"
+  VERSION = "r2.1.0"
 
   def initialize(argv, cmd = "analyze")
     @argv = argv
@@ -107,6 +107,7 @@ class Analyze
     -- <file>...        Subsequent <file>... read as SystemVerilog.
     --flatf <file>      Generate flattened .f file into <file> immediately
                           after option processing.
+    --keep_var_in_flatf Keep ${VAR} names in generated <file> specifed by --flatf option.
     --exit_after_flatf  Exit after generating <file> specifed by --flatf option.
     --yvhdl <dir>       Specify directory <dir> for finding unresolved 
                           references.
@@ -171,7 +172,7 @@ class Opts
   attr_reader :top_mod, :incdir, :v, :slf, :vhdl, :sv,
               :sv_seeker, :slf_seeker, :vhdl_seeker, :nodefn, :tcl, :opt_e,
               :exit_on_err, :more_opts, :excl_emit, :msg_lvl, :redefn_lvl,
-              :sfcu, :flatf, :exit_after_flatf
+              :sfcu, :flatf, :exit_after_flatf, :keep_var_in_flatf
 
   private
   def init(args)
@@ -194,6 +195,7 @@ class Opts
     @file_as = :sysvlog #:vhdl or :slf
     @flatf = nil
     @exit_after_flatf = false
+    @keep_var_in_flatf = false
     @nodefn = []
     @tcl = nil
     @opt_e = nil
@@ -219,6 +221,26 @@ class Opts
   public
   DEFINE_LOC_DELIM = Java::apfe.vlogpp2.MacroDefns.stDefineDelimitLoc
 
+  #Replace value with longest matching value from used env.
+  private
+  def replace_with_env_var(p)
+    return p unless @keep_var_in_flatf
+    unless defined?(@@env_keys)
+      @@env_keys = Dotf.used_env.sort {
+        |a,b| File.expand_path(a[1]).length <=> File.expand_path(b[1]).length}.reverse.collect{|a| a[0]
+      }
+    end
+    full_path = File.expand_path(p)
+    @@env_keys.each do |k|
+      prefix = File.expand_path(Dotf.used_env[k])
+      if full_path.start_with?(prefix)
+        n = prefix.length
+        return "${#{k}}#{full_path[n..-1]}"
+      end
+    end
+    return p
+  end
+
   private
   def dump_outf(ofn)
     return unless ofn
@@ -228,17 +250,20 @@ class Opts
     ofid << "// -m #{@top_mod}\n"
     @define.each do |d|
       d = d.split(DEFINE_LOC_DELIM)
-      ofid << "+define+#{d.last}"
+      ofid << "+define+#{replace_with_env_var(d.last)}"
       ofid << " // #{d[0]}" if 1 < d.length
       ofid << "\n"
     end
-    @incdir.each { |i| ofid << "+incdir+#{i}\n" }
-    @v.each { |i| ofid << "-v #{i}\n" }
+    @incdir.each { |i| ofid << "+incdir+#{replace_with_env_var(i)}\n" }
+    @v.each { |i| ofid << "-v #{replace_with_env_var(i)}\n" }
+    #TODO: add replace_with_env_var
     @slf_seeker.dump_outf(ofid)
-    @sv.each { |i| ofid << "#{i}\n" }
-    @vhdl.each { |i| ofid << "+vhdl+#{i}\n" }
+    @sv.each { |i| ofid << "#{replace_with_env_var(i)}\n" }
+    @vhdl.each { |i| ofid << "+vhdl+#{replace_with_env_var(i)}\n" }
+    #TODO: add replace_with_env_var
     @vhdl_seeker.dump_outf(ofid, 'vhdl')
-    @slf.each { |i| ofid << "+slf+#{i}\n" }
+    @slf.each { |i| ofid << "+slf+#{replace_with_env_var(i)}\n" }
+    #TODO: add replace_with_env_var
     @slf_seeker.dump_outf(ofid, 'slf')
     ofid.close
   end
@@ -338,6 +363,12 @@ class Opts
         when '--exit_after_flatf'
           unless @exit_after_flatf
             @exit_after_flatf = true
+          else
+            error('ARG-5', @ai)
+          end
+        when '--keep_var_in_flatf'
+          unless @keep_var_in_flatf
+            @keep_var_in_flatf = true
           else
             error('ARG-5', @ai)
           end
@@ -556,8 +587,8 @@ class Opts
   class OptIter < Iter
     def initialize(args)
       @iter = ArrayIter.new(args)
-			@opts_stk = []
-			@dotf = nil
+      @opts_stk = []
+      @dotf = nil
     end
 
     def has_more?
@@ -571,7 +602,7 @@ class Opts
     end
 
     def switch_to_dotf(fname) #push
-			@opts_stk.push(@iter)
+      @opts_stk.push(@iter)
       pdir = @dotf ? @dotf.dir : nil
       @dotf = Dotf.new(fname, pdir)
       @iter = @dotf
@@ -592,8 +623,8 @@ class Opts
     private
     #Pop from dotf and return has_more?
     def pop
-			@iter = @opts_stk.pop
-			@dotf = nil
+      @iter = @opts_stk.pop
+      @dotf = nil
       return @iter ? @iter.has_more? : nil
     end
   end
@@ -602,6 +633,10 @@ class Opts
   class Dotf < Iter
     attr_reader :fname, :lnum, :dir
 
+    private
+    @@used_env = {}
+
+    public
     def initialize(fname, pdir=nil)
       @fname = fname
       @lnum = 0
@@ -613,17 +648,21 @@ class Opts
       next_line if has_more?
     end
 
+    def self.used_env
+      @@used_env
+    end
+
     def has_more?
       @irow < @nrows
     end
 
-		def next
-			r = get_next
+    def next
+      r = get_next
 #STDERR.puts "DBG3: #{@fname}: #{r}"
-			return r
-		end
+      return r
+    end
 
-		private
+    private
     def get_next
       return nil unless has_more?
       return @line.next if @line.has_more?
@@ -639,12 +678,15 @@ class Opts
       @line = ArrayIter.new(@eles[@irow][1])
     end
 
-		private
-		def get_env(ix,fname,lnum)
-			return ENV[ix] if ENV.key?(ix)
-			Message.error('ENV-1', [fname, lnum, ix])
-			errmsg_and_exit
-		end
+    private
+    def get_env(ix,fname,lnum)
+      if ENV.key?(ix)
+        @@used_env[ix] = ENV[ix] unless @@used_env.key?(ix)
+        return ENV[ix]
+      end
+      Message.error('ENV-1', [fname, lnum, ix])
+      errmsg_and_exit
+    end
 
     private
     def read(fname)
@@ -658,7 +700,7 @@ class Opts
         #allow ${VAR} substitutions
         line = line.gsub(/(\$\{)([^\}]+)(\})/) { get_env($2,fname,lnum) }
         #allow $VAR substitutions
-				line = line.gsub(/\$([^\/]+)(\/|$)/) { get_env($1,fname,lnum)+$2}
+        line = line.gsub(/\$([^\/]+)(\/|$)/) { get_env($1,fname,lnum)+$2}
         unless line.empty?
           leles = line.split(/\s+/)
           @eles << [lnum, leles] unless leles.empty?
@@ -730,8 +772,8 @@ L1
       data[:sv] = define_only_files + data[:sv]
       updated_sv = add_includes_as_src(data[:sv], included_files)
       data[:sv] = updated_sv
-			updated_sv = merge_undef_only_files(data[:sv])
-			data[:sv] = updated_sv
+      updated_sv = merge_undef_only_files(data[:sv])
+      data[:sv] = updated_sv
       Message.info(1, 'FILE-4', @fnm)
       File.open(@fnm, 'w') do |f|
         @ofid = f
