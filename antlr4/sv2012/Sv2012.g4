@@ -2,7 +2,7 @@
 grammar Sv2012;
 
 // A.1.1 Library source text
-library_text : { library_description }
+library_text :  ( library_description )* 
 ;
 
 library_description :
@@ -13,15 +13,17 @@ library_declaration
 ;
 
 library_declaration :
-'library' library_identifier file_path_spec { ',' file_path_spec }
-[ '-incdir' file_path_spec { ',' file_path_spec } ] ';'
+'library' library_identifier File_path_spec  ( ',' File_path_spec )* 
+( '-incdir' File_path_spec  ( ',' File_path_spec )*  )? ';'
 ;
 
-include_statement : 'include' file_path_spec ';'
+include_statement : 'include' File_path_spec ';'
 ;
+
+File_path_spec : ([/~]|'./') ~[ \r\t\n]*? ;
 
 // A.1.2 SystemVerilog source text
-source_text : [ timeunits_declaration ] { description } EOF
+source_text : ( timeunits_declaration )?  ( description )*  EOF
 ;
 
 description :
@@ -30,28 +32,28 @@ module_declaration
 | interface_declaration
 | program_declaration
 | package_declaration
-| { attribute_instance } package_item
-| { attribute_instance } bind_directive
+|  ( attribute_instance )*  package_item
+|  ( attribute_instance )*  bind_directive
 | config_declaration
 ;
 
 module_nonansi_header :
-{ attribute_instance } module_keyword [ lifetime ] module_identifier
-{ package_import_declaration } [ parameter_port_list ] list_of_ports ';'
+( attribute_instance )*  module_keyword ( lifetime )? module_identifier
+( package_import_declaration )*  ( parameter_port_list )? list_of_ports ';'
 ;
 
 module_ansi_header :
-{ attribute_instance } module_keyword [ lifetime ] module_identifier
-{ package_import_declaration } [ parameter_port_list ] [ list_of_port_declarations ] ';'
+( attribute_instance )*  module_keyword ( lifetime )? module_identifier
+( package_import_declaration )*  ( parameter_port_list )? ( list_of_port_declarations )? ';'
 ;
 
 module_declaration :
-module_nonansi_header [ timeunits_declaration ] { module_item }
-'endmodule' [ ':' module_identifier ]
-| module_ansi_header [ timeunits_declaration ] { non_port_module_item }
-'endmodule' [ ':' module_identifier ]
-| { attribute_instance } module_keyword [ lifetime ] module_identifier '(' '.' '*' ')' ';'
-[ timeunits_declaration ] { module_item } 'endmodule' [ ':' module_identifier ]
+module_nonansi_header ( timeunits_declaration )?  ( module_item )* 
+'endmodule' ( ':' module_identifier )?
+| module_ansi_header ( timeunits_declaration )?  ( non_port_module_item )* 
+'endmodule' ( ':' module_identifier )?
+|  ( attribute_instance )*  module_keyword ( lifetime )? module_identifier '(' '.' '*' ')' ';'
+( timeunits_declaration )?  ( module_item )*  'endmodule' ( ':' module_identifier )?
 | 'extern' module_nonansi_header
 | 'extern' module_ansi_header
 ;
@@ -60,76 +62,76 @@ module_keyword : 'module' | 'macromodule'
 ;
 
 interface_declaration :
-interface_nonansi_header [ timeunits_declaration ] { interface_item }
-'endinterface' [ ':' interface_identifier ]
-| interface_ansi_header [ timeunits_declaration ] { non_port_interface_item }
-'endinterface' [ ':' interface_identifier ]
-| { attribute_instance } interface interface_identifier '(' '.' '*' ')' ';'
-[ timeunits_declaration ] { interface_item }
-'endinterface' [ ':' interface_identifier ]
+interface_nonansi_header ( timeunits_declaration )?  ( interface_item )* 
+'endinterface' ( ':' interface_identifier )?
+| interface_ansi_header ( timeunits_declaration )?  ( non_port_interface_item )* 
+'endinterface' ( ':' interface_identifier )?
+|  ( attribute_instance )*  'interface' interface_identifier '(' '.' '*' ')' ';'
+( timeunits_declaration )?  ( interface_item )* 
+'endinterface' ( ':' interface_identifier )?
 | 'extern' interface_nonansi_header
 | 'extern' interface_ansi_header
 ;
 
 interface_nonansi_header :
-{ attribute_instance } 'interface' [ lifetime ] interface_identifier
-{ package_import_declaration } [ parameter_port_list ] list_of_ports ';'
+( attribute_instance )*  'interface' ( lifetime )? interface_identifier
+( package_import_declaration )*  ( parameter_port_list )? list_of_ports ';'
 ;
 
 interface_ansi_header :
-{attribute_instance } 'interface' [ lifetime ] interface_identifier
-{ package_import_declaration } [ parameter_port_list ] [ list_of_port_declarations ] ';'
+(attribute_instance )*  'interface' ( lifetime )? interface_identifier
+( package_import_declaration )*  ( parameter_port_list )? ( list_of_port_declarations )? ';'
 ;
 
 program_declaration :
-program_nonansi_header [ timeunits_declaration ] { program_item }
-'endprogram' [ ':' program_identifier ]
-| program_ansi_header [ timeunits_declaration ] { non_port_program_item }
-'endprogram' [ ':' program_identifier ]
-| { attribute_instance } program program_identifier '(' '.' '*' ')' ';'
-[ timeunits_declaration ] { program_item }
-'endprogram' [ ':' program_identifier ]
+program_nonansi_header ( timeunits_declaration )?  ( program_item )* 
+'endprogram' ( ':' program_identifier )?
+| program_ansi_header ( timeunits_declaration )?  ( non_port_program_item )* 
+'endprogram' ( ':' program_identifier )?
+|  ( attribute_instance )*  'program' program_identifier '(' '.' '*' ')' ';'
+( timeunits_declaration )?  ( program_item )* 
+'endprogram' ( ':' program_identifier )?
 | 'extern' program_nonansi_header
 | 'extern' program_ansi_header
 ;
 
 program_nonansi_header :
-{ attribute_instance } 'program' [ lifetime ] program_identifier
-{ package_import_declaration } [ parameter_port_list ] list_of_ports ';'
+( attribute_instance )*  'program' ( lifetime )? program_identifier
+( package_import_declaration )*  ( parameter_port_list )? list_of_ports ';'
 ;
 
 program_ansi_header :
-{attribute_instance } 'program' [ lifetime ] program_identifier
-{ package_import_declaration } [ parameter_port_list ] [ list_of_port_declarations ] ';'
+(attribute_instance )*  'program' ( lifetime )? program_identifier
+( package_import_declaration )*  ( parameter_port_list )? ( list_of_port_declarations )? ';'
 ;
 
 checker_declaration :
-'checker' checker_identifier [ '(' [ checker_port_list ] ')' ] ';'
-{ { attribute_instance } checker_or_generate_item }
-'endchecker' [ ':' checker_identifier ]
+'checker' checker_identifier ( '(' ( checker_port_list )? ')' )? ';'
+(  ( attribute_instance )*  checker_or_generate_item )* 
+'endchecker' ( ':' checker_identifier )?
 ;
 
 class_declaration :
-[ 'virtual' ] 'class' [ lifetime ] class_identifier [ parameter_port_list ]
-[ 'extends' class_type [ '(' list_of_arguments ')' ] ]
-[ 'implements' interface_class_type { ',' interface_class_type } ] ';'
-{ class_item }
-'endclass' [ ':' class_identifier]
+( 'virtual' )? 'class' ( lifetime )? class_identifier ( parameter_port_list )?
+( 'extends' class_type ( '(' list_of_arguments ')' )? )?
+( 'implements' interface_class_type  ( ',' interface_class_type )*  )? ';'
+( class_item )* 
+'endclass' ( ':' class_identifier)?
 ;
 
-interface_class_type : ps_class_identifier [ parameter_value_assignment ]
+interface_class_type : ps_class_identifier ( parameter_value_assignment )?
 ;
 
 interface_class_declaration :
-'interface' 'class' class_identifier [ parameter_port_list ]
-[ 'extends' interface_class_type { ',' interface_class_type } ] ';'
-{ interface_class_item }
-'endclass' [ ':' class_identifier]
+'interface' 'class' class_identifier ( parameter_port_list )?
+( 'extends' interface_class_type  ( ',' interface_class_type )*  )? ';'
+( interface_class_item )* 
+'endclass' ( ':' class_identifier)?
 ;
 
 interface_class_item :
 type_declaration
-| { attribute_instance } interface_class_method
+|  ( attribute_instance )*  interface_class_method
 | local_parameter_declaration ';'
 | parameter_declaration ';'
 | ';'
@@ -140,13 +142,13 @@ interface_class_method :
 ;
 
 package_declaration :
-{ attribute_instance } 'package' [ lifetime ] package_identifier ';'
-[ timeunits_declaration ] { { attribute_instance } package_item }
-'endpackage' [ ':' package_identifier ]
+( attribute_instance )*  'package' ( lifetime )? package_identifier ';'
+( timeunits_declaration )?  (  ( attribute_instance )*  package_item )* 
+'endpackage' ( ':' package_identifier )?
 ;
 
 timeunits_declaration :
-'timeunit' time_literal [ '/' time_literal ] ';'
+'timeunit' time_literal ( '/' time_literal )? ';'
 | 'timeprecision' time_literal ';'
 | 'timeunit' time_literal ';' 'timeprecision' time_literal ';'
 | 'timeprecision' time_literal ';' 'timeunit' time_literal ';'
@@ -154,8 +156,8 @@ timeunits_declaration :
 
 // A.1.3 Module parameters and ports
 parameter_port_list :
-'#' '(' list_of_param_assignments { ',' parameter_port_declaration } ')'
-| '#' '(' parameter_port_declaration { ',' parameter_port_declaration } ')'
+'#' '(' list_of_param_assignments  ( ',' parameter_port_declaration )*  ')'
+| '#' '(' parameter_port_declaration  ( ',' parameter_port_declaration )*  ')'
 | '#' '(' ')'
 ;
 
@@ -166,29 +168,29 @@ parameter_declaration
 | 'type' list_of_type_assignments
 ;
 
-list_of_ports : '(' port { ',' port } ')'
+list_of_ports : '(' port  ( ',' port )*  ')'
 ;
 
 list_of_port_declarations :
-'(' [ { attribute_instance} ansi_port_declaration { ',' { attribute_instance} ansi_port_declaration } ] ')'
+'(' (  ( attribute_instance )* ansi_port_declaration  ( ','  ( attribute_instance )* ansi_port_declaration )*  )? ')'
 ;
 
 port_declaration :
-{ attribute_instance } inout_declaration
-| { attribute_instance } input_declaration
-| { attribute_instance } output_declaration
-| { attribute_instance } ref_declaration
-| { attribute_instance } interface_port_declaration
+( attribute_instance )*  inout_declaration
+|  ( attribute_instance )*  input_declaration
+|  ( attribute_instance )*  output_declaration
+|  ( attribute_instance )*  ref_declaration
+|  ( attribute_instance )*  interface_port_declaration
 ;
 
 port :
-[ port_expression ]
-| '.' port_identifier '(' [ port_expression ] ')'
+( port_expression )?
+| '.' port_identifier '(' ( port_expression )? ')'
 ;
 
 port_expression :
 port_reference
-| { port_reference { ',' port_reference } }
+|  ( port_reference  ( ',' port_reference )*  )* 
 ;
 
 port_reference :
@@ -198,33 +200,33 @@ port_identifier constant_select
 port_direction : 'input' | 'output' | 'inout' | 'ref'
 ;
 
-net_port_header : [ port_direction ] net_port_type
+net_port_header : ( port_direction )? net_port_type
 ;
 
-variable_port_header : [ port_direction ] variable_port_type
+variable_port_header : ( port_direction )? variable_port_type
 ;
 
 interface_port_header :
-interface_identifier [ '.' modport_identifier ]
-| interface [ '.' modport_identifier ]
+interface_identifier ( '.' modport_identifier )?
+| 'interface' ( '.' modport_identifier )?
 ;
 
 ansi_port_declaration :
-[ net_port_header | interface_port_header ] port_identifier { unpacked_dimension }
-[ '=' constant_expression ]
-| [ variable_port_header ] port_identifier { variable_dimension } [ '=' constant_expression ]
-| [ port_direction ] '.' port_identifier '(' [ expression ] ')'
+( net_port_header | interface_port_header )? port_identifier  ( unpacked_dimension )* 
+( '=' constant_expression )?
+| ( variable_port_header )? port_identifier  ( variable_dimension )*  ( '=' constant_expression )?
+| ( port_direction )? '.' port_identifier '(' ( expression )? ')'
 ;
 
 // A.1.4 Module items
 elaboration_system_task :
-'$fatal' [ '(' finish_number [',' list_of_arguments ] ')' ] ';'
-| '$error' [ '(' [ list_of_arguments ] ')' ] ';'
-| '$warning' [ '(' [ list_of_arguments ] ')' ] ';'
-| '$info' [ '(' [ list_of_arguments ] ')' ] ';'
+'$fatal' ( '(' finish_number (',' list_of_arguments )? ')' )? ';'
+| '$error' ( '(' ( list_of_arguments )? ')' )? ';'
+| '$warning' ( '(' ( list_of_arguments )? ')' )? ';'
+| '$info' ( '(' ( list_of_arguments )? ')' )? ';'
 ;
 
-finish_number : 0 | 1 | 2
+finish_number : '0' | '1' | '2'
 ;
 
 module_common_item :
@@ -249,38 +251,38 @@ port_declaration ';'
 ;
 
 module_or_generate_item :
-{ attribute_instance } parameter_override
-| { attribute_instance } gate_instantiation
-| { attribute_instance } udp_instantiation
-| { attribute_instance } module_instantiation
-| { attribute_instance } module_common_item
+( attribute_instance )*  parameter_override
+|  ( attribute_instance )*  gate_instantiation
+|  ( attribute_instance )*  udp_instantiation
+|  ( attribute_instance )*  module_instantiation
+|  ( attribute_instance )*  module_common_item
 ;
 
 module_or_generate_item_declaration :
 package_or_generate_item_declaration
 | genvar_declaration
 | clocking_declaration
-| default clocking clocking_identifier ';'
-| default disable iff expression_or_dist ';'
+| 'default' 'clocking' clocking_identifier ';'
+| 'default' 'disable' 'iff' expression_or_dist ';'
 ;
 
 non_port_module_item :
 generate_region
 | module_or_generate_item
 | specify_block
-| { attribute_instance } specparam_declaration
+|  ( attribute_instance )*  specparam_declaration
 | program_declaration
 | module_declaration
 | interface_declaration
 | timeunits_declaration
 ;
 
-parameter_override : defparam list_of_defparam_assignments ';'
+parameter_override : 'defparam' list_of_defparam_assignments ';'
 ;
 
 bind_directive :
-bind bind_target_scope [':' bind_target_instance_list] bind_instantiation ';'
-| bind bind_target_instance bind_instantiation ';'
+'bind' bind_target_scope (':' bind_target_instance_list)? bind_instantiation ';'
+| 'bind' bind_target_instance bind_instantiation ';'
 ;
 
 bind_target_scope :
@@ -293,7 +295,7 @@ hierarchical_identifier constant_bit_select
 ;
 
 bind_target_instance_list :
-bind_target_instance { ',' bind_target_instance }
+bind_target_instance  ( ',' bind_target_instance )* 
 ;
 
 bind_instantiation :
@@ -305,14 +307,14 @@ program_instantiation
 
 // A.1.5 Configuration source text
 config_declaration :
-config config_identifier ';'
-{ local_parameter_declaration ';' }
+'config' config_identifier ';'
+( local_parameter_declaration ';' )* 
 design_statement
-{ config_rule_statement }
-endconfig [ ':' config_identifier ]
+( config_rule_statement )* 
+'endconfig' ( ':' config_identifier )?
 ;
 
-design_statement : design { [ library_identifier '.' ] cell_identifier } ';'
+design_statement : 'design'  ( ( library_identifier '.' )? cell_identifier )*  ';'
 ;
 
 config_rule_statement :
@@ -323,37 +325,37 @@ default_clause liblist_clause ';'
 | cell_clause use_clause ';'
 ;
 
-default_clause : default
+default_clause : 'default' 
 ;
 
-inst_clause : instance inst_name
+inst_clause : 'instance' inst_name
 ;
 
-inst_name : topmodule_identifier { '.' instance_identifier }
+inst_name : topmodule_identifier  ( '.' instance_identifier )* 
 ;
 
-cell_clause : cell [ library_identifier '.' ] cell_identifier
+cell_clause : 'cell' ( library_identifier '.' )? cell_identifier
 ;
 
-liblist_clause : liblist {library_identifier}
+liblist_clause : 'liblist' ( library_identifier)*
 ;
 
-use_clause : use [ library_identifier '.' ] cell_identifier [ ':' config ]
-| use named_parameter_assignment { ',' named_parameter_assignment } [ ':' config ]
-| use [ library_identifier '.' ] cell_identifier named_parameter_assignment
-{ ',' named_parameter_assignment } [ ':' config ]
+use_clause : 'use' ( library_identifier '.' )? cell_identifier ( ':' 'config' )?
+| 'use' named_parameter_assignment  ( ',' named_parameter_assignment )*  ( ':' 'config' )?
+| 'use' ( library_identifier '.' )? cell_identifier named_parameter_assignment
+( ',' named_parameter_assignment )*  ( ':' 'config' )?
 ;
 
 // A.1.6 Interface items
 interface_or_generate_item :
-{ attribute_instance } module_common_item
-| { attribute_instance } modport_declaration
-| { attribute_instance } extern_tf_declaration
+( attribute_instance )*  module_common_item
+|  ( attribute_instance )*  modport_declaration
+|  ( attribute_instance )*  extern_tf_declaration
 ;
 
 extern_tf_declaration :
-extern method_prototype ';'
-| extern forkjoin task_prototype ';'
+'extern' method_prototype ';'
+| 'extern' 'forkjoin' task_prototype ';'
 ;
 
 interface_item :
@@ -376,11 +378,11 @@ port_declaration ';'
 ;
 
 non_port_program_item :
-{ attribute_instance } continuous_assign
-| { attribute_instance } module_or_generate_item_declaration
-| { attribute_instance } initial_construct
-| { attribute_instance } final_construct
-| { attribute_instance } concurrent_assertion_item
+( attribute_instance )*  continuous_assign
+|  ( attribute_instance )*  module_or_generate_item_declaration
+|  ( attribute_instance )*  initial_construct
+|  ( attribute_instance )*  final_construct
+|  ( attribute_instance )*  concurrent_assertion_item
 | timeunits_declaration
 | program_generate_item
 ;
@@ -394,12 +396,12 @@ loop_generate_construct
 
 // A.1.8 Checker items
 checker_port_list :
-checker_port_item {',' checker_port_item}
+checker_port_item ( ',' checker_port_item)*
 ;
 
 checker_port_item :
-{ attribute_instance } [ checker_port_direction ] property_formal_type formal_port_identifier
-{variable_dimension} [ '=' property_actual_arg ]
+( attribute_instance )*  ( checker_port_direction )? property_formal_type formal_port_identifier
+(variable_dimension )* ( '=' property_actual_arg )?
 ;
 
 checker_port_direction :
@@ -417,7 +419,7 @@ checker_or_generate_item_declaration
 ;
 
 checker_or_generate_item_declaration :
-[ 'rand' ] data_declaration
+( 'rand' )? data_declaration
 | function_declaration
 | checker_declaration
 | assertion_item_declaration
@@ -439,32 +441,32 @@ loop_generate_construct
 
 // A.1.9 Class items
 class_item :
-{ attribute_instance } class_property
-| { attribute_instance } class_method
-| { attribute_instance } class_constraint
-| { attribute_instance } class_declaration
-| { attribute_instance } covergroup_declaration
+( attribute_instance )*  class_property
+|  ( attribute_instance )*  class_method
+|  ( attribute_instance )*  class_constraint
+|  ( attribute_instance )*  class_declaration
+|  ( attribute_instance )*  covergroup_declaration
 | local_parameter_declaration ';'
 | parameter_declaration ';'
 | ';'
 ;
 
 class_property :
-{ property_qualifier } data_declaration
-| 'const' { class_item_qualifier } data_type const_identifier [ '=' constant_expression ] ';'
+( property_qualifier )*  data_declaration
+| 'const'  ( class_item_qualifier )*  data_type const_identifier ( '=' constant_expression )? ';'
 ;
 
 class_method :
-{ method_qualifier } task_declaration
-| { method_qualifier } function_declaration
-| 'pure' 'virtual' { class_item_qualifier } method_prototype ';'
-| 'extern' { method_qualifier } method_prototype ';'
-| { method_qualifier } class_constructor_declaration
-| 'extern' { method_qualifier } class_constructor_prototype
+( method_qualifier )*  task_declaration
+|  ( method_qualifier )*  function_declaration
+| 'pure' 'virtual'  ( class_item_qualifier )*  method_prototype ';'
+| 'extern'  ( method_qualifier )*  method_prototype ';'
+|  ( method_qualifier )*  class_constructor_declaration
+| 'extern'  ( method_qualifier )*  class_constructor_prototype
 ;
 
 class_constructor_prototype :
-'function' 'new' [ '(' [ tf_port_list ] ')' ] ';'
+'function' 'new' ( '(' ( tf_port_list )? ')' )? ';'
 ;
 
 class_constraint :
@@ -489,7 +491,7 @@ random_qualifier :
 ;
 
 method_qualifier :
-[ 'pure' ] 'virtual'
+( 'pure' )? 'virtual'
 | class_item_qualifier
 ;
 
@@ -499,18 +501,18 @@ task_prototype
 ;
 
 class_constructor_declaration :
-'function' [ class_scope ] 'new' [ '(' [ tf_port_list ] ')' ] ';'
-{ block_item_declaration }
-[ 'super' '.' 'new' [ '(' list_of_arguments ')' ] ';' ]
-{ function_statement_or_null }
-'endfunction' [ : 'new' ]
+'function' ( class_scope )? 'new' ( '(' ( tf_port_list )? ')' )? ';'
+( block_item_declaration )* 
+( 'super' '.' 'new' ( '(' list_of_arguments ')' )? ';' )?
+( function_statement_or_null )* 
+'endfunction' ( : 'new' )?
 ;
 
 // A.1.10 Constraints
-constraint_declaration : [ 'static' ] 'constraint' constraint_identifier constraint_block
+constraint_declaration : ( 'static' )? 'constraint' constraint_identifier constraint_block
 ;
 
-constraint_block : '{' { constraint_block_item } '}'
+constraint_block : '{'  ( constraint_block_item )*  '}'
 ;
 
 constraint_block_item :
@@ -518,17 +520,17 @@ constraint_block_item :
 | constraint_expression
 ;
 
-solve_before_list : constraint_primary { ',' constraint_primary }
+solve_before_list : constraint_primary  ( ',' constraint_primary )* 
 ;
 
-constraint_primary : [ implicit_class_handle '.' | class_scope ] hierarchical_identifier select
+constraint_primary : ( implicit_class_handle '.' | class_scope )? hierarchical_identifier select
 ;
 
 constraint_expression :
-[ 'soft' ] expression_or_dist ';'
+( 'soft' )? expression_or_dist ';'
 | uniqueness_constraint ';'
 | expression '-' '>' constraint_set
-| 'if' '(' expression ')' constraint_set [ 'else' constraint_set ]
+| 'if' '(' expression ')' constraint_set ( 'else' constraint_set )?
 | 'foreach' '(' ps_or_hierarchical_array_identifier '[' loop_variables ']' ')' constraint_set
 | 'disable' 'soft' constraint_primary ';'
 ;
@@ -539,13 +541,13 @@ uniqueness_constraint :
 
 constraint_set :
 constraint_expression
-| '{' { constraint_expression } '}'
+| '{'  ( constraint_expression )*  '}'
 ;
 
-dist_list : dist_item { ',' dist_item }
+dist_list : dist_item  ( ',' dist_item )* 
 ;
 
-dist_item : value_range [ dist_weight ]
+dist_item : value_range ( dist_weight )?
 ;
 
 dist_weight :
@@ -553,17 +555,17 @@ dist_weight :
 | ':' '/' expression
 ;
 
-constraint_prototype : [constraint_prototype_qualifier] [ 'static' ] 'constraint' constraint_identifier ';'
+constraint_prototype : (constraint_prototype_qualifier)? ( 'static' )? 'constraint' constraint_identifier ';'
 ;
 
 constraint_prototype_qualifier : 'extern' | 'pure'
 ;
 
 extern_constraint_declaration :
-[ 'static' ] 'constraint' class_scope constraint_identifier constraint_block
+( 'static' )? 'constraint' class_scope constraint_identifier constraint_block
 ;
 
-identifier_list : identifier { ',' identifier }
+identifier_list : identifier  ( ',' identifier )* 
 ;
 
 // A.1.11 Package items
@@ -592,7 +594,7 @@ net_declaration
 | ';'
 ;
 
-anonymous_program : 'program' ';' { anonymous_program_item } 'endprogram'
+anonymous_program : 'program' ';'  ( anonymous_program_item )*  'endprogram'
 ;
 
 anonymous_program_item :
@@ -618,7 +620,7 @@ parameter_declaration :
 ;
 
 specparam_declaration :
-'specparam' [ packed_dimension ] list_of_specparam_assignments ';'
+'specparam' ( packed_dimension )? list_of_specparam_assignments ';'
 ;
 
 // A.2.1.2 Port declarations
@@ -646,7 +648,7 @@ ref_declaration : 'ref' variable_port_type list_of_variable_identifiers
 
 // A.2.1.3 Type declarations
 data_declaration :
-[ 'const' ] [ 'var' ] [ lifetime ] data_type_or_implicit list_of_variable_decl_assignments ';'
+( 'const' )? ( 'var' )? ( lifetime )? data_type_or_implicit list_of_variable_decl_assignments ';'
 | type_declaration
 | package_import_declaration
 //TODO: not clear if net_type_decl belongs here or not
@@ -654,7 +656,7 @@ data_declaration :
 ;
 
 package_import_declaration :
-import package_import_item { ',' package_import_item } ';'
+'import' package_import_item  ( ',' package_import_item )*  ';'
 ;
 
 package_import_item :
@@ -664,32 +666,32 @@ package_identifier ':' ':' identifier
 
 package_export_declaration :
 'export' '*::*' ';'
-| 'export' package_import_item { ',' package_import_item } ';'
+| 'export' package_import_item  ( ',' package_import_item )*  ';'
 ;
 
 genvar_declaration : 'genvar' list_of_genvar_identifiers ';'
 ;
 
 net_declaration :
-net_type [ drive_strength | charge_strength ] [ 'vectored' | 'scalared' ]
-data_type_or_implicit [ delay3 ] list_of_net_decl_assignments ';'
-| net_type_identifier [ delay_control ]
+net_type ( drive_strength | charge_strength )? ( 'vectored' | 'scalared' )?
+data_type_or_implicit ( delay3 )? list_of_net_decl_assignments ';'
+| net_type_identifier ( delay_control )?
 list_of_net_decl_assignments ';'
-| 'interconnect' implicit_data_type [ '#' delay_value ]
-net_identifier { unpacked_dimension }
-[ ',' net_identifier { unpacked_dimension }] ';'
+| 'interconnect' implicit_data_type ( '#' delay_value )?
+net_identifier  ( unpacked_dimension )* 
+( ',' net_identifier  ( unpacked_dimension )* )? ';'
 ;
 
 type_declaration :
-'typedef' data_type type_identifier { variable_dimension } ';'
+'typedef' data_type type_identifier  ( variable_dimension )*  ';'
 | 'typedef' interface_instance_identifier constant_bit_select '.' type_identifier type_identifier ';'
-| 'typedef' [ 'enum' | 'struct' | 'union' | 'class' | 'interface' 'class' ] type_identifier ';'
+| 'typedef' ( 'enum' | 'struct' | 'union' | 'class' | 'interface' 'class' )? type_identifier ';'
 ;
 
 net_type_declaration :
 'nettype' data_type net_type_identifier
-[ 'with' [ package_scope | class_scope ] tf_identifier ] ';'
-| 'nettype' [ package_scope | class_scope ] net_type_identifier net_type_identifier ';'
+( 'with' ( package_scope | class_scope )? tf_identifier )? ';'
+| 'nettype' ( package_scope | class_scope )? net_type_identifier net_type_identifier ';'
 ;
 
 lifetime : 'static' | 'automatic'
@@ -701,17 +703,17 @@ casting_type : simple_type | constant_primary | signing | 'string' | 'const'
 ;
 
 data_type :
-integer_vector_type [ signing ] { packed_dimension }
-| integer_atom_type [ signing ]
+integer_vector_type ( signing )?  ( packed_dimension )* 
+| integer_atom_type ( signing )?
 | non_integer_type
-| struct_union [ 'packed' [ signing ] ] '{' struct_union_member { struct_union_member } '}'
-{ packed_dimension }
-| 'enum' [ enum_base_type ] '{' enum_name_declaration { ',' enum_name_declaration } '}'
-{ packed_dimension }
+| struct_union ( 'packed' ( signing )? )? '{' struct_union_member  ( struct_union_member )*  '}'
+( packed_dimension )* 
+| 'enum' ( enum_base_type )? '{' enum_name_declaration  ( ',' enum_name_declaration )*  '}'
+( packed_dimension )* 
 | 'string'
 | 'chandle'
-| 'virtual' [ 'interface' ] interface_identifier [ parameter_value_assignment ] [ '.' modport_identifier ]
-| [ class_scope | package_scope ] type_identifier { packed_dimension }
+| 'virtual' ( 'interface' )? interface_identifier ( parameter_value_assignment )? ( '.' modport_identifier )?
+| ( class_scope | package_scope )? type_identifier  ( packed_dimension )* 
 | class_type
 | 'event'
 | ps_covergroup_identifier
@@ -721,25 +723,27 @@ integer_vector_type [ signing ] { packed_dimension }
 data_type_or_implicit :
 data_type
 | implicit_data_type
-implicit_data_type : [ signing ] { packed_dimension }
+;
+
+implicit_data_type : ( signing )?  ( packed_dimension )* 
 ;
 
 enum_base_type :
-integer_atom_type [ signing ]
-| integer_vector_type [ signing ] [ packed_dimension ]
-| type_identifier [ packed_dimension ]
+integer_atom_type ( signing )?
+| integer_vector_type ( signing )? ( packed_dimension )?
+| type_identifier ( packed_dimension )?
 ;
 
 enum_name_declaration :
-enum_identifier [ '[' integral_number [ ':' integral_number ] ']' ] [ '=' constant_expression ]
+enum_identifier ( '[' Integral_number ( ':' Integral_number )? ']' )? ( '=' constant_expression )?
 ;
 
-class_scope : class_type ::
+class_scope : class_type ':' ':'
 ;
 
 class_type :
-ps_class_identifier [ parameter_value_assignment ]
-{ ':' ':' class_identifier [ parameter_value_assignment ] }
+ps_class_identifier ( parameter_value_assignment )?
+( ':' ':' class_identifier ( parameter_value_assignment )? )* 
 ;
 
 integer_type : integer_vector_type | integer_atom_type
@@ -748,7 +752,7 @@ integer_type : integer_vector_type | integer_atom_type
 integer_atom_type : 'byte' | 'shortint' | 'int' | 'longint' | 'integer' | 'time'
 ;
 
-integer_vector_type : 'bit' | 'logic' | reg'
+integer_vector_type : 'bit' | 'logic' | 'reg'
 ;
 
 non_integer_type : 'shortreal' | 'real' | 'realtime'
@@ -758,7 +762,7 @@ net_type : 'supply0' | 'supply1' | 'tri' | 'triand' | 'trior' | 'trireg' | 'tri0
 ;
 
 net_port_type :
-[ net_type ] data_type_or_implicit
+( net_type )? data_type_or_implicit
 | net_type_identifier
 | 'interconnect' implicit_data_type
 ;
@@ -766,7 +770,7 @@ net_port_type :
 variable_port_type : var_data_type
 ;
 
-var_data_type : data_type | var data_type_or_implicit
+var_data_type : data_type | 'var' data_type_or_implicit
 ;
 
 signing : 'signed' | 'unsigned'
@@ -776,13 +780,13 @@ simple_type : integer_type | non_integer_type | ps_type_identifier | ps_paramete
 ;
 
 struct_union_member :
-{ attribute_instance } [random_qualifier] data_type_or_void list_of_variable_decl_assignments ';'
+( attribute_instance )*  (random_qualifier)? data_type_or_void list_of_variable_decl_assignments ';'
 ;
 
 data_type_or_void : data_type | 'void'
 ;
 
-struct_union : 'struct' | 'union' [ 'tagged' ]
+struct_union : 'struct' | 'union' ( 'tagged' )?
 ;
 
 type_reference :
@@ -810,90 +814,90 @@ charge_strength : '(' 'small' ')' | '(' 'medium' ')' | '(' 'large' ')'
 ;
 
 // A.2.2.3 Delays
-delay3 : '#' delay_value | '#' '(' mintypmax_expression [ ',' mintypmax_expression [ ','
-mintypmax_expression ] ] ')'
+delay3 : '#' delay_value | '#' '(' mintypmax_expression ( ',' mintypmax_expression ( ','
+mintypmax_expression )? )? ')'
 ;
 
-delay2 : '#' delay_value | '#' '(' mintypmax_expression [ ',' mintypmax_expression ] ')'
+delay2 : '#' delay_value | '#' '(' mintypmax_expression ( ',' mintypmax_expression )? ')'
 ;
 
 delay_value :
-unsigned_number
-| real_number
+Unsigned_number
+| Real_number
 | ps_identifier
 | time_literal
 | '1step'
 ;
 
 // A.2.3 Declaration lists
-list_of_defparam_assignments : defparam_assignment { ',' defparam_assignment }
+list_of_defparam_assignments : defparam_assignment  ( ',' defparam_assignment )* 
 ;
 
-list_of_genvar_identifiers : genvar_identifier { ',' genvar_identifier }
+list_of_genvar_identifiers : genvar_identifier  ( ',' genvar_identifier )* 
 ;
 
-list_of_interface_identifiers : interface_identifier { unpacked_dimension }
-{ ',' interface_identifier { unpacked_dimension } }
+list_of_interface_identifiers : interface_identifier  ( unpacked_dimension )* 
+( ',' interface_identifier  ( unpacked_dimension )*  )* 
 ;
 
-list_of_net_decl_assignments : net_decl_assignment { ',' net_decl_assignment }
+list_of_net_decl_assignments : net_decl_assignment  ( ',' net_decl_assignment )* 
 ;
 
-list_of_param_assignments : param_assignment { ',' param_assignment }
+list_of_param_assignments : param_assignment  ( ',' param_assignment )* 
 ;
 
-list_of_port_identifiers : port_identifier { unpacked_dimension }
-{ ',' port_identifier { unpacked_dimension } }
+list_of_port_identifiers : port_identifier  ( unpacked_dimension )* 
+( ',' port_identifier  ( unpacked_dimension )*  )* 
 ;
 
-list_of_udp_port_identifiers : port_identifier { ',' port_identifier }
+list_of_udp_port_identifiers : port_identifier  ( ',' port_identifier )* 
 ;
 
-list_of_specparam_assignments : specparam_assignment { ',' specparam_assignment }
+list_of_specparam_assignments : specparam_assignment  ( ',' specparam_assignment )* 
 ;
 
-list_of_tf_variable_identifiers : port_identifier { variable_dimension } [ '=' expression ]
-{ ',' port_identifier { variable_dimension } [ '=' expression ] }
+list_of_tf_variable_identifiers : port_identifier  ( variable_dimension )*  ( '=' expression )?
+( ',' port_identifier  ( variable_dimension )*  ( '=' expression )? )* 
 ;
 
-list_of_type_assignments : type_assignment { ',' type_assignment }
+list_of_type_assignments : type_assignment  ( ',' type_assignment )* 
 ;
 
-list_of_variable_decl_assignments : variable_decl_assignment { ',' variable_decl_assignment }
+list_of_variable_decl_assignments : variable_decl_assignment  ( ',' variable_decl_assignment )* 
 ;
 
-list_of_variable_identifiers : variable_identifier { variable_dimension }
-{ ',' variable_identifier { variable_dimension } }
+list_of_variable_identifiers : variable_identifier  ( variable_dimension )* 
+( ',' variable_identifier  ( variable_dimension )*  )* 
 ;
 
-list_of_variable_port_identifiers : port_identifier { variable_dimension } [ '=' constant_expression ]
-{ ',' port_identifier { variable_dimension } [ '=' constant_expression ] }
+list_of_variable_port_identifiers : port_identifier  ( variable_dimension )*  ( '=' constant_expression )?
+( ',' port_identifier  ( variable_dimension )*  ( '=' constant_expression )? )* 
 ;
 
 // A.2.4 Declaration assignments
 defparam_assignment : hierarchical_parameter_identifier '=' constant_mintypmax_expression
 ;
 
-net_decl_assignment : net_identifier { unpacked_dimension } [ '=' expression ]
+net_decl_assignment : net_identifier  ( unpacked_dimension )*  ( '=' expression )?
 ;
 
 param_assignment :
-parameter_identifier { unpacked_dimension } [ '=' constant_param_expression ]
+parameter_identifier  ( unpacked_dimension )*  ( '=' constant_param_expression )?
 ;
 
 specparam_assignment :
-specparam_identifier = constant_mintypmax_expression
+specparam_identifier '=' constant_mintypmax_expression
 | pulse_control_specparam
 ;
 
 type_assignment :
-type_identifier [ '=' data_type ]
+type_identifier ( '=' data_type )?
 ;
 
 pulse_control_specparam :
-'PATHPULSE$' = '(' reject_limit_value [ ',' error_limit_value ] ')'
+'PATHPULSE$' '=' '(' reject_limit_value ( ',' error_limit_value )? ')'
 | 'PATHPULSE$' specify_input_terminal_descriptor '$' specify_output_terminal_descriptor
-'=' '(' reject_limit_value [ ',' error_limit_value ] ')'
+'=' '(' reject_limit_value ( ',' error_limit_value )? ')'
 ;
 
 error_limit_value : limit_value
@@ -906,18 +910,18 @@ limit_value : constant_mintypmax_expression
 ;
 
 variable_decl_assignment :
-variable_identifier { variable_dimension } [ '=' expression ]
-| dynamic_array_variable_identifier unsized_dimension { variable_dimension }
-[ '=' dynamic_array_new ]
-| class_variable_identifier [ '=' class_new ]
+variable_identifier  ( variable_dimension )*  ( '=' expression )?
+| dynamic_array_variable_identifier unsized_dimension  ( variable_dimension )* 
+( '=' dynamic_array_new )?
+| class_variable_identifier ( '=' class_new )?
 ;
 
 class_new :
-[ class_scope ] 'new' [ '(' list_of_arguments ')' ]
+( class_scope )? 'new' ( '(' list_of_arguments ')' )?
 | 'new' expression
 ;
 
-dynamic_array_new : 'new' '[' expression ']' [ '(' expression ')' ]
+dynamic_array_new : 'new' '[' expression ']' ( '(' expression ')' )?
 ;
 
 // A.2.5 Declaration ranges
@@ -943,7 +947,7 @@ unsized_dimension
 | queue_dimension
 ;
 
-queue_dimension : '[' '$' [ ':' constant_expression ] ']'
+queue_dimension : '[' '$' ( ':' constant_expression )? ']'
 ;
 
 unsized_dimension : '[' ']'
@@ -955,30 +959,30 @@ data_type_or_void
 | implicit_data_type
 ;
 
-function_declaration : function [ lifetime ] function_body_declaration
+function_declaration : 'function' ( lifetime )? function_body_declaration
 ;
 
 function_body_declaration :
 function_data_type_or_implicit
-[ interface_identifier '.' | class_scope ] function_identifier ';'
-{ tf_item_declaration }
-{ function_statement_or_null }
-endfunction [ : function_identifier ]
+( interface_identifier '.' | class_scope )? function_identifier ';'
+( tf_item_declaration )* 
+( function_statement_or_null )* 
+'endfunction' ( ':' function_identifier )?
 | function_data_type_or_implicit
-[ interface_identifier '.' | class_scope ] function_identifier '(' [ tf_port_list ] ')' ';'
-{ block_item_declaration }
-{ function_statement_or_null }
-endfunction [ : function_identifier ]
+( interface_identifier '.' | class_scope )? function_identifier '(' ( tf_port_list )? ')' ';'
+( block_item_declaration )* 
+( function_statement_or_null )* 
+'endfunction' ( ':' function_identifier )?
 ;
 
-function_prototype : 'function' data_type_or_void function_identifier [ '(' [ tf_port_list ] ')' ]
+function_prototype : 'function' data_type_or_void function_identifier ( '(' ( tf_port_list )? ')' )?
 ;
 
 dpi_import_export :
-'import' dpi_spec_string [ dpi_function_import_property ] [ c_identifier '=' ] dpi_function_proto ';'
-| 'import' dpi_spec_string [ dpi_task_import_property ] [ c_identifier '=' ] dpi_task_proto ';'
-| 'export' dpi_spec_string [ c_identifier '=' ] function function_identifier ';'
-| 'export' dpi_spec_string [ c_identifier '=' ] task task_identifier ';'
+'import' dpi_spec_string ( dpi_function_import_property )? ( c_identifier '=' )? dpi_function_proto ';'
+| 'import' dpi_spec_string ( dpi_task_import_property )? ( c_identifier '=' )? dpi_task_proto ';'
+| 'export' dpi_spec_string ( c_identifier '=' )? 'function' function_identifier ';'
+| 'export' dpi_spec_string ( c_identifier '=' )? 'task' task_identifier ';'
 ;
 
 dpi_spec_string : 'DPI-C' | 'DPI'
@@ -997,18 +1001,18 @@ dpi_task_proto : task_prototype
 ;
 
 // A.2.7 Task declarations
-task_declaration : 'task' [ lifetime ] task_body_declaration
+task_declaration : 'task' ( lifetime )? task_body_declaration
 ;
 
 task_body_declaration :
-[ interface_identifier '.' | class_scope ] task_identifier ';'
-{ tf_item_declaration }
-{ statement_or_null }
-'endtask' [ ':' task_identifier ]
-| [ interface_identifier '.' | class_scope ] task_identifier '(' [ tf_port_list ] ')' ';'
-{ block_item_declaration }
-{ statement_or_null }
-'endtask' [ ':' task_identifier ]
+( interface_identifier '.' | class_scope )? task_identifier ';'
+( tf_item_declaration )* 
+( statement_or_null )* 
+'endtask' ( ':' task_identifier )?
+| ( interface_identifier '.' | class_scope )? task_identifier '(' ( tf_port_list )? ')' ';'
+( block_item_declaration )* 
+( statement_or_null )* 
+'endtask' ( ':' task_identifier )?
 ;
 
 tf_item_declaration :
@@ -1017,75 +1021,85 @@ block_item_declaration
 ;
 
 tf_port_list :
-tf_port_item { ',' tf_port_item }
+tf_port_item  ( ',' tf_port_item )* 
 ;
 
 tf_port_item :
-{ attribute_instance }
-[ tf_port_direction ] [ 'var' ] data_type_or_implicit
-[ port_identifier { variable_dimension } [ '=' expression ] ]
+( attribute_instance )* 
+( tf_port_direction )? ( 'var' )? data_type_or_implicit
+( port_identifier  ( variable_dimension )*  ( '=' expression )? )?
+;
+
 tf_port_direction : port_direction | 'const' 'ref'
 ;
 
 tf_port_declaration :
-{ attribute_instance } tf_port_direction [ 'var' ] data_type_or_implicit list_of_tf_variable_identifiers ';'
-task_prototype : 'task' task_identifier [ '(' [ tf_port_list ] ')' ]
+( attribute_instance )*  tf_port_direction ( 'var' )? data_type_or_implicit list_of_tf_variable_identifiers ';'
+;
+
+task_prototype : 'task' task_identifier ( '(' ( tf_port_list )? ')' )?
 ;
 
 // A.2.8 Block item declarations
 block_item_declaration :
-{ attribute_instance } data_declaration
-| { attribute_instance } local_parameter_declaration ';'
-| { attribute_instance } parameter_declaration ';'
-| { attribute_instance } overload_declaration
-| { attribute_instance } let_declaration
+( attribute_instance )*  data_declaration
+|  ( attribute_instance )*  local_parameter_declaration ';'
+|  ( attribute_instance )*  parameter_declaration ';'
+|  ( attribute_instance )*  overload_declaration
+|  ( attribute_instance )*  let_declaration
 ;
 
 overload_declaration :
 'bind' overload_operator 'function' data_type function_identifier '(' overload_proto_formals ')' ';'
+;
+
 overload_operator : '+' '+'? | '-' '-'? | '*' '*'? | '/' | '%' | '=' '='? | '!' '=' 
 | '<' '='? | '>' '='?
 ;
 
-overload_proto_formals : data_type {',' data_type}
+overload_proto_formals : data_type ( ',' data_type)*
 ;
 
 // A.2.9 Interface declarations
-modport_declaration : 'modport' modport_item { ',' modport_item } ';'
+modport_declaration : 'modport' modport_item  ( ',' modport_item )*  ';'
 ;
 
-modport_item : modport_identifier '(' modport_ports_declaration { ',' modport_ports_declaration } ')'
+modport_item : modport_identifier '(' modport_ports_declaration  ( ',' modport_ports_declaration )*  ')'
 ;
 
 modport_ports_declaration :
-{ attribute_instance } modport_simple_ports_declaration
-| { attribute_instance } modport_tf_ports_declaration
-| { attribute_instance } modport_clocking_declaration
+( attribute_instance )*  modport_simple_ports_declaration
+|  ( attribute_instance )*  modport_tf_ports_declaration
+|  ( attribute_instance )*  modport_clocking_declaration
+;
+
 modport_clocking_declaration : 'clocking' clocking_identifier
 ;
 
 modport_simple_ports_declaration :
-port_direction modport_simple_port { ',' modport_simple_port }
+port_direction modport_simple_port  ( ',' modport_simple_port )* 
 ;
 
 modport_simple_port :
 port_identifier
-| '.' port_identifier '(' [ expression ] ')'
+| '.' port_identifier '(' ( expression )? ')'
 ;
 
 modport_tf_ports_declaration :
-import_export modport_tf_port { ',' modport_tf_port }
+import_export modport_tf_port  ( ',' modport_tf_port )* 
 ;
 
 modport_tf_port :
 method_prototype
 | tf_identifier
+;
+
 import_export : 'import' | 'export'
 ;
 
 // A.2.10 Assertion declarations
 concurrent_assertion_item :
-[ block_identifier ':' ] concurrent_assertion_statement
+( block_identifier ':' )? concurrent_assertion_statement
 | checker_instantiation
 ;
 
@@ -1114,7 +1128,7 @@ expect_property_statement :
 ;
 
 cover_sequence_statement:
-'cover' 'sequence' '(' [clocking_event ] [ 'disable' 'iff' '(' expression_or_dist ')' ]
+'cover' 'sequence' '(' (clocking_event )? ( 'disable' 'iff' '(' expression_or_dist ')' )?
 sequence_expr ')' statement_or_null
 ;
 
@@ -1123,12 +1137,12 @@ restrict_property_statement:
 ;
 
 property_instance :
-ps_or_hierarchical_property_identifier [ '(' [ property_list_of_arguments ] ')' ]
+ps_or_hierarchical_property_identifier ( '(' ( property_list_of_arguments )? ')' )?
 ;
 
 property_list_of_arguments :
-[property_actual_arg] { ',' [property_actual_arg] } { ',' '.' identifier '(' [property_actual_arg] ')' }
-| '.' identifier '(' [property_actual_arg] ')' { ',' '.' identifier '(' [property_actual_arg] ')' }
+(property_actual_arg)?  ( ',' (property_actual_arg)? )*   ( ',' '.' identifier '(' (property_actual_arg)? ')' )* 
+| '.' identifier '(' (property_actual_arg)? ')'  ( ',' '.' identifier '(' (property_actual_arg)? ')' )* 
 ;
 
 property_actual_arg :
@@ -1143,19 +1157,19 @@ property_declaration
 ;
 
 property_declaration :
-'property' property_identifier [ '(' [ property_port_list ] ')' ] ';'
-{ assertion_variable_declaration }
-property_spec [ ';' ]
-'endproperty' [ ':' property_identifier ]
+'property' property_identifier ( '(' ( property_port_list )? ')' )? ';'
+( assertion_variable_declaration )* 
+property_spec ( ';' )?
+'endproperty' ( ':' property_identifier )?
 ;
 
 property_port_list :
-property_port_item {',' property_port_item}
+property_port_item ( ',' property_port_item)*
 ;
 
 property_port_item :
-{ attribute_instance } [ 'local' [ property_lvar_port_direction ] ] property_formal_type
-formal_port_identifier {variable_dimension} [ '=' property_actual_arg ]
+( attribute_instance )*  ( 'local' ( property_lvar_port_direction )? )? property_formal_type
+formal_port_identifier ( variable_dimension )* ( '=' property_actual_arg )?
 ;
 
 property_lvar_port_direction : 'input'
@@ -1167,7 +1181,7 @@ sequence_formal_type
 ;
 
 property_spec :
-[clocking_event ] [ 'disable' 'iff' '(' expression_or_dist ')' ] property_expr
+( clocking_event )? ( 'disable' 'iff' '(' expression_or_dist ')' )? property_expr
 ;
 
 property_expr :
@@ -1180,20 +1194,20 @@ sequence_expr
 | property_expr 'and' property_expr
 | sequence_expr '|' '-' '>' property_expr
 | sequence_expr '|' '=' '>' property_expr
-| 'if' '(' expression_or_dist ')' property_expr [ 'else' property_expr ]
-| 'case' '(' expression_or_dist ')' property_case_item { property_case_item } 'endcase'
+| 'if' '(' expression_or_dist ')' property_expr ( 'else' property_expr )?
+| 'case' '(' expression_or_dist ')' property_case_item  ( property_case_item )*  'endcase'
 | sequence_expr '#' '-' '#' property_expr
 | sequence_expr '#' '=' '#' property_expr
 | 'nexttime' property_expr
-| 'nexttime' [ constant _expression ] property_expr
+| 'nexttime' ( constant_expression )? property_expr
 | 's_nexttime' property_expr
-| 's_nexttime' [ constant_expression ] property_expr
+| 's_nexttime' ( constant_expression )? property_expr
 | 'always' property_expr
-| 'always' [ cycle_delay_const_range_expression ] property_expr
-| 's_always' [ constant_range] property_expr
+| 'always' ( cycle_delay_const_range_expression )? property_expr
+| 's_always' ( constant_range)? property_expr
 | 's_eventually' property_expr
-| 'eventually' [ constant_range ] property_expr
-| 's_eventually' [ cycle_delay_const_range_expression ] property_expr
+| 'eventually' ( constant_range )? property_expr
+| 's_eventually' ( cycle_delay_const_range_expression )? property_expr
 | property_expr 'until' property_expr
 | property_expr 's_until' property_expr
 | property_expr 'until_with' property_expr
@@ -1209,24 +1223,24 @@ sequence_expr
 ;
 
 property_case_item:
-expression_or_dist { ',' expression_or_dist } ':' property_expr [ ';' ]
-| 'default' [ ':' ] property_expr [ ';' ]
+expression_or_dist  ( ',' expression_or_dist )*  ':' property_expr ( ';' )?
+| 'default' ( ':' )? property_expr ( ';' )?
 ;
 
 sequence_declaration :
-'sequence' sequence_identifier [ '(' [ sequence_port_list ] ')' ] ';'
-{ assertion_variable_declaration }
-sequence_expr [ ';' ]
-'endsequence' [ ':' sequence_identifier ]
+'sequence' sequence_identifier ( '(' ( sequence_port_list )? ')' )? ';'
+( assertion_variable_declaration )* 
+sequence_expr ( ';' )?
+'endsequence' ( ':' sequence_identifier )?
 ;
 
 sequence_port_list :
-sequence_port_item {',' sequence_port_item}
+sequence_port_item ( ',' sequence_port_item)*
 ;
 
 sequence_port_item :
-{ attribute_instance } [ 'local' [ sequence_lvar_port_direction ] ] sequence_formal_type
-formal_port_identifier {variable_dimension} [ '=' sequence_actual_arg ]
+( attribute_instance )*  ( 'local' ( sequence_lvar_port_direction )? )? sequence_formal_type
+formal_port_identifier ( variable_dimension )* ( '=' sequence_actual_arg )?
 ;
 
 sequence_lvar_port_direction : 'input' | 'inout' | 'output'
@@ -1239,15 +1253,15 @@ data_type_or_implicit
 ;
 
 sequence_expr :
-cycle_delay_range sequence_expr { cycle_delay_range sequence_expr }
-| sequence_expr cycle_delay_range sequence_expr { cycle_delay_range sequence_expr }
-| expression_or_dist [ boolean_abbrev ]
-| sequence_instance [ sequence_abbrev ]
-| '(' sequence_expr {',' sequence_match_item } ')' [ sequence_abbrev ]
+cycle_delay_range sequence_expr  ( cycle_delay_range sequence_expr )* 
+| sequence_expr cycle_delay_range sequence_expr  ( cycle_delay_range sequence_expr )* 
+| expression_or_dist ( boolean_abbrev )?
+| sequence_instance ( sequence_abbrev )?
+| '(' sequence_expr ( ',' sequence_match_item )*  ')' ( sequence_abbrev )?
 | sequence_expr 'and' sequence_expr
 | sequence_expr 'intersect' sequence_expr
 | sequence_expr 'or' sequence_expr
-| 'first_match' '(' sequence_expr {',' sequence_match_item} ')'
+| 'first_match' '(' sequence_expr ( ',' sequence_match_item )* ')'
 | expression_or_dist 'throughout' sequence_expr
 | sequence_expr 'within' sequence_expr
 | clocking_event sequence_expr
@@ -1271,12 +1285,12 @@ operator_assignment
 ;
 
 sequence_instance :
-ps_or_hierarchical_sequence_identifier [ '(' [ sequence_list_of_arguments ] ')' ]
+ps_or_hierarchical_sequence_identifier ( '(' ( sequence_list_of_arguments )? ')' )?
 ;
 
 sequence_list_of_arguments :
-[sequence_actual_arg] { ',' [sequence_actual_arg] } { ',' '.' identifier '(' [sequence_actual_arg] ')' }
-| '.' identifier '(' [sequence_actual_arg] ')' { ',' '.' identifier '(' [sequence_actual_arg] ')' }
+(sequence_actual_arg)?  ( ',' (sequence_actual_arg)? )*   ( ',' '.' identifier '(' (sequence_actual_arg)? ')' )* 
+| '.' identifier '(' (sequence_actual_arg)? ')'  ( ',' '.' identifier '(' (sequence_actual_arg)? ')' )* 
 ;
 
 sequence_actual_arg :
@@ -1315,7 +1329,7 @@ constant_expression ':' constant_expression
 | constant_expression ':' '$'
 ;
 
-expression_or_dist : expression [ 'dist' '{' dist_list '}' ]
+expression_or_dist : expression ( 'dist' '{' dist_list '}' )?
 ;
 
 assertion_variable_declaration :
@@ -1323,7 +1337,7 @@ var_data_type list_of_variable_decl_assignments ';'
 ;
 
 let_declaration :
-let let_identifier [ '(' [ let_port_list ] ')' ] '=' expression ';'
+'let' let_identifier ( '(' ( let_port_list )? ')' )? '=' expression ';'
 ;
 
 let_identifier :
@@ -1331,11 +1345,11 @@ identifier
 ;
 
 let_port_list :
-let_port_item {',' let_port_item}
+let_port_item ( ',' let_port_item)*
 ;
 
 let_port_item :
-{ attribute_instance } let_formal_type formal_port_identifier { variable_dimension } [ '=' expression ]
+( attribute_instance )*  let_formal_type formal_port_identifier  ( variable_dimension )*  ( '=' expression )?
 ;
 
 let_formal_type :
@@ -1344,12 +1358,12 @@ data_type_or_implicit
 ;
 
 let_expression :
-[ package_scope ] let_identifier [ '(' [ let_list_of_arguments ] ')' ]
+( package_scope )? let_identifier ( '(' ( let_list_of_arguments )? ')' )?
 ;
 
 let_list_of_arguments :
-[ let_actual_arg ] {',' [ let_actual_arg ] } {',' '.' identifier '(' [ let_actual_arg ] ')' }
-| '.' identifier '(' [ let_actual_arg ] ')' { ',' '.' identifier '(' [ let_actual_arg ] ')' }
+( let_actual_arg )? ( ',' ( let_actual_arg )? )*  ( ',' '.' identifier '(' ( let_actual_arg )? ')' )* 
+| '.' identifier '(' ( let_actual_arg )? ')'  ( ',' '.' identifier '(' ( let_actual_arg )? ')' )* 
 ;
 
 let_actual_arg :
@@ -1359,14 +1373,14 @@ expression
 // A.2.11 Covergroup declarations
 
 covergroup_declaration :
-'covergroup' covergroup_identifier [ '(' [ tf_port_list ] ')' ] [ coverage_event ] ';'
-{ coverage_spec_or_option }
-'endgroup' [ ':' covergroup_identifier ]
+'covergroup' covergroup_identifier ( '(' ( tf_port_list )? ')' )? ( coverage_event )? ';'
+( coverage_spec_or_option )* 
+'endgroup' ( ':' covergroup_identifier )?
 ;
 
 coverage_spec_or_option :
-{attribute_instance} coverage_spec
-| {attribute_instance} coverage_option ';'
+(attribute_instance )* coverage_spec
+| ( attribute_instance )* coverage_option ';'
 ;
 
 coverage_option :
@@ -1381,7 +1395,7 @@ cover_point
 
 coverage_event :
 clocking_event
-| 'with' 'function sample' '(' [ tf_port_list ] ')'
+| 'with' 'function sample' '(' ( tf_port_list )? ')'
 | '@' '@' '(' block_event_expression ')'
 ;
 
@@ -1394,40 +1408,40 @@ block_event_expression 'or'  block_event_expression
 hierarchical_btf_identifier :
 hierarchical_tf_identifier
 | hierarchical_block_identifier
-| [ hierarchical_identifier '.' | class_scope ] method_identifier
+| ( hierarchical_identifier '.' | class_scope )? method_identifier
 ;
 
 cover_point :
-[ [ data_type_or_implicit ] cover_point_identifier ':' ] coverpoint expression [ 'iff' '(' expression ')' ]
+( ( data_type_or_implicit )? cover_point_identifier ':' )? 'coverpoint' expression ( 'iff' '(' expression ')' )?
 bins_or_empty
 ;
 
 bins_or_empty :
-'{' {attribute_instance} { bins_or_options ';' } '}'
+'{' ( attribute_instance )*  ( bins_or_options ';' )*  '}'
 | ';'
 ;
 
 bins_or_options :
 coverage_option
-| [ 'wildcard' ] bins_keyword bin_identifier [ '[' [ covergroup_expression ] ']' ] '='
-'{' covergroup_range_list '}' [ 'with' '(' 'with'_covergroup_expression ')' ]
-[ 'iff' '(' expression ')' ]
-| [ 'wildcard' ] bins_keyword bin_identifier [ '[' [ covergroup_expression ] ']' ] '='
-cover_point_identifier 'with' '(' 'with'_covergroup_expression ')' ] [ 'iff' '(' expression ')' ]
-| [ 'wildcard' ] bins_keyword bin_identifier [ '[' [ covergroup_expression ] ']' ] '='
-set_covergroup_expression [ 'iff' '(' expression ')' ]
-| [ 'wildcard'] bins_keyword bin_identifier [ '[' ']' ] '=' trans_list [ 'iff' '(' expression ')' ]
-| bins_keyword bin_identifier [ '[' [ covergroup_expression ] ']' ] '=' default [ 'iff' '(' expression ')' ]
-| bins_keyword bin_identifier '=' 'default' 'sequence' [ 'iff' '(' expression ')' ]
+| ( 'wildcard' )? bins_keyword bin_identifier ( '[' ( covergroup_expression )? ']' )? '='
+'{' covergroup_range_list '}' ( 'with' '(' with_covergroup_expression ')' )?
+( 'iff' '(' expression ')' )?
+| ( 'wildcard' )? bins_keyword bin_identifier ( '[' ( covergroup_expression )? ']' )? '='
+cover_point_identifier 'with' '(' with_covergroup_expression ')' ( 'iff' '(' expression ')' )?
+| ( 'wildcard' )? bins_keyword bin_identifier ( '[' ( covergroup_expression )? ']' )? '='
+set_covergroup_expression ( 'iff' '(' expression ')' )?
+| ( 'wildcard')? bins_keyword bin_identifier ( '[' ']' )? '=' trans_list ( 'iff' '(' expression ')' )?
+| bins_keyword bin_identifier ( '[' ( covergroup_expression )? ']' )? '=' 'default' ( 'iff' '(' expression ')' )?
+| bins_keyword bin_identifier '=' 'default' 'sequence' ( 'iff' '(' expression ')' )?
 ;
 
 bins_keyword: 'bins' | 'illegal_bins' | 'ignore_bins'
 ;
 
-trans_list : '(' trans_set ')' { ',' '(' trans_set ')' }
+trans_list : '(' trans_set ')'  ( ',' '(' trans_set ')' )* 
 ;
 
-trans_set : trans_range_list { '=' '>' trans_range_list }
+trans_set : trans_range_list  ( '=' '>' trans_range_list )* 
 ;
 
 trans_range_list :
@@ -1442,14 +1456,14 @@ trans_item : covergroup_range_list
 
 repeat_range :
 covergroup_expression
-| covergroup_expression : covergroup_expression
+| covergroup_expression ':' covergroup_expression
 ;
 
 cover_cross :
-[ cross_identifier ':' ] 'cross' list_of_cross_items [ 'iff' '(' expression ')' ] cross_body
+( cross_identifier ':' )? 'cross' list_of_cross_items ( 'iff' '(' expression ')' )? cross_body
 ;
 
-list_of_cross_items : cross_item ',' cross_item { ',' cross_item }
+list_of_cross_items : cross_item ',' cross_item  ( ',' cross_item )* 
 ;
 
 cross_item :
@@ -1458,21 +1472,21 @@ cover_point_identifier
 ;
 
 cross_body :
-'{' { cross_body_item ';' } '}'
+'{'  ( cross_body_item ';' )*  '}'
 | ';'
 ;
 
 cross_body_item :
-function_declaraton
+function_declaration
 | bins_selection_or_option ';'
 ;
 
 bins_selection_or_option :
-{ attribute_instance } coverage_option
-| { attribute_instance } bins_selection
+( attribute_instance )*  coverage_option
+|  ( attribute_instance )*  bins_selection
 ;
 
-bins_selection : bins_keyword bin_identifier '=' select_expression [ 'iff' '(' expression ')' ]
+bins_selection : bins_keyword bin_identifier '=' select_expression ( 'iff' '(' expression ')' )?
 ;
 
 select_expression :
@@ -1481,18 +1495,20 @@ select_condition
 | select_expression '&' '&' select_expression
 | select_expression '|' '|' select_expression
 | '(' select_expression ')'
-| select_expression 'with' '(' with_covergroup_expression ')' [ 'matches' integer_covergroup_expression ]
+| select_expression 'with' '(' with_covergroup_expression ')' ( 'matches' integer_covergroup_expression )?
 | cross_identifier
-| cross_set_expression [ 'matches' integer_covergroup_expression ]
+| cross_set_expression ( 'matches' integer_covergroup_expression )?
 ;
 
-select_condition : 'binsof' '(' bins_expression ')' [ intersect '{' covergroup_range_list '}' ]
+select_condition : 'binsof' '(' bins_expression ')' ( 'intersect' '{' covergroup_range_list '}' )?
 ;
 
 bins_expression :
 variable_identifier
-| cover_point_identifier [ '.' bin_identifier ]
-covergroup_range_list : covergroup_value_range { ',' covergroup_value_range }
+| cover_point_identifier ( '.' bin_identifier )?
+;
+
+covergroup_range_list : covergroup_value_range  ( ',' covergroup_value_range )* 
 ;
 
 covergroup_value_range :
@@ -1519,43 +1535,43 @@ covergroup_expression : expression
 // A.3.1 Primitive instantiation and instances
 
 gate_instantiation :
-cmos_switchtype [delay3] cmos_switch_instance { ',' cmos_switch_instance } ';'
-| enable_gatetype [drive_strength] [delay3] enable_gate_instance { ',' enable_gate_instance } ';'
-| mos_switchtype [delay3] mos_switch_instance { ',' mos_switch_instance } ';'
-| n_input_gatetype [drive_strength] [delay2] n_input_gate_instance { ',' n_input_gate_instance } ';'
-| n_output_gatetype [drive_strength] [delay2] n_output_gate_instance
-{ ',' n_output_gate_instance } ';'
-| pass_en_switchtype [delay2] pass_enable_switch_instance { ',' pass_enable_switch_instance } ';'
-| pass_switchtype pass_switch_instance { ',' pass_switch_instance } ';'
-| 'pulldown' [pulldown_strength] pull_gate_instance { ',' pull_gate_instance } ';'
-| 'pullup' [pullup_strength] pull_gate_instance { ',' pull_gate_instance } ';'
+cmos_switchtype (delay3)? cmos_switch_instance  ( ',' cmos_switch_instance )*  ';'
+| enable_gatetype (drive_strength)? (delay3)? enable_gate_instance  ( ',' enable_gate_instance )*  ';'
+| mos_switchtype (delay3)? mos_switch_instance  ( ',' mos_switch_instance )*  ';'
+| n_input_gatetype (drive_strength)? (delay2)? n_input_gate_instance  ( ',' n_input_gate_instance )*  ';'
+| n_output_gatetype (drive_strength)? (delay2)? n_output_gate_instance
+( ',' n_output_gate_instance )*  ';'
+| pass_en_switchtype (delay2)? pass_enable_switch_instance  ( ',' pass_enable_switch_instance )*  ';'
+| pass_switchtype pass_switch_instance  ( ',' pass_switch_instance )*  ';'
+| 'pulldown' (pulldown_strength)? pull_gate_instance  ( ',' pull_gate_instance )*  ';'
+| 'pullup' (pullup_strength)? pull_gate_instance  ( ',' pull_gate_instance )*  ';'
 ;
 
-cmos_switch_instance : [ name_of_instance ] '(' output_terminal ',' input_terminal ','
+cmos_switch_instance : ( name_of_instance )? '(' output_terminal ',' input_terminal ','
 ncontrol_terminal ',' pcontrol_terminal ')'
 ;
 
-enable_gate_instance : [ name_of_instance ] '(' output_terminal ',' input_terminal ',' enable_terminal ')'
+enable_gate_instance : ( name_of_instance )? '(' output_terminal ',' input_terminal ',' enable_terminal ')'
 ;
 
-mos_switch_instance : [ name_of_instance ] '(' output_terminal ',' input_terminal ',' enable_terminal ')'
+mos_switch_instance : ( name_of_instance )? '(' output_terminal ',' input_terminal ',' enable_terminal ')'
 ;
 
-n_input_gate_instance : [ name_of_instance ] '(' output_terminal ',' input_terminal { ',' input_terminal } ')'
+n_input_gate_instance : ( name_of_instance )? '(' output_terminal ',' input_terminal  ( ',' input_terminal )*  ')'
 ;
 
-n_output_gate_instance : [ name_of_instance ] '(' output_terminal { ',' output_terminal } ','
+n_output_gate_instance : ( name_of_instance )? '(' output_terminal  ( ',' output_terminal )*  ','
 input_terminal ')'
 ;
 
-pass_switch_instance : [ name_of_instance ] '(' inout_terminal ',' inout_terminal ')'
+pass_switch_instance : ( name_of_instance )? '(' inout_terminal ',' inout_terminal ')'
 ;
 
-pass_enable_switch_instance : [ name_of_instance ] '(' inout_terminal ',' inout_terminal ','
+pass_enable_switch_instance : ( name_of_instance )? '(' inout_terminal ',' inout_terminal ','
 enable_terminal ')'
 ;
 
-pull_gate_instance : [ name_of_instance ] '(' output_terminal ')'
+pull_gate_instance : ( name_of_instance )? '(' output_terminal ')'
 ;
 
 // A.3.2 Primitive strengths
@@ -1616,78 +1632,79 @@ pass_switchtype : 'tran' | 'rtran'
 // A.4 Instantiations
 // A.4.1 Instantiation
 // A.4.1.1 Module instantiation
-;
 
 module_instantiation :
-module_identifier [ parameter_value_assignment ] hierarchical_instance { ',' hierarchical_instance } ';'
+module_identifier ( parameter_value_assignment )? hierarchical_instance  ( ',' hierarchical_instance )*  ';'
 ;
 
-parameter_value_assignment : '#' '(' [ list_of_parameter_assignments ] ')'
+parameter_value_assignment : '#' '(' ( list_of_parameter_assignments )? ')'
 ;
 
 list_of_parameter_assignments :
-ordered_parameter_assignment { ',' ordered_parameter_assignment }
-| named_parameter_assignment { ',' named_parameter_assignment }
+ordered_parameter_assignment  ( ',' ordered_parameter_assignment )* 
+| named_parameter_assignment  ( ',' named_parameter_assignment )* 
 ;
 
 ordered_parameter_assignment : param_expression
 ;
 
-named_parameter_assignment : '.' parameter_identifier '(' [ param_expression ] ')'
+named_parameter_assignment : '.' parameter_identifier '(' ( param_expression )? ')'
 ;
 
-hierarchical_instance : name_of_instance '(' [ list_of_port_connections ] ')'
+hierarchical_instance : name_of_instance '(' ( list_of_port_connections )? ')'
 ;
 
-name_of_instance : instance_identifier { unpacked_dimension }
+name_of_instance : instance_identifier  ( unpacked_dimension )* 
 ;
 
 list_of_port_connections :
-ordered_port_connection { ',' ordered_port_connection }
-| named_port_connection { ',' named_port_connection }
+ordered_port_connection  ( ',' ordered_port_connection )* 
+| named_port_connection  ( ',' named_port_connection )* 
 ;
 
-ordered_port_connection : { attribute_instance } [ expression ]
+ordered_port_connection :  ( attribute_instance )*  ( expression )?
 ;
 
 named_port_connection :
-{ attribute_instance } '.' port_identifier [ '(' [ expression ] ')' ]
-| { attribute_instance } '.' '*'
+( attribute_instance )*  '.' port_identifier ( '(' ( expression )? ')' )?
+|  ( attribute_instance )*  '.' '*'
 ;
 
 // A.4.1.2 Interface instantiation
 
 interface_instantiation :
-interface_identifier [ parameter_value_assignment ] hierarchical_instance { ',' hierarchical_instance } ';'
+interface_identifier ( parameter_value_assignment )? hierarchical_instance  ( ',' hierarchical_instance )*  ';'
 ;
 
 // A.4.1.3 Program instantiation
 
 program_instantiation :
-program_identifier [ parameter_value_assignment ] hierarchical_instance { ',' hierarchical_instance } ';'
+program_identifier ( parameter_value_assignment )? hierarchical_instance  ( ',' hierarchical_instance )*  ';'
 ;
 
 // A.4.1.4 Checker instantiation
 
 checker_instantiation :
-ps_checker_identifier name_of_instance '(' [list_of_checker_port_connections] ')' ';'
+ps_checker_identifier name_of_instance '(' (list_of_checker_port_connections)? ')' ';'
 ;
 
 list_of_checker_port_connections :
-ordered_checker_port_connection { ',' ordered_checker_port_connection }
-| named_checker_port_connection { ',' named_checker_port_connection }
-ordered_checker_port_connection : { attribute_instance } [ property_actual_arg ]
+ordered_checker_port_connection  ( ',' ordered_checker_port_connection )* 
+| named_checker_port_connection  ( ',' named_checker_port_connection )* 
+;
+
+ordered_checker_port_connection :  ( attribute_instance )*  ( property_actual_arg )?
 ;
 
 named_checker_port_connection :
-{ attribute_instance } '.' formal_port_identifier [ '(' [ property_actual_arg ] ')' ]
-| { attribute_instance } '.' '*'
+( attribute_instance )*  '.' formal_port_identifier ( '(' ( property_actual_arg )? ')' )?
+|  ( attribute_instance )*  '.' '*'
 ;
 
 // A.4.2 Generated instantiation
 
 generate_region :
-'generate' { generate_item } 'endgenerate'
+'generate'  ( generate_item )*  'endgenerate'
 ;
 
 loop_generate_construct :
@@ -1696,7 +1713,7 @@ generate_block
 ;
 
 genvar_initialization :
-[ 'genvar' ] genvar_identifier '=' constant_expression
+( 'genvar' )? genvar_identifier '=' constant_expression
 ;
 
 genvar_iteration :
@@ -1711,23 +1728,23 @@ if_generate_construct
 ;
 
 if_generate_construct :
-'if' '(' constant_expression ')' generate_block [ 'else' generate_block ]
+'if' '(' constant_expression ')' generate_block ( 'else' generate_block )?
 ;
 
 case_generate_construct :
-'case' '(' constant_expression ')' case_generate_item { case_generate_item } 'endcase'
+'case' '(' constant_expression ')' case_generate_item  ( case_generate_item )*  'endcase'
 ;
 
 case_generate_item :
-constant_expression { ',' constant_expression } ':' generate_block
-| 'default' [ ':' ] generate_block
+constant_expression  ( ',' constant_expression )*  ':' generate_block
+| 'default' ( ':' )? generate_block
 ;
 
 generate_block :
 generate_item
-| [ generate_block_identifier ':' ] 'begin' [ ':' generate_block_identifier ]
-{ generate_item }
-'end' [ ':' generate_block_identifier ]
+| ( generate_block_identifier ':' )? 'begin' ( ':' generate_block_identifier )?
+( generate_item )* 
+'end' ( ':' generate_block_identifier )?
 ;
 
 generate_item :
@@ -1740,33 +1757,33 @@ module_or_generate_item
 // A.5.1 UDP declaration
 
 udp_nonansi_declaration :
-{ attribute_instance } 'primitive' udp_identifier '(' udp_port_list ')' ';'
+( attribute_instance )*  'primitive' udp_identifier '(' udp_port_list ')' ';'
 ;
 
 udp_ansi_declaration :
-{ attribute_instance } 'primitive' udp_identifier '(' udp_declaration_port_list ')' ';'
+( attribute_instance )*  'primitive' udp_identifier '(' udp_declaration_port_list ')' ';'
 ;
 
 udp_declaration :
-udp_nonansi_declaration udp_port_declaration { udp_port_declaration }
+udp_nonansi_declaration udp_port_declaration  ( udp_port_declaration )* 
 udp_body
-'endprimitive' [ ':' udp_identifier ]
+'endprimitive' ( ':' udp_identifier )?
 | udp_ansi_declaration
 udp_body
-'endprimitive' [ : udp_identifier ]
+'endprimitive' ( : udp_identifier )?
 | 'extern' udp_nonansi_declaration
 | 'extern' udp_ansi_declaration
-| { attribute_instance } 'primitive' udp_identifier '(' '.' '*' ')' ';'
-{ udp_port_declaration }
+|  ( attribute_instance )*  'primitive' udp_identifier '(' '.' '*' ')' ';'
+( udp_port_declaration )* 
 udp_body
-'endprimitive' [ ':' udp_identifier ]
+'endprimitive' ( ':' udp_identifier )?
 ;
 
 // A.5.2 UDP ports
-udp_port_list : output_port_identifier ',' input_port_identifier { ',' input_port_identifier }
+udp_port_list : output_port_identifier ',' input_port_identifier  ( ',' input_port_identifier )* 
 ;
 
-udp_declaration_port_list : udp_output_declaration ',' udp_input_declaration { ',' udp_input_declaration }
+udp_declaration_port_list : udp_output_declaration ',' udp_input_declaration  ( ',' udp_input_declaration )* 
 ;
 
 udp_port_declaration :
@@ -1776,27 +1793,27 @@ udp_output_declaration ';'
 ;
 
 udp_output_declaration :
-{ attribute_instance } 'output' port_identifier
-| { attribute_instance } 'output' 'reg' port_identifier [ '=' constant_expression ]
+( attribute_instance )*  'output' port_identifier
+|  ( attribute_instance )*  'output' 'reg' port_identifier ( '=' constant_expression )?
 ;
 
-udp_input_declaration : { attribute_instance } 'input' list_of_udp_port_identifiers
+udp_input_declaration :  ( attribute_instance )*  'input' list_of_udp_port_identifiers
 ;
 
-udp_reg_declaration : { attribute_instance } 'reg' variable_identifier
+udp_reg_declaration :  ( attribute_instance )*  'reg' variable_identifier
 ;
 
 // A.5.3 UDP body
 udp_body : combinational_body | sequential_body
 ;
 
-combinational_body : 'table' combinational_entry { combinational_entry } 'endtable'
+combinational_body : 'table' combinational_entry  ( combinational_entry )*  'endtable'
 ;
 
 combinational_entry : level_input_list ':' output_symbol ';'
 ;
 
-sequential_body : [ udp_initial_statement ] 'table' sequential_entry { sequential_entry } 'endtable'
+sequential_body : ( udp_initial_statement )? 'table' sequential_entry  ( sequential_entry )*  'endtable'
 ;
 
 udp_initial_statement : 'initial' output_port_identifier '=' init_val ';'
@@ -1811,10 +1828,10 @@ sequential_entry : seq_input_list ':' current_state ':' next_state ';'
 seq_input_list : level_input_list | edge_input_list
 ;
 
-level_input_list : level_symbol { level_symbol }
+level_input_list : level_symbol  ( level_symbol )* 
 ;
 
-edge_input_list : { level_symbol } edge_indicator { level_symbol }
+edge_input_list :  ( level_symbol )*  edge_indicator  ( level_symbol )* 
 ;
 
 edge_indicator : '(' level_symbol level_symbol ')' | edge_symbol
@@ -1836,28 +1853,27 @@ edge_symbol : 'r' | 'R' | 'f' | 'F' | 'p' | 'P' | 'n' | 'N' | '*'
 ;
 
 // A.5.4 UDP instantiation
-udp_instantiation : udp_identifier [ drive_strength ] [ delay2 ] udp_instance { ',' udp_instance } ';'
+udp_instantiation : udp_identifier ( drive_strength )? ( delay2 )? udp_instance  ( ',' udp_instance )*  ';'
 ;
 
-udp_instance : [ name_of_instance ] '(' output_terminal ',' input_terminal { ',' input_terminal } ')'
+udp_instance : ( name_of_instance )? '(' output_terminal ',' input_terminal  ( ',' input_terminal )*  ')'
 ;
 
 // A.6 Behavioral statements
 // A.6.1 Continuous assignment and net alias statements
-;
 
 continuous_assign :
-'assign' [ drive_strength ] [ delay3 ] list_of_net_assignments ';'
-| 'assign' [ delay_control ] list_of_variable_assignments ';'
+'assign' ( drive_strength )? ( delay3 )? list_of_net_assignments ';'
+| 'assign' ( delay_control )? list_of_variable_assignments ';'
 ;
 
-list_of_net_assignments : net_assignment { ',' net_assignment }
+list_of_net_assignments : net_assignment  ( ',' net_assignment )* 
 ;
 
-list_of_variable_assignments : variable_assignment { ',' variable_assignment }
+list_of_variable_assignments : variable_assignment  ( ',' variable_assignment )* 
 ;
 
-net_alias : 'alias' net_lvalue '=' net_lvalue { '=' net_lvalue } ';'
+net_alias : 'alias' net_lvalue '=' net_lvalue  ( '=' net_lvalue )*  ';'
 ;
 
 net_assignment : net_lvalue '=' expression
@@ -1879,7 +1895,7 @@ final_construct : 'final' function_statement
 blocking_assignment :
 variable_lvalue '=' delay_or_event_control expression
 | nonrange_variable_lvalue '=' dynamic_array_new
-| [ implicit_class_handle '.' | class_scope | package_scope ] hierarchical_variable_identifier
+| ( implicit_class_handle '.' | class_scope | package_scope )? hierarchical_variable_identifier
 select '=' class_new
 | operator_assignment
 ;
@@ -1893,7 +1909,7 @@ assignment_operator :
 ;
 
 nonblocking_assignment :
-variable_lvalue '<' '=' [ delay_or_event_control ] expression
+variable_lvalue '<' '=' ( delay_or_event_control )? expression
 ;
 
 procedural_continuous_assignment :
@@ -1912,17 +1928,17 @@ variable_assignment : variable_lvalue '=' expression
 
 action_block :
 statement_or_null
-| [ statement ] 'else' statement_or_null
+| ( statement )? 'else' statement_or_null
 ;
 
 seq_block :
-'begin' [ ':' block_identifier ] { block_item_declaration } { statement_or_null }
-'end' [ ':' block_identifier ]
+'begin' ( ':' block_identifier )?  ( block_item_declaration )*   ( statement_or_null )* 
+'end' ( ':' block_identifier )?
 ;
 
 par_block :
-'fork' [ ':' block_identifier ] { block_item_declaration } { statement_or_null }
-join_keyword [ ':' block_identifier ]
+'fork' ( ':' block_identifier )?  ( block_item_declaration )*   ( statement_or_null )* 
+join_keyword ( ':' block_identifier )?
 ;
 
 join_keyword : 'join' | 'join_any' | 'join_none'
@@ -1932,10 +1948,10 @@ join_keyword : 'join' | 'join_any' | 'join_none'
 
 statement_or_null :
 statement
-| { attribute_instance } ';'
+|  ( attribute_instance )*  ';'
 ;
 
-statement : [ block_identifier : ] { attribute_instance } statement_item
+statement : ( block_identifier ':' )?  ( attribute_instance )*  statement_item
 ;
 
 statement_item :
@@ -1966,10 +1982,10 @@ function_statement : statement
 
 function_statement_or_null :
 function_statement
-| { attribute_instance } ';'
+|  ( attribute_instance )*  ';'
 ;
 
-variable_identifier_list : variable_identifier { ',' variable_identifier }
+variable_identifier_list : variable_identifier  ( ',' variable_identifier )* 
 ;
 
 // A.6.5 Timing control statements
@@ -1998,8 +2014,8 @@ event_control :
 ;
 
 event_expression :
-[ edge_identifier ] expression [ 'iff' expression ]
-| sequence_instance [ 'iff' expression ]
+( edge_identifier )? expression ( 'iff' expression )?
+| sequence_instance ( 'iff' expression )?
 | event_expression 'or' event_expression
 | event_expression ',' event_expression
 | '(' event_expression ')'
@@ -2012,7 +2028,7 @@ delay_control
 ;
 
 jump_statement :
-'return' [ expression ] ';'
+'return' ( expression )? ';'
 | 'break' ';'
 | 'continue' ';'
 ;
@@ -2020,12 +2036,12 @@ jump_statement :
 wait_statement :
 'wait' '(' expression ')' statement_or_null
 | 'wait' 'fork' ';'
-| 'wait_order' '(' hierarchical_identifier { ',' hierarchical_identifier } ')' action_block
+| 'wait_order' '(' hierarchical_identifier  ( ',' hierarchical_identifier )*  ')' action_block
 ;
 
 event_trigger :
 '-' '>' hierarchical_event_identifier ';'
-| '->>' [ delay_or_event_control ] hierarchical_event_identifier ';'
+| '-' '>' '>' ( delay_or_event_control )? hierarchical_event_identifier ';'
 ;
 
 disable_statement :
@@ -2037,16 +2053,16 @@ disable_statement :
 // A.6.6 Conditional statements
 
 conditional_statement :
-[ unique_priority ] 'if' '(' cond_predicate ')' statement_or_null
-{ 'else' 'if' '(' cond_predicate ')' statement_or_null }
-[ 'else' statement_or_null ]
+( unique_priority )? 'if' '(' cond_predicate ')' statement_or_null
+( 'else' 'if' '(' cond_predicate ')' statement_or_null )* 
+( 'else' statement_or_null )?
 ;
 
 unique_priority : 'unique' | 'unique0' | 'priority'
 ;
 
 cond_predicate :
-expression_or_cond_pattern { '&&&' expression_or_cond_pattern }
+expression_or_cond_pattern  ( '&&&' expression_or_cond_pattern )* 
 ;
 
 expression_or_cond_pattern :
@@ -2059,12 +2075,12 @@ cond_pattern : expression 'matches' pattern
 // A.6.7 Case statements
 
 case_statement :
-[ unique_priority ] case_keyword '(' case_expression ')'
-case_item { case_item } 'endcase'
-| [ unique_priority ] case_keyword '(' case_expression ')' 'matches'
-case_pattern_item { case_pattern_item } 'endcase'
-| [ unique_priority ] case '(' case_expression ')' 'inside'
-case_inside_item { case_inside_item } 'endcase'
+( unique_priority )? case_keyword '(' case_expression ')'
+case_item  ( case_item )*  'endcase'
+| ( unique_priority )? case_keyword '(' case_expression ')' 'matches'
+case_pattern_item  ( case_pattern_item )*  'endcase'
+| ( unique_priority )? 'case' '(' case_expression ')' 'inside'
+case_inside_item  ( case_inside_item )*  'endcase'
 ;
 
 case_keyword : 'case' | 'casez' | 'casex'
@@ -2074,31 +2090,31 @@ case_expression : expression
 ;
 
 case_item :
-case_item_expression { ',' case_item_expression } ':' statement_or_null
-| 'default' [ ':' ] statement_or_null
+case_item_expression  ( ',' case_item_expression )*  ':' statement_or_null
+| 'default' ( ':' )? statement_or_null
 ;
 
 case_pattern_item :
-pattern [ '&&&' expression ] ':' statement_or_null
-| 'default' [ ':' ] statement_or_null
+pattern ( '&' '&' '&' expression )? ':' statement_or_null
+| 'default' ( ':' )? statement_or_null
 ;
 
 case_inside_item :
 open_range_list ':' statement_or_null
-| 'default' [ ':' ] statement_or_null
+| 'default' ( ':' )? statement_or_null
 ;
 
 case_item_expression : expression
 ;
 
 randcase_statement :
-'randcase' randcase_item { randcase_item } 'endcase'
+'randcase' randcase_item  ( randcase_item )*  'endcase'
 ;
 
 randcase_item : expression ':' statement_or_null
 ;
 
-open_range_list : open_value_range { ',' open_value_range }
+open_range_list : open_value_range  ( ',' open_value_range )* 
 ;
 
 open_value_range : value_range
@@ -2110,16 +2126,16 @@ pattern :
 '.' variable_identifier
 | '.' '*'
 | constant_expression
-| tagged member_identifier [ pattern ]
-| '\'' '{' pattern { ',' pattern } '}'
-| '\'' '{' member_identifier ':' pattern { ',' member_identifier ':' pattern } '}'
+| 'tagged' member_identifier ( pattern )?
+| '\'' '{' pattern  ( ',' pattern )*  '}'
+| '\'' '{' member_identifier ':' pattern  ( ',' member_identifier ':' pattern )*  '}'
 ;
 
 assignment_pattern :
-'\'' '{' expression { ',' expression } '}'
-| '\'' '{' structure_pattern_key ':' expression { ',' structure_pattern_key ':' expression } '}'
-| '\'' '{' array_pattern_key ':' expression { ',' array_pattern_key ':' expression } '}'
-| '\'' '{' constant_expression '{' expression { ',' expression } '}' '}'
+'\'' '{' expression  ( ',' expression )*  '}'
+| '\'' '{' structure_pattern_key ':' expression  ( ',' structure_pattern_key ':' expression )*  '}'
+| '\'' '{' array_pattern_key ':' expression  ( ',' array_pattern_key ':' expression )*  '}'
+| '\'' '{' constant_expression '{' expression  ( ',' expression )*  '}' '}'
 ;
 
 structure_pattern_key : member_identifier | assignment_pattern_key
@@ -2132,7 +2148,7 @@ assignment_pattern_key : simple_type | 'default'
 ;
 
 assignment_pattern_expression :
-[ assignment_pattern_expression_type ] assignment_pattern
+( assignment_pattern_expression_type )? assignment_pattern
 ;
 
 assignment_pattern_expression_type :
@@ -2146,11 +2162,11 @@ constant_assignment_pattern_expression : assignment_pattern_expression
 ;
 
 assignment_pattern_net_lvalue :
-'\'{' net_lvalue {',' net_lvalue } '}'
+'\'' '{' net_lvalue ( ',' net_lvalue )*  '}'
 ;
 
 assignment_pattern_variable_lvalue :
-'\'{' variable_lvalue {',' variable_lvalue } '}'
+'\'' '{' variable_lvalue ( ',' variable_lvalue )*  '}'
 ;
 
 // A.6.8 Looping statements
@@ -2159,7 +2175,7 @@ loop_statement :
 'forever' statement_or_null
 | 'repeat' '(' expression ')' statement_or_null
 | 'while' '(' expression ')' statement_or_null
-| 'for' '(' [ for_initialization ] ';' [ expression ] ';' [ for_step ] ')'
+| 'for' '(' ( for_initialization )? ';' ( expression )? ';' ( for_step )? ')'
 statement_or_null
 | 'do' statement_or_null 'while' '(' expression ')' ';'
 | 'foreach' '(' ps_or_hierarchical_array_identifier '[' loop_variables ']' ')' statement
@@ -2167,14 +2183,14 @@ statement_or_null
 
 for_initialization :
 list_of_variable_assignments
-| for_variable_declaration { ',' for_variable_declaration }
+| for_variable_declaration  ( ',' for_variable_declaration )* 
 ;
 
 for_variable_declaration :
-[ 'var' ] data_type variable_identifier '=' expression { ',' variable_identifier '=' expression }
+( 'var' )? data_type variable_identifier '=' expression  ( ',' variable_identifier '=' expression )* 
 ;
 
-for_step : for_step_assignment { ',' for_step_assignment }
+for_step : for_step_assignment  ( ',' for_step_assignment )* 
 ;
 
 for_step_assignment :
@@ -2183,7 +2199,7 @@ operator_assignment
 | function_subroutine_call
 ;
 
-loop_variables : [ index_variable_identifier ] { ',' [ index_variable_identifier ] }
+loop_variables : ( index_variable_identifier )?  ( ',' ( index_variable_identifier )? )* 
 ;
 
 // A.6.9 Subroutine call statements
@@ -2200,7 +2216,7 @@ concurrent_assertion_item
 | deferred_immediate_assertion_item
 ;
 
-deferred_immediate_assertion_item : [ block_identifier : ] deferred_immediate_assertion_statement
+deferred_immediate_assertion_item : ( block_identifier ':' )? deferred_immediate_assertion_statement
 ;
 
 procedural_assertion_statement :
@@ -2254,10 +2270,10 @@ deferred_immediate_cover_statement :
 ;
 
 // A.6.11 Clocking block
-clocking_declaration : [ 'default' ] 'clocking' [ clocking_identifier ] clocking_event ';'
-{ clocking_item }
-'endclocking' [ ':' clocking_identifier ]
-| 'global' 'clocking' [ clocking_identifier ] clocking_event ';' 'endclocking' [ ':' clocking_identifier ]
+clocking_declaration : ( 'default' )? 'clocking' ( clocking_identifier )? clocking_event ';'
+( clocking_item )* 
+'endclocking' ( ':' clocking_identifier )?
+| 'global' 'clocking' ( clocking_identifier )? clocking_event ';' 'endclocking' ( ':' clocking_identifier )?
 ;
 
 clocking_event :
@@ -2268,7 +2284,7 @@ clocking_event :
 clocking_item :
 'default' default_skew ';'
 | clocking_direction list_of_clocking_decl_assign ';'
-| { attribute_instance } assertion_item_declaration
+|  ( attribute_instance )*  assertion_item_declaration
 ;
 
 default_skew :
@@ -2278,29 +2294,29 @@ default_skew :
 ;
 
 clocking_direction :
-'input' [ clocking_skew ]
-| 'output' [ clocking_skew ]
-| 'input' [ clocking_skew ] 'output' [ clocking_skew ]
+'input' ( clocking_skew )?
+| 'output' ( clocking_skew )?
+| 'input' ( clocking_skew )? 'output' ( clocking_skew )?
 | 'inout'
 ;
 
-list_of_clocking_decl_assign : clocking_decl_assign { ',' clocking_decl_assign }
+list_of_clocking_decl_assign : clocking_decl_assign  ( ',' clocking_decl_assign )* 
 ;
 
-clocking_decl_assign : signal_identifier [ '=' expression ]
+clocking_decl_assign : signal_identifier ( '=' expression )?
 ;
 
 clocking_skew :
-edge_identifier [ delay_control ]
+edge_identifier ( delay_control )?
 | delay_control
 ;
 
 clocking_drive :
-clockvar_expression '<' '=' [ cycle_delay ] expression
+clockvar_expression '<' '=' ( cycle_delay )? expression
 ;
 
 cycle_delay :
-'#' '#' integral_number
+'#' '#' Integral_number
 | '#' '#' identifier
 | '#' '#' '(' expression ')'
 ;
@@ -2312,29 +2328,29 @@ clockvar_expression : clockvar select
 ;
 
 // A.6.12 Randsequence
-randsequence_statement : 'randsequence' '(' [ production_identifier ] ')'
-production { production }
+randsequence_statement : 'randsequence' '(' ( production_identifier )? ')'
+production  ( production )* 
 'endsequence'
 ;
 
-production : [ data_type_or_void ] production_identifier [ '(' tf_port_list ')' ] ':' rs_rule { '|' rs_rule } ';'
+production : ( data_type_or_void )? production_identifier ( '(' tf_port_list ')' )? ':' rs_rule  ( '|' rs_rule )*  ';'
 ;
 
-rs_rule : rs_production_list [ ':' '=' weight_specification [ rs_code_block ] ]
+rs_rule : rs_production_list ( ':' '=' weight_specification ( rs_code_block )? )?
 ;
 
 rs_production_list :
-rs_prod { rs_prod }
-| 'rand' 'join' [ '(' expression ')' ] production_item production_item { production_item }
+rs_prod  ( rs_prod )* 
+| 'rand' 'join' ( '(' expression ')' )? production_item production_item  ( production_item )* 
 ;
 
 weight_specification :
-integral_number
+Integral_number
 | ps_identifier
 | '(' expression ')'
 ;
 
-rs_code_block : '{' { data_declaration } { statement_or_null } '}'
+rs_code_block : '{'  ( data_declaration )*   ( statement_or_null )*  '}'
 ;
 
 rs_prod :
@@ -2345,26 +2361,26 @@ production_item
 | rs_case
 ;
 
-production_item : production_identifier [ '(' list_of_arguments ')' ]
+production_item : production_identifier ( '(' list_of_arguments ')' )?
 ;
 
-rs_if_else : 'if' '(' expression ')' production_item [ 'else' production_item ]
+rs_if_else : 'if' '(' expression ')' production_item ( 'else' production_item )?
 ;
 
 rs_repeat : 'repeat' '(' expression ')' production_item
 ;
 
-rs_case : 'case' '(' case_expression ')' rs_case_item { rs_case_item } 'endcase'
+rs_case : 'case' '(' case_expression ')' rs_case_item  ( rs_case_item )*  'endcase'
 ;
 
 rs_case_item :
-case_item_expression { ',' case_item_expression } : production_item ';'
-| 'default' [ ':' ] production_item ';'
+case_item_expression  ( ',' case_item_expression )*  ':' production_item ';'
+| 'default' ( ':' )? production_item ';'
 ;
 
 // A.7 Specify section
 // A.7.1 Specify block declaration
-specify_block : 'specify' { specify_item } 'endspecify'
+specify_block : 'specify'  ( specify_item )*  'endspecify'
 ;
 
 specify_item :
@@ -2399,29 +2415,29 @@ parallel_path_description '=' path_delay_value
 ;
 
 parallel_path_description :
-'(' specify_input_terminal_descriptor [ polarity_operator ] '=' '>' specify_output_terminal_descriptor ')'
+'(' specify_input_terminal_descriptor ( polarity_operator )? '=' '>' specify_output_terminal_descriptor ')'
 ;
 
 full_path_description :
-'(' list_of_path_inputs [ polarity_operator ] '*' '>' list_of_path_outputs ')'
+'(' list_of_path_inputs ( polarity_operator )? '*' '>' list_of_path_outputs ')'
 ;
 
 list_of_path_inputs :
-specify_input_terminal_descriptor { ',' specify_input_terminal_descriptor }
+specify_input_terminal_descriptor  ( ',' specify_input_terminal_descriptor )* 
 ;
 
 list_of_path_outputs :
-specify_output_terminal_descriptor { ',' specify_output_terminal_descriptor }
+specify_output_terminal_descriptor  ( ',' specify_output_terminal_descriptor )* 
 ;
 
 // A.7.3 Specify block terminals
 
 specify_input_terminal_descriptor :
-input_identifier [ '[' constant_range_expression ']' ]
+input_identifier ( '[' constant_range_expression ']' )?
 ;
 
 specify_output_terminal_descriptor :
-output_identifier [ '[' constant_range_expression ']' ]
+output_identifier ( '[' constant_range_expression ']' )?
 ;
 
 input_identifier : input_port_identifier | inout_port_identifier | interface_identifier '.' port_identifier
@@ -2447,6 +2463,8 @@ tz1_path_delay_expression ',' t1z_path_delay_expression ',' tz0_path_delay_expre
 tz1_path_delay_expression ',' t1z_path_delay_expression ',' tz0_path_delay_expression ','
 t0x_path_delay_expression ',' tx1_path_delay_expression ',' t1x_path_delay_expression ','
 tx0_path_delay_expression ',' txz_path_delay_expression ',' tzx_path_delay_expression
+;
+
 t_path_delay_expression : path_delay_expression
 ;
 
@@ -2504,13 +2522,13 @@ parallel_edge_sensitive_path_description '=' path_delay_value
 ;
 
 parallel_edge_sensitive_path_description :
-'(' [ edge_identifier ] specify_input_terminal_descriptor [ polarity_operator ] '=' '>'
-'(' specify_output_terminal_descriptor [ polarity_operator ] ':' data_source_expression ')' ')'
+'(' ( edge_identifier )? specify_input_terminal_descriptor ( polarity_operator )? '=' '>'
+'(' specify_output_terminal_descriptor ( polarity_operator )? ':' data_source_expression ')' ')'
 ;
 
 full_edge_sensitive_path_description :
-'(' [ edge_identifier ] list_of_path_inputs [ polarity_operator ] '*' '>'
-'(' list_of_path_outputs [ polarity_operator ] ':' data_source_expression ')' ')'
+'(' ( edge_identifier )? list_of_path_inputs ( polarity_operator )? '*' '>'
+'(' list_of_path_outputs ( polarity_operator )? ':' data_source_expression ')' ')'
 ;
 
 data_source_expression : expression
@@ -2547,57 +2565,57 @@ setup_timing_check
 ;
 
 setup_timing_check :
-'$setup' '(' data_event ',' reference_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$setup' '(' data_event ',' reference_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 hold_timing_check :
-'$hold' '(' reference_event ',' data_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$hold' '(' reference_event ',' data_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 setuphold_timing_check :
 '$setuphold' '(' reference_event ',' data_event ',' timing_check_limit ',' timing_check_limit
-[ ',' [ notifier ] [ ',' [ timestamp_condition ] [ ',' [ timecheck_condition ]
-[ ',' [ delayed_reference ] [ ',' [ delayed_data ] ] ] ] ] ] ')' ';'
+( ',' ( notifier )? ( ',' ( timestamp_condition )? ( ',' ( timecheck_condition )?
+( ',' ( delayed_reference )? ( ',' ( delayed_data )? )? )? )? )? )? ')' ';'
 ;
 
 recovery_timing_check :
-'$recovery' '(' reference_event ',' data_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$recovery' '(' reference_event ',' data_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 removal_timing_check :
-'$removal' '(' reference_event ',' data_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$removal' '(' reference_event ',' data_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 recrem_timing_check :
 '$recrem' '(' reference_event ',' data_event ',' timing_check_limit ',' timing_check_limit
-[ ',' [ notifier ] [ ',' [ timestamp_condition ] [ ',' [ timecheck_condition ]
-[ ',' [ delayed_reference ] [ ',' [ delayed_data ] ] ] ] ] ] ')' ';'
+( ',' ( notifier )? ( ',' ( timestamp_condition )? ( ',' ( timecheck_condition )?
+( ',' ( delayed_reference )? ( ',' ( delayed_data )? )? )? )? )? )? ')' ';'
 ;
 
 skew_timing_check :
-'$skew' '(' reference_event ',' data_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$skew' '(' reference_event ',' data_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 timeskew_timing_check :
 '$timeskew' '(' reference_event ',' data_event ',' timing_check_limit
-[ ',' [ notifier ] [ ',' [ event_based_flag ] [ ',' [ remain_active_flag ] ] ] ] ')' ';'
+( ',' ( notifier )? ( ',' ( event_based_flag )? ( ',' ( remain_active_flag )? )? )? )? ')' ';'
 ;
 
 fullskew_timing_check :
 '$fullskew' '(' reference_event ',' data_event ',' timing_check_limit ',' timing_check_limit
-[ ',' [ notifier ] [ ',' [ event_based_flag ] [ ',' [ remain_active_flag ] ] ] ] ')' ';'
+( ',' ( notifier )? ( ',' ( event_based_flag )? ( ',' ( remain_active_flag )? )? )? )? ')' ';'
 ;
 
 period_timing_check :
-'$period' '(' controlled_reference_event ',' timing_check_limit [ ',' [ notifier ] ] ')' ';'
+'$period' '(' controlled_reference_event ',' timing_check_limit ( ',' ( notifier )? )? ')' ';'
 ;
 
 width_timing_check :
-'$width' '(' controlled_reference_event ',' timing_check_limit ',' threshold [ ',' [ notifier ] ] ')' ';'
+'$width' '(' controlled_reference_event ',' timing_check_limit ',' threshold ( ',' ( notifier )? )? ')' ';'
 ;
 
 nochange_timing_check :
-'$nochange' '(' reference_event ',' data_event ',' start_edge_offset ',' end_edge_offset [ ',' [ notifier ] ] ')' ';'
+'$nochange' '(' reference_event ',' data_event ',' start_edge_offset ',' end_edge_offset ( ',' ( notifier )? )? ')' ';'
 ;
 
 // A.7.5.2 System timing check command arguments
@@ -2650,11 +2668,11 @@ timing_check_limit : expression
 // A.7.5.3 System timing check event definitions
 
 timing_check_event :
-[timing_check_event_control] specify_terminal_descriptor [ '&&&' timing_check_condition ]
+(timing_check_event_control)? specify_terminal_descriptor ( '&' '&' '&' timing_check_condition )?
 ;
 
 controlled_timing_check_event :
-timing_check_event_control specify_terminal_descriptor [ '&&&' timing_check_condition ]
+timing_check_event_control specify_terminal_descriptor ( '&' '&' '&' timing_check_condition )?
 ;
 
 timing_check_event_control :
@@ -2669,16 +2687,16 @@ specify_input_terminal_descriptor
 | specify_output_terminal_descriptor
 ;
 
-edge_control_specifier : 'edge' '[' edge_descriptor { ',' edge_descriptor } ']'
+edge_control_specifier : 'edge' '[' Edge_descriptor  ( ',' Edge_descriptor )*  ']'
 ;
 
-edge_descriptor : '01' | '10' | z_or_x zero_or_one | zero_or_one z_or_x
+Edge_descriptor : '01' | '10' | Z_or_x Zero_or_one | Zero_or_one Z_or_x
 ;
 
-zero_or_one : '0' | '1'
+fragment Zero_or_one : [01]
 ;
 
-z_or_x : 'x' | 'X' | 'z' | 'Z'
+fragment Z_or_x : [xXzZ]
 ;
 
 timing_check_condition :
@@ -2689,30 +2707,30 @@ scalar_timing_check_condition
 scalar_timing_check_condition :
 expression
 | '~' expression
-| expression '=' '=' scalar_constant
-| expression '=' '=' =' scalar_constant
-| expression '!' '=' scalar_constant
-| expression '!' '=' '=' scalar_constant
+| expression '=' '=' Scalar_constant
+| expression '=' '=' '=' Scalar_constant
+| expression '!' '=' Scalar_constant
+| expression '!' '=' '=' Scalar_constant
 ;
 
-scalar_constant : '1\'b0' | '1\'b1' | '1\'B0' | '1\'B1' | '\'b0' | '\'b1' | '\'B0' | '\'B1' | '1' | '0'
+Scalar_constant : ('1'? ('\'' [bB]) [01]) | [01]
 ;
 
 // A.8 Expressions
 // A.8.1 Concatenations
 
 concatenation :
-'{' expression { ',' expression } '}'
+'{' expression  ( ',' expression )*  '}'
 ;
 
 constant_concatenation :
-'{' constant_expression { ',' constant_expression } '}'
+'{' constant_expression  ( ',' constant_expression )*  '}'
 ;
 
 constant_multiple_concatenation : '{' constant_expression constant_concatenation '}'
 ;
 
-module_path_concatenation : '{' module_path_expression { ',' module_path_expression } '}'
+module_path_concatenation : '{' module_path_expression  ( ',' module_path_expression )*  '}'
 ;
 
 module_path_multiple_concatenation : '{' constant_expression module_path_concatenation '}'
@@ -2721,7 +2739,7 @@ module_path_multiple_concatenation : '{' constant_expression module_path_concate
 multiple_concatenation : '{' expression concatenation '}'
 ;
 
-streaming_concatenation : '{' stream_operator [ slice_size ] stream_concatenation '}'
+streaming_concatenation : '{' stream_operator ( slice_size )? stream_concatenation '}'
 ;
 
 stream_operator : '>' '>' | '<' '<'
@@ -2730,10 +2748,10 @@ stream_operator : '>' '>' | '<' '<'
 slice_size : simple_type | constant_expression
 ;
 
-stream_concatenation : '{' stream_expression { ',' stream_expression } '}'
+stream_concatenation : '{' stream_expression  ( ',' stream_expression )*  '}'
 ;
 
-stream_expression : expression [ 'with' '[' array_range_expression ']' ]
+stream_expression : expression ( 'with' '[' array_range_expression ']' )?
 ;
 
 array_range_expression :
@@ -2750,30 +2768,34 @@ empty_queue : '{' '}'
 constant_function_call : function_subroutine_call
 ;
 
-tf_call : ps_or_hierarchical_tf_identifier { attribute_instance } [ '(' list_of_arguments ')' ]
+tf_call : ps_or_hierarchical_tf_identifier  ( attribute_instance )*  ( '(' list_of_arguments ')' )?
 ;
 
 system_tf_call :
-system_tf_identifier [ '(' list_of_arguments ')' ]
-| system_tf_identifier '(' data_type [ ',' expression ] ')'
+System_tf_identifier ( '(' list_of_arguments ')' )?
+| System_tf_identifier '(' data_type ( ',' expression )? ')'
 ;
 
 subroutine_call :
 tf_call
 | system_tf_call
 | method_call
-| [ 'std' ':' ':' ] randomize_call
+| ( 'std' ':' ':' )? randomize_call
+;
+
 function_subroutine_call : subroutine_call
 ;
 
 list_of_arguments :
-[ expression ] { ',' [ expression ] } { ',' '.' identifier '(' [ expression ] ')' }
-| '.' identifier '(' [ expression ] ')' { ',' '.' identifier '(' [ expression ] ')' }
+( expression )?  ( ',' ( expression )? )*   ( ',' '.' identifier '(' ( expression )? ')' )* 
+| '.' identifier '(' ( expression )? ')'  ( ',' '.' identifier '(' ( expression )? ')' )* 
+;
+
 method_call : method_call_root '.' method_call_body
 ;
 
 method_call_body :
-method_identifier { attribute_instance } [ '(' list_of_arguments ')' ]
+method_identifier  ( attribute_instance )*  ( '(' list_of_arguments ')' )?
 | built_in_method_call
 ;
 
@@ -2783,15 +2805,15 @@ array_manipulation_call
 ;
 
 array_manipulation_call :
-array_method_name { attribute_instance }
-[ '(' list_of_arguments ')' ]
-[ 'with' '(' expression ')' ]
+array_method_name  ( attribute_instance )* 
+( '(' list_of_arguments ')' )?
+( 'with' '(' expression ')' )?
 ;
 
 randomize_call :
-'randomize' { attribute_instance }
-[ '(' [ variable_identifier_list | 'null' ] ')' ]
-[ 'with' [ '(' [ identifier_list ] ')' ] constraint_block ]
+'randomize'  ( attribute_instance )* 
+( '(' ( variable_identifier_list | 'null' )? ')' )?
+( 'with' ( '(' ( identifier_list )? ')' )? constraint_block )?
 ;
 
 method_call_root : primary | implicit_class_handle
@@ -2804,18 +2826,18 @@ method_identifier | 'unique' | 'and' | 'or' | 'xor'
 // A.8.3 Expressions
 
 inc_or_dec_expression :
-inc_or_dec_operator { attribute_instance } variable_lvalue
-| variable_lvalue { attribute_instance } inc_or_dec_operator
+inc_or_dec_operator  ( attribute_instance )*  variable_lvalue
+| variable_lvalue  ( attribute_instance )*  inc_or_dec_operator
 ;
 
-conditional_expression : cond_predicate ? { attribute_instance } expression : expression
+conditional_expression : cond_predicate '?'  ( attribute_instance )*  expression ':' expression
 ;
 
 constant_expression :
 constant_primary
-| unary_operator { attribute_instance } constant_primary
-| constant_expression binary_operator { attribute_instance } constant_expression
-| constant_expression '?' { attribute_instance } constant_expression ':' constant_expression
+| unary_operator  ( attribute_instance )*  constant_primary
+| constant_expression binary_operator  ( attribute_instance )*  constant_expression
+| constant_expression '?'  ( attribute_instance )*  constant_expression ':' constant_expression
 ;
 
 constant_mintypmax_expression :
@@ -2840,7 +2862,7 @@ constant_range
 | constant_indexed_range
 ;
 
-constant_range ':' constant_expression ':' constant_expression
+constant_range : constant_expression ':' constant_expression
 ;
 
 constant_indexed_range :
@@ -2850,17 +2872,17 @@ constant_expression '+' ':' constant_expression
 
 expression :
 primary
-| unary_operator { attribute_instance } primary
+| unary_operator  ( attribute_instance )*  primary
 | inc_or_dec_expression
 | '(' operator_assignment ')'
-| expression binary_operator { attribute_instance } expression
+| expression binary_operator  ( attribute_instance )*  expression
 | conditional_expression
 | inside_expression
 | tagged_union_expression
 ;
 
 tagged_union_expression :
-'tagged' member_identifier [ expression ]
+'tagged' member_identifier ( expression )?
 ;
 
 inside_expression : expression 'inside' '{' open_range_list '}'
@@ -2876,14 +2898,14 @@ expression
 | expression ':' expression ':' expression
 ;
 
-module_path_conditional_expression : module_path_expression '?' { attribute_instance }
+module_path_conditional_expression : module_path_expression '?'  ( attribute_instance )* 
 	module_path_expression ':' module_path_expression
 ;
 
 module_path_expression :
 module_path_primary
-| unary_module_path_operator { attribute_instance } module_path_primary
-| module_path_expression binary_module_path_operator { attribute_instance }
+| unary_module_path_operator  ( attribute_instance )*  module_path_primary
+| module_path_expression binary_module_path_operator  ( attribute_instance )* 
 module_path_expression
 | module_path_conditional_expression
 ;
@@ -2909,12 +2931,12 @@ genvar_expression : constant_expression
 constant_primary :
 primary_literal
 | ps_parameter_identifier constant_select
-| specparam_identifier [ '[' constant_range_expression ']' ]
+| specparam_identifier ( '[' constant_range_expression ']' )?
 | genvar_identifier
 | formal_port_identifier constant_select
-| [ package_scope | class_scope ] enum_identifier
-| constant_concatenation [ '[' constant_range_expression ']' ]
-| constant_multiple_concatenation [ '[' constant_range_expression ']' ]
+| ( package_scope | class_scope )? enum_identifier
+| constant_concatenation ( '[' constant_range_expression ']' )?
+| constant_multiple_concatenation ( '[' constant_range_expression ']' )?
 | constant_function_call
 | constant_let_expression
 | '(' constant_mintypmax_expression ')'
@@ -2934,10 +2956,10 @@ number
 
 primary :
 primary_literal
-| [ class_qualifier | package_scope ] hierarchical_identifier select
+| ( class_qualifier | package_scope )? hierarchical_identifier select
 | empty_queue
-| concatenation [ '[' range_expression ']' ]
-| multiple_concatenation [ '[' range_expression ']' ]
+| concatenation ( '[' range_expression ']' )?
+| multiple_concatenation ( '[' range_expression ']' )?
 | function_subroutine_call
 | let_expression
 | '(' mintypmax_expression ')'
@@ -2950,7 +2972,7 @@ primary_literal
 | 'null'
 ;
 
-class_qualifier : [ 'local' ':' ':' ] [ implicit_class_handle '.' | class_scope ]
+class_qualifier : ( 'local' ':' ':' )? ( implicit_class_handle '.' | class_scope )?
 ;
 
 range_expression :
@@ -2958,12 +2980,12 @@ expression
 | part_select_range
 ;
 
-primary_literal : number | time_literal | unbased_unsized_literal | string_literal
+primary_literal : number | time_literal | Unbased_unsized_literal | String_literal
 ;
 
 time_literal :
-unsigned_number time_unit
-| fixed_point_number time_unit
+Unsigned_number time_unit
+| Fixed_point_number time_unit
 ;
 
 time_unit : 's' | 'ms' | 'us' | 'ns' | 'ps' | 'fs'
@@ -2972,23 +2994,23 @@ time_unit : 's' | 'ms' | 'us' | 'ns' | 'ps' | 'fs'
 implicit_class_handle : 'this' | 'super' | 'this' '.' 'super'
 ;
 
-bit_select : { '[' expression ']' }
+bit_select :  ( '[' expression ']' )* 
 ;
 
 select :
-[ { '.' member_identifier bit_select } '.' member_identifier ] bit_select [ '[' part_select_range ']' ]
+(  ( '.' member_identifier bit_select )*  '.' member_identifier )? bit_select ( '[' part_select_range ']' )?
 ;
 
 nonrange_select :
-[ { '.' member_identifier bit_select } '.' member_identifier ] bit_select
+(  ( '.' member_identifier bit_select )*  '.' member_identifier )? bit_select
 ;
 
-constant_bit_select : { '[' constant_expression ']' }
+constant_bit_select :  ( '[' constant_expression ']' )* 
 ;
 
 constant_select :
-[ { '.' member_identifier constant_bit_select } '.' member_identifier ] constant_bit_select
-[ '[' constant_part_select_range ']' ]
+(  ( '.' member_identifier constant_bit_select )*  '.' member_identifier )? constant_bit_select
+( '[' constant_part_select_range ']' )?
 ;
 
 constant_cast :
@@ -3006,19 +3028,19 @@ casting_type '\'' '(' expression ')'
 
 net_lvalue :
 ps_or_hierarchical_net_identifier constant_select
-| '{' net_lvalue { ',' net_lvalue } '}'
-| [ assignment_pattern_expression_type ] assignment_pattern_net_lvalue
+| '{' net_lvalue  ( ',' net_lvalue )*  '}'
+| ( assignment_pattern_expression_type )? assignment_pattern_net_lvalue
 ;
 
 variable_lvalue :
-[ implicit_class_handle '.' | package_scope ] hierarchical_variable_identifier select
-| '{' variable_lvalue { ',' variable_lvalue } '}'
-| [ assignment_pattern_expression_type ] assignment_pattern_variable_lvalue
+( implicit_class_handle '.' | package_scope )? hierarchical_variable_identifier select
+| '{' variable_lvalue  ( ',' variable_lvalue )*  '}'
+| ( assignment_pattern_expression_type )? assignment_pattern_variable_lvalue
 | streaming_concatenation
 ;
 
 nonrange_variable_lvalue :
-[ implicit_class_handle '.' | package_scope ] hierarchical_variable_identifier nonrange_select
+( implicit_class_handle '.' | package_scope )? hierarchical_variable_identifier nonrange_select
 ;
 
 // A.8.6 Operators
@@ -3049,111 +3071,105 @@ binary_module_path_operator :
 // A.8.7 Numbers
 
 number :
-integral_number
-| real_number
+Integral_number
+| Real_number
 ;
 
-integral_number :
-decimal_number
-| octal_number
-| binary_number
-| hex_number
+Integral_number :
+Decimal_number
+| Octal_number
+| Binary_number
+| Hex_number
 ;
 
-decimal_number :
-unsigned_number
-| [ size ] decimal_base unsigned_number
-| [ size ] decimal_base x_digit { _ }
-| [ size ] decimal_base z_digit { _ }
+Decimal_number :
+Unsigned_number
+| Size? Decimal_base Unsigned_number
+| Size? Decimal_base X_digit  '_'*
+| Size? Decimal_base Z_digit  '_'*
 ;
 
-binary_number : [ size ] binary_base binary_value
+fragment Binary_number : Size? Binary_base Binary_value
 ;
 
-octal_number : [ size ] octal_base octal_value
+fragment Octal_number : Size? Octal_base Octal_value
 ;
 
-hex_number : [ size ] hex_base hex_value
+fragment Hex_number : Size? Hex_base Hex_value
 ;
 
-sign : + | -
+fragment Size : Non_zero_unsigned_number
 ;
 
-size : non_zero_unsigned_number
+Non_zero_unsigned_number : Non_zero_decimal_digit  ( '_' | Decimal_digit)*
 ;
 
-non_zero_unsigned_number : non_zero_decimal_digit { _ | decimal_digit}
+Real_number :
+Fixed_point_number
+| Unsigned_number ( '.' Unsigned_number )? [eE] [+-]? Unsigned_number
 ;
 
-real_number :
-fixed_point_number
-| unsigned_number [ '.' unsigned_number ] exp [ sign ] unsigned_number
+Fixed_point_number : Unsigned_number '.' Unsigned_number
 ;
 
-fixed_point_number : unsigned_number '.' unsigned_number
+Unsigned_number : Decimal_digit  ( '_' | Decimal_digit )* 
 ;
 
-exp : e | E
+Binary_value : Binary_digit  ( '_' | Binary_digit )* 
 ;
 
-unsigned_number : decimal_digit { _ | decimal_digit }
+Octal_value : Octal_digit  ( '_' | Octal_digit )* 
 ;
 
-binary_value : binary_digit { _ | binary_digit }
+Hex_value : Hex_digit  ( '_' | Hex_digit )* 
 ;
 
-octal_value : octal_digit { _ | octal_digit }
+fragment Decimal_base : '\'' [sS]? [dD]
 ;
 
-hex_value : hex_digit { _ | hex_digit }
+fragment Binary_base : '\'' [sS]? [bB]
 ;
 
-decimal_base : '[s|S]d | '[s|S]D
+fragment Octal_base : '\'' [sS]? [oO]
 ;
 
-binary_base : '[s|S]b | '[s|S]B
+fragment Hex_base : '\'' [sS]? [hH]
 ;
 
-octal_base : '[s|S]o | '[s|S]O
+fragment Non_zero_decimal_digit : [1-9]
 ;
 
-hex_base : '[s|S]h | '[s|S]H
+fragment Decimal_digit : [0-9]
 ;
 
-non_zero_decimal_digit : 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+fragment Binary_digit : X_digit | Z_digit | [01]
 ;
 
-decimal_digit : 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+fragment Octal_digit : X_digit | Z_digit | [0-7]
 ;
 
-binary_digit : x_digit | z_digit | 0 | 1
+fragment Hex_digit : X_digit | Z_digit | [0-9a-fA-F]
 ;
 
-octal_digit : x_digit | z_digit | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+fragment X_digit : [xX]
 ;
 
-hex_digit : x_digit | z_digit | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | a | b | c | d | e | f | A | B | C | D | E | F
+fragment Z_digit : [zZ?]
 ;
 
-x_digit : x | X
-;
-
-z_digit : z | Z | ?
-;
-
-unbased_unsized_literal : '0 | '1 | 'z_or_x 
+Unbased_unsized_literal : '\'' (Zero_or_one | Z_or_x)
 ;
 
 // A.8.8 Strings
-string_literal : " { Any_ASCII_Characters } "
+String_literal : '"' ( ~[\n\r] )* '"' 
 ;
 
 // A.9 General
 // A.9.1 Attributes
-attribute_instance : '(' '*' attr_spec { ',' attr_spec } '*' ')'
+attribute_instance : '(' '*' attr_spec  ( ',' attr_spec )*  '*' ')'
 ;
 
-attr_spec : attr_name [ = constant_expression ]
+attr_spec : attr_name ( '=' constant_expression )?
 ;
 
 attr_name : identifier
@@ -3161,19 +3177,8 @@ attr_name : identifier
 
 // A.9.2 Comments
 
-comment :
-one_line_comment
-| block_comment
-;
-
-one_line_comment : // comment_text \n
-;
-
-block_comment : /* comment_text */
-;
-
-comment_text : { Any_ASCII_character }
-;
+One_line_comment : '//' .*? '\r'? '\n' -> channel(HIDDEN);
+Block_comment : '/*' .*? '*/' -> channel(HIDDEN);
 
 // A.9.3 Identifiers
 array_identifier : identifier
@@ -3185,7 +3190,7 @@ block_identifier : identifier
 bin_identifier : identifier
 ;
 
-c_identifier : [ a-zA-Z_ ] { [ a-zA-Z0-9_ ] }
+c_identifier : Simple_identifier
 ;
 
 cell_identifier : identifier
@@ -3230,8 +3235,11 @@ dynamic_array_variable_identifier : variable_identifier
 enum_identifier : identifier
 ;
 
-escaped_identifier : \ {any_printable_ASCII_character_except_white_space} white_space
-;
+Escaped_identifier
+	:	'\\' ~[ \r\t\n]*
+        {_input.LA(1)!=' '&&_input.LA(1)!='\t'&&_input.LA(1)!='\t'&&_input.LA(1)!='\n'}?
+    ;
+
 
 formal_identifier : identifier
 ;
@@ -3257,7 +3265,7 @@ hierarchical_block_identifier : hierarchical_identifier
 hierarchical_event_identifier : hierarchical_identifier
 ;
 
-hierarchical_identifier : [ $root '.' ] { identifier constant_bit_select '.' } identifier
+hierarchical_identifier : ( '$root' '.' )?  ( identifier constant_bit_select '.' )*  identifier
 ;
 
 hierarchical_net_identifier : hierarchical_identifier
@@ -3282,8 +3290,8 @@ hierarchical_variable_identifier : hierarchical_identifier
 ;
 
 identifier :
-simple_identifier
-| escaped_identifier
+Simple_identifier
+| Escaped_identifier
 ;
 
 index_variable_identifier : identifier
@@ -3332,8 +3340,8 @@ package_identifier : identifier
 ;
 
 package_scope :
-package_identifier ::
-| $unit ::
+package_identifier ':' ':'
+| '$unit' ':' ':'
 ;
 
 parameter_identifier : identifier
@@ -3351,46 +3359,46 @@ program_identifier : identifier
 property_identifier : identifier
 ;
 
-ps_class_identifier : [ package_scope ] class_identifier
+ps_class_identifier : ( package_scope )? class_identifier
 ;
 
-ps_covergroup_identifier : [ package_scope ] covergroup_identifier
+ps_covergroup_identifier : ( package_scope )? covergroup_identifier
 ;
 
-ps_checker_identifier : [ package_scope ] checker_identifier
+ps_checker_identifier : ( package_scope )? checker_identifier
 ;
 
-ps_identifier : [ package_scope ] identifier
+ps_identifier : ( package_scope )? identifier
 ;
 
 ps_or_hierarchical_array_identifier :
-[ implicit_class_handle '.' | class_scope | package_scope ] hierarchical_array_identifier
+( implicit_class_handle '.' | class_scope | package_scope )? hierarchical_array_identifier
 ;
 
-ps_or_hierarchical_net_identifier : [ package_scope ] net_identifier | hierarchical_net_identifier
+ps_or_hierarchical_net_identifier : ( package_scope )? net_identifier | hierarchical_net_identifier
 ;
 
 ps_or_hierarchical_property_identifier :
-[ package_scope ] property_identifier
+( package_scope )? property_identifier
 | hierarchical_property_identifier
 ;
 
 ps_or_hierarchical_sequence_identifier :
-[ package_scope ] sequence_identifier
+( package_scope )? sequence_identifier
 | hierarchical_sequence_identifier
 ;
 
 ps_or_hierarchical_tf_identifier :
-[ package_scope ] tf_identifier
+( package_scope )? tf_identifier
 | hierarchical_tf_identifier
 ;
 
 ps_parameter_identifier :
-[ package_scope | class_scope ] parameter_identifier
-| { generate_block_identifier [ [ constant_expression ] ] '.' } parameter_identifier
+( package_scope | class_scope )? parameter_identifier
+|  ( generate_block_identifier ( ( constant_expression )? )? '.' )*  parameter_identifier
 ;
 
-ps_type_identifier : [ local:: | package_scope ] type_identifier
+ps_type_identifier : ( 'local' ':' ':' | package_scope )? type_identifier
 ;
 
 sequence_identifier : identifier
@@ -3399,13 +3407,13 @@ sequence_identifier : identifier
 signal_identifier : identifier
 ;
 
-simple_identifier : [ a-zA-Z_ ] { [ a-zA-Z0-9_$ ] }
+Simple_identifier : [a-zA-Z_] [a-zA-Z0-9_$]*
 ;
 
 specparam_identifier : identifier
 ;
 
-system_tf_identifier : $[ a-zA-Z0-9_$ ]{ [ a-zA-Z0-9_$ ] }
+System_tf_identifier : '$' [a-zA-Z_] [a-zA-Z0-9_$]*
 ;
 
 task_identifier : identifier
@@ -3430,5 +3438,4 @@ variable_identifier : identifier
 ;
 
 // A.9.4 White space
-white_space : space | tab | newline | eof
-;
+White_space : [ \t\n\r]+ -> channel(HIDDEN) ;
