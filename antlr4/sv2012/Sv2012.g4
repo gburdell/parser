@@ -226,7 +226,7 @@ elaboration_system_task :
 | '$info' ( '(' ( list_of_arguments )? ')' )? ';'
 ;
 
-finish_number : '0' | '1' | '2'
+finish_number : Unsigned_number
 ;
 
 module_common_item :
@@ -699,7 +699,12 @@ lifetime : 'static' | 'automatic'
 
 // A.2.2 Declaration data types
 // A.2.2.1 Net and variable types
-casting_type : simple_type | constant_primary | signing | 'string' | 'const'
+casting_type : 
+simple_type 
+//ilr | constant_primary 
+| signing 
+| 'string' 
+| 'const'
 ;
 
 data_type :
@@ -1819,7 +1824,7 @@ sequential_body : ( udp_initial_statement )? 'table' sequential_entry  ( sequent
 udp_initial_statement : 'initial' output_port_identifier '=' init_val ';'
 ;
 
-init_val : '1\'b0' | '1\'b1' | '1\'bx' | '1\'bX' | '1\'B0' | '1\'B1' | '1\'Bx' | '1\'BX' | '1' | '0'
+init_val : Integral_number
 ;
 
 sequential_entry : seq_input_list ':' current_state ':' next_state ';'
@@ -1843,13 +1848,15 @@ current_state : level_symbol
 next_state : output_symbol | '-'
 ;
 
-output_symbol : '0' | '1' | 'x' | 'X'
+output_symbol : Integral_number
 ;
 
-level_symbol : '0' | '1' | 'x' | 'X' | '?' | 'b' | 'B'
+//level_symbol : '0' | '1' | 'x' | 'X' | '?' | 'b' | 'B'
+level_symbol : Unsigned_number | Simple_identifier | '?'
 ;
 
-edge_symbol : 'r' | 'R' | 'f' | 'F' | 'p' | 'P' | 'n' | 'N' | '*'
+//edge_symbol : 'r' | 'R' | 'f' | 'F' | 'p' | 'P' | 'n' | 'N' | '*'
+edge_symbol : Simple_identifier | '*'
 ;
 
 // A.5.4 UDP instantiation
@@ -2255,17 +2262,17 @@ deferred_immediate_assert_statement
 ;
 
 deferred_immediate_assert_statement :
-'assert' '#' '0' '(' expression ')' action_block
+'assert' '#' Unsigned_number '(' expression ')' action_block
 | 'assert' 'final' '(' expression ')' action_block
 ;
 
 deferred_immediate_assume_statement :
-'assume' '#' '0' '(' expression ')' action_block
+'assume' '#' Unsigned_number '(' expression ')' action_block
 | 'assume' 'final' '(' expression ')' action_block
 ;
 
 deferred_immediate_cover_statement :
-'cover' '#' '0' '(' expression ')' statement_or_null
+'cover' '#' Unsigned_number '(' expression ')' statement_or_null
 | 'cover' 'final' '(' expression ')' statement_or_null
 ;
 
@@ -2687,16 +2694,18 @@ specify_input_terminal_descriptor
 | specify_output_terminal_descriptor
 ;
 
-edge_control_specifier : 'edge' '[' Edge_descriptor  ( ',' Edge_descriptor )*  ']'
+edge_control_specifier : 'edge' '[' edge_descriptor  ( ',' edge_descriptor )*  ']'
 ;
 
-Edge_descriptor : '01' | '10' | Z_or_x Zero_or_one | Zero_or_one Z_or_x
+/**
+edge_descriptor : '01' | '10' | z_or_x zero_or_one | zero_or_one z_or_x
 ;
-
-fragment Zero_or_one : [01]
+zero_or_one : '0' | '1'
 ;
-
-fragment Z_or_x : [xXzZ]
+z_or_x : 'x' | 'X' | 'z' | 'Z'
+;
+**/
+edge_descriptor : Unsigned_number Simple_identifier? | Simple_identifier Unsigned_number
 ;
 
 timing_check_condition :
@@ -2707,14 +2716,13 @@ scalar_timing_check_condition
 scalar_timing_check_condition :
 expression
 | '~' expression
-| expression '=' '=' Scalar_constant
-| expression '=' '=' '=' Scalar_constant
-| expression '!' '=' Scalar_constant
-| expression '!' '=' '=' Scalar_constant
+| expression '=' '=' scalar_constant
+| expression '=' '=' '=' scalar_constant
+| expression '!' '=' scalar_constant
+| expression '!' '=' '=' scalar_constant
 ;
 
-Scalar_constant : ('1'? ('\'' [bB]) [01]) | [01]
-;
+scalar_constant : Integral_number ;
 
 // A.8 Expressions
 // A.8.1 Concatenations
@@ -2776,6 +2784,9 @@ System_tf_identifier ( '(' list_of_arguments ')' )?
 | System_tf_identifier '(' data_type ( ',' expression )? ')'
 ;
 
+function_subroutine_call : subroutine_call
+;
+
 subroutine_call :
 tf_call
 | system_tf_call
@@ -2783,15 +2794,15 @@ tf_call
 | ( 'std' ':' ':' )? randomize_call
 ;
 
-function_subroutine_call : subroutine_call
+method_call : method_call_root '.' method_call_body
+;
+
+method_call_root : primary | implicit_class_handle
 ;
 
 list_of_arguments :
 ( expression )?  ( ',' ( expression )? )*   ( ',' '.' identifier '(' ( expression )? ')' )* 
 | '.' identifier '(' ( expression )? ')'  ( ',' '.' identifier '(' ( expression )? ')' )* 
-;
-
-method_call : method_call_root '.' method_call_body
 ;
 
 method_call_body :
@@ -2814,9 +2825,6 @@ randomize_call :
 'randomize'  ( attribute_instance )* 
 ( '(' ( variable_identifier_list | 'null' )? ')' )?
 ( 'with' ( '(' ( identifier_list )? ')' )? constraint_block )?
-;
-
-method_call_root : primary | implicit_class_handle
 ;
 
 array_method_name :
@@ -2876,8 +2884,8 @@ primary
 | inc_or_dec_expression
 | '(' operator_assignment ')'
 | expression binary_operator  ( attribute_instance )*  expression
-| conditional_expression
-| inside_expression
+//ilr | conditional_expression
+//ilr | inside_expression
 | tagged_union_expression
 ;
 
@@ -2898,16 +2906,16 @@ expression
 | expression ':' expression ':' expression
 ;
 
-module_path_conditional_expression : module_path_expression '?'  ( attribute_instance )* 
-	module_path_expression ':' module_path_expression
+module_path_conditional_expression : 
+	module_path_expression '?'  ( attribute_instance )* module_path_expression 
+		':' module_path_expression
 ;
 
 module_path_expression :
 module_path_primary
 | unary_module_path_operator  ( attribute_instance )*  module_path_primary
-| module_path_expression binary_module_path_operator  ( attribute_instance )* 
-module_path_expression
-| module_path_conditional_expression
+| module_path_expression binary_module_path_operator  ( attribute_instance )* module_path_expression
+//ilr | module_path_conditional_expression
 ;
 
 module_path_mintypmax_expression :
@@ -2960,10 +2968,10 @@ primary_literal
 | empty_queue
 | concatenation ( '[' range_expression ']' )?
 | multiple_concatenation ( '[' range_expression ']' )?
-| function_subroutine_call
+//ilr | function_subroutine_call
 | let_expression
 | '(' mintypmax_expression ')'
-| cast
+//ilr | cast
 | assignment_pattern_expression
 | streaming_concatenation
 | sequence_method_call
@@ -3101,7 +3109,7 @@ fragment Hex_number : Size? Hex_base Hex_value
 fragment Size : Non_zero_unsigned_number
 ;
 
-Non_zero_unsigned_number : Non_zero_decimal_digit  ( '_' | Decimal_digit)*
+fragment Non_zero_unsigned_number : Non_zero_decimal_digit  ( '_' | Decimal_digit)*
 ;
 
 Real_number :
@@ -3115,13 +3123,13 @@ Fixed_point_number : Unsigned_number '.' Unsigned_number
 Unsigned_number : Decimal_digit  ( '_' | Decimal_digit )* 
 ;
 
-Binary_value : Binary_digit  ( '_' | Binary_digit )* 
+fragment Binary_value : Binary_digit  ( '_' | Binary_digit )* 
 ;
 
-Octal_value : Octal_digit  ( '_' | Octal_digit )* 
+fragment Octal_value : Octal_digit  ( '_' | Octal_digit )* 
 ;
 
-Hex_value : Hex_digit  ( '_' | Hex_digit )* 
+fragment Hex_value : Hex_digit  ( '_' | Hex_digit )* 
 ;
 
 fragment Decimal_base : '\'' [sS]? [dD]
@@ -3157,7 +3165,7 @@ fragment X_digit : [xX]
 fragment Z_digit : [zZ?]
 ;
 
-Unbased_unsized_literal : '\'' (Zero_or_one | Z_or_x)
+Unbased_unsized_literal : '\'' [01zZxX]
 ;
 
 // A.8.8 Strings
