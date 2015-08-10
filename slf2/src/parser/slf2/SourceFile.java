@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class SourceFile extends FileCharReader {
 
     public SourceFile(String fname) throws FileNotFoundException {
-        super(fname, true);
+        super(fname);//, true);
     }
 
     private static final Pattern stString = Pattern.compile("\\\"(.*?)\\\"");
@@ -58,14 +58,11 @@ public class SourceFile extends FileCharReader {
                 } else if (acceptOnMatch(stLibrary)) {
                     ok = library();
                 } else {
-                    assert false;//todo: error
+                    syntaxError();
                 }
             }
-            if (!ok) {
-               assert false; //todo: error
-            }
         } catch (ParseError ex) {
-            assert false;//todo
+            assert false;//todo: generate local error message
         }
         return ok;
     }
@@ -105,21 +102,21 @@ public class SourceFile extends FileCharReader {
                         if (acceptOnMatch('(')) {
                             state = EState.eLibraryName;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eLibraryName:
                         if (acceptOnMatch(stIdent, stString)) {
                             state = EState.eLibRparen;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eLibRparen:
                         if (acceptOnMatch(')')) {
                             state = EState.eLibraryBody;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eLibraryBody:
@@ -127,17 +124,17 @@ public class SourceFile extends FileCharReader {
                         final char c = (char) la();
                         int n;
                         if (m_closures.empty() && (c != '{')) {
-                            assert false;//todo: error
+                            syntaxError();
                         } else if ((1 == m_closures.size())
                                 && (EState.eCellBody == state)
                                 && (c != '{')) {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         if (acceptOnMatch(stString)) {
                             //do nothing
                         } else if (0 <= (n = stClosures[0].indexOf(c))) {
                             //add the matching/closure
-                            m_closures.add(new Pair<>(getFileLocation(),stClosures[1].charAt(n)));
+                            m_closures.add(new Pair<>(getFileLocation(), stClosures[1].charAt(n)));
                             next();
                         } else if (c == m_closures.peek().e2) {
                             if (!m_closures.empty()) {
@@ -151,12 +148,16 @@ public class SourceFile extends FileCharReader {
                                 }
                                 next();
                             } else {
-                                assert false;//todo: error
+                                syntaxError();
                             }
                         } else if (0 <= (n = stClosures[1].indexOf(c))) {
-                            syntaxError(c);//todo: doesn't match closure so error
+                            syntaxError();
                         } else if (acceptOnMatch(stCell)) {
                             state = EState.eCellLparen;
+                        } else if (acceptOnMatch(stIdent)) {
+                            //catch case where keyword appears in (unused) ident, as in:
+                            //clock_gating_integrated_cell
+                            //........................^--^
                         } else {
                             next();
                         }
@@ -165,7 +166,7 @@ public class SourceFile extends FileCharReader {
                         if (acceptOnMatch('(')) {
                             state = EState.eCellName;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eCellName:
@@ -173,43 +174,45 @@ public class SourceFile extends FileCharReader {
                             addCell();
                             state = EState.eCellRparen;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eCellRparen:
                         if (acceptOnMatch(')')) {
                             state = EState.eCellBody;
                         } else {
-                            assert false;//todo: error
+                            syntaxError();
                         }
                         break;
                     case eWaitForEOF:
                     //fall through
                     default:
-                        assert false;//todo: error
+                        syntaxError();
                 }
             }
         }
         final boolean ok = (state == EState.eWaitForEOF);
         return ok;
     }
-    
-    private void syntaxError(final char c) {
+
+    private void syntaxError() {
+        final char c = (char)la();
         final String loc = getLocation();
-        System.err.printf("Error: %s: syntax error at '%c'\n",loc,c);
+        System.err.printf("Error: %s: syntax error at '%c'\n", loc, c);
         assert false;
     }
-    
+
     private void addCell() {
         final FileLocation loc = getMatched().peek().e1;
         final String cellNm = getMatched().remove().e2;
-        
+        System.out.println("cell=" + cellNm);
+
     }
 
     private static final String[] stClosures = new String[]{"({[", ")}]"};
 
-    private final Stack<Pair<FileLocation,Character>> m_closures = new Stack<>();
-    private final Map<String,FileLocation>  m_locByCell = new HashMap<>();
+    private final Stack<Pair<FileLocation, Character>> m_closures = new Stack<>();
+    private final Map<String, FileLocation> m_locByCell = new HashMap<>();
 
     private class SlfParseError extends Exception {
 

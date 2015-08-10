@@ -56,6 +56,7 @@ public class SourceFileTest {
 
     static {
         addTest("f1.lib", true);
+        addTest("f2.lib", true);
     }
 
     /**
@@ -63,8 +64,8 @@ public class SourceFileTest {
      */
     @Test
     public void testParse() {
-        System.out.println("parse");
         for (final Pair<String, Boolean> test : stTests) {
+            System.out.println("parse: " + test.e1);
             try {
                 boolean expResult = test.e2;
                 SourceFile instance = new SourceFile(test.e1);
@@ -73,10 +74,7 @@ public class SourceFileTest {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(SourceFileTest.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }
