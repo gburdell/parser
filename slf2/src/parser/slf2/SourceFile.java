@@ -26,6 +26,7 @@ package parser.slf2;
 import gblib.FileCharReader;
 import gblib.FileLocation;
 import gblib.Util.Pair;
+import static gblib.Util.escape;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -196,16 +197,16 @@ public class SourceFile extends FileCharReader {
     }
 
     private void syntaxError() {
-        final char c = (char)la();
+        final String s = escape((char)la());
         final String loc = getLocation();
-        System.err.printf("Error: %s: syntax error at '%c'\n", loc, c);
+        System.err.printf("Error: %s: syntax error at '%s'\n", loc, s);
         assert false;
     }
 
     private void addCell() {
         final FileLocation loc = getMatched().peek().e1;
         final String cellNm = getMatched().remove().e2;
-        System.out.println("cell=" + cellNm);
+        //System.out.println("cell=" + cellNm);
         //todo: add to tracker Modules (parser.Module).
     }
 
