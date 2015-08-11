@@ -57,6 +57,8 @@ public class SourceFileTest {
     static {
         addTest("f1.lib", true);
         addTest("f2.lib", true);
+        addTest("f3.lib", true);
+        addTest("f4.lib", true);
     }
 
     /**

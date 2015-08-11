@@ -152,7 +152,7 @@ public class SourceFile extends FileCharReader {
                             }
                         } else if (0 <= (n = stClosures[1].indexOf(c))) {
                             syntaxError();
-                        } else if (acceptOnMatch(stCell)) {
+                        } else if ((1 == m_closures.size()) && acceptOnMatch(stCell)) {
                             state = EState.eCellLparen;
                         } else if (acceptOnMatch(stIdent)) {
                             //catch case where keyword appears in (unused) ident, as in:
@@ -206,13 +206,12 @@ public class SourceFile extends FileCharReader {
         final FileLocation loc = getMatched().peek().e1;
         final String cellNm = getMatched().remove().e2;
         System.out.println("cell=" + cellNm);
-
+        //todo: add to tracker Modules (parser.Module).
     }
 
     private static final String[] stClosures = new String[]{"({[", ")}]"};
 
     private final Stack<Pair<FileLocation, Character>> m_closures = new Stack<>();
-    private final Map<String, FileLocation> m_locByCell = new HashMap<>();
 
     private class SlfParseError extends Exception {
 
