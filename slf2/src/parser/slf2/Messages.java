@@ -27,10 +27,41 @@
  */
 package parser.slf2;
 
+import gblib.FileCharReader;
+import gblib.MessageMgr;
+import static gblib.MessageMgr.addMessage;
+
 /**
  *
  * @author gburdell
  */
 public class Messages {
+    public static void message(final String code, Object... args) {
+        MessageMgr.message(code, args);
+    }
     
+    public static void message(final FileCharReader.ParseError ex) {
+        final String loc = ex.getLocation().toString();
+        switch(ex.getType()) {
+            case eNestedBlockComment:
+                message("SLF-1", loc);
+                break;
+            case eUnexpectedEOF:
+                message("SLF-2", loc);
+                break;
+            default:
+                assert false;
+        }
+    }
+    
+    private static boolean init() {
+        addMessage('E', "SLF-1", "%s: nested comments not allowed");
+        addMessage('E', "SLF-2", "%s: premature <EOF> detected");
+        addMessage('E', "SLF-3", "%s: syntax error at '%s'");
+        addMessage('E', "SLF-4", "%s: syntax error at '%s', expecting '%s'");
+        addMessage('I', "SLF-5", "%s: %d cell(s) found");
+        return true;
+    }
+    
+    private static final boolean stInit = init();
 }

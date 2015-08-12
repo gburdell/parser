@@ -28,10 +28,9 @@ import gblib.FileLocation;
 import gblib.Util.Pair;
 import static gblib.Util.escape;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 import java.util.regex.Pattern;
+import static parser.slf2.Messages.message;
 
 /**
  *
@@ -59,11 +58,16 @@ public class SourceFile extends FileCharReader {
                 } else if (acceptOnMatch(stLibrary)) {
                     ok = library();
                 } else {
-                    syntaxError();
+                    syntaxError("library");
                 }
             }
-        } catch (ParseError ex) {
-            assert false;//todo: generate local error message
+        } catch (final ParseError ex) {
+            message(ex);
+        } catch (final SlfParseError ex) {
+            //do nothing, since already did message
+        }
+        if (ok) {
+            message("SLF-5", getFile().getFilename(), m_cellCnt);
         }
         return ok;
     }
@@ -92,7 +96,7 @@ public class SourceFile extends FileCharReader {
     private static final Pattern stLibraryName
             = Pattern.compile("()|");
 
-    private boolean library() throws ParseError {
+    private boolean library() throws ParseError, SlfParseError {
         //entry upon library
         EState state = EState.eLibLparen;
         while (!isEOF()) {
@@ -196,25 +200,33 @@ public class SourceFile extends FileCharReader {
         return ok;
     }
 
-    private void syntaxError() {
-        final String s = escape((char)la());
+    private void syntaxError() throws SlfParseError {
+        final String s = escape((char) la());
         final String loc = getLocation();
-        System.err.printf("Error: %s: syntax error at '%s'\n", loc, s);
-        assert false;
+        message("SLF-3", loc, s);
+        throw new SlfParseError();
+    }
+
+    private void syntaxError(final String expecting) throws SlfParseError {
+        final String s = escape((char) la());
+        final String loc = getLocation();
+        message("SLF-4", loc, s, expecting);
+        throw new SlfParseError();
     }
 
     private void addCell() {
         final FileLocation loc = getMatched().peek().e1;
         final String cellNm = getMatched().remove().e2;
-        //System.out.println("cell=" + cellNm);
-        //todo: add to tracker Modules (parser.Module).
+        //TODO: add via tracker
+        m_cellCnt++;
     }
 
     private static final String[] stClosures = new String[]{"({[", ")}]"};
 
     private final Stack<Pair<FileLocation, Character>> m_closures = new Stack<>();
+    private int m_cellCnt = 0;
 
-    private class SlfParseError extends Exception {
+    public static class SlfParseError extends Exception {
 
     }
 }
