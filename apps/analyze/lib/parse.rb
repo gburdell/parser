@@ -457,8 +457,7 @@ class Parse
 
   private
   class Slf < Base
-		java_import 'parser.slf.Parser'
-		java_import 'parser.slf.SlfParser'
+		java_import 'parser.slf2.Parser'
 
 		def initialize(srcs)
 			parse(srcs)
@@ -468,7 +467,7 @@ class Parse
 	  def parse(srcs)
 	    @jparser = Parser.new
       @jparser.parse(srcs.to_java(:string))
-      @jtracker = SlfParser.stTracker
+      @jtracker = Parser.stTracker
 	  end
 	end
 

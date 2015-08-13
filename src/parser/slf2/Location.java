@@ -1,7 +1,6 @@
 //The MIT License
 //
-//Copyright (c) 2006-2010  Karl W. Pfalzer
-//Copyright (c) 2011-      George P. Burdell
+//Copyright (c) 2015-      George P. Burdell
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,29 +19,24 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //THE SOFTWARE.
-package parser.slf;
+package parser.slf2;
+
+import parser.ILexer;
+import gblib.FileLocation;
 
 /**
  *
- * @author karl
+ * @author kpfalzer
  */
-public class SlfMain {
+public class Location extends parser.Location {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        SlfMain m = new SlfMain(args);
+    public Location(final FileLocation loc) {
+        super(loc.getFile().getFilename(), loc.getLineNum());
     }
-    public void parse(String srcs[]) {
-        m_parser.parse(srcs);
+
+    @Override
+    protected ILexer getLexer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public SlfMain(String srcs[]) {
-        m_parser = new Parser();
-        init(srcs);
-    }
-    private void init(String srcs[]) {
-        parse(srcs);
-    }
-    private Parser  m_parser;
+
 }

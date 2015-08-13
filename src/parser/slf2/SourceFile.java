@@ -28,6 +28,7 @@ import gblib.FileLocation;
 import gblib.Util.Pair;
 import static gblib.Util.escape;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.regex.Pattern;
 import static parser.slf2.Messages.message;
@@ -38,10 +39,10 @@ import static parser.slf2.Messages.message;
  */
 public class SourceFile extends FileCharReader {
 
-    public SourceFile(String fname) throws FileNotFoundException {
-        super(fname);//, true);
+    public SourceFile(String fname) throws FileNotFoundException, IOException {
+        super(fname);
     }
-
+    
     private static final Pattern stString = Pattern.compile("\\\"(.*?)\\\"");
     private static final Pattern stSpacing = Pattern.compile("[ \\t]+");
     private static final Pattern stIdent = Pattern.compile("([a-zA-Z_]\\w*)(?=\\W)");
@@ -217,7 +218,7 @@ public class SourceFile extends FileCharReader {
     private void addCell() {
         final FileLocation loc = getMatched().peek().e1;
         final String cellNm = getMatched().remove().e2;
-        //TODO: add via tracker
+        Parser.stTracker.addModule(cellNm, loc);
         m_cellCnt++;
     }
 

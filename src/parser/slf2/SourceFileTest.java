@@ -31,8 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -64,16 +62,17 @@ public class SourceFileTest {
     /**
      * Test of parse method, of class SourceFile.
      */
-    @Test
-    public void testParse() {
+    public static void main(String argv[]) {
         for (final Pair<String, Boolean> test : stTests) {
             System.out.println("parse: " + test.e1);
             try {
                 boolean expResult = test.e2;
                 SourceFile instance = new SourceFile(test.e1);
                 boolean result = instance.parse();
-                assertEquals(expResult, result);
+                assert (expResult==result);
             } catch (FileNotFoundException ex) {
+                Logger.getLogger(SourceFileTest.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(SourceFileTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

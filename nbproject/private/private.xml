@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/Parser.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/Parser.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/apfe/sv2009/SvMain.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/SourceFile.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/Module.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/SourceFileTest.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/Location.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf/Module.java</file>
             <file>file:/home/gburdell/projects/parser/src/parser/slf/Tracker.java</file>
         </group>
     </open-files>
