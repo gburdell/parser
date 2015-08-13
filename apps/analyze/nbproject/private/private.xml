@@ -39,6 +39,7 @@
         <group>
             <file>file:/home/gburdell/projects/parser/apps/analyze/lib/parse.rb</file>
             <file>file:/home/gburdell/projects/parser/apps/analyze/lib/main.rb</file>
+            <file>file:/home/gburdell/projects/parser/apps/analyze/lib/analyze.rb</file>
         </group>
     </open-files>
 </project-private>
