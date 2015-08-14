@@ -3,6 +3,7 @@
 + release r2.2.0.
 + replace SLF parser w/ fast/minimum (get cell only).
 + drop redundant `line when -E is used.
++ jre1.8.0_25-b17
 
 3-jul-2015
 ==========
