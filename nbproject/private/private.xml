@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/Parser.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf3/Location.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf3/Parser.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf3/Tokenizer.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/SourceFile.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf2/SourceFileTest.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/Tracker.java</file>
+            <file>file:/home/gburdell/projects/parser/src/parser/slf3/Messages.java</file>
+        </group>
     </open-files>
 </project-private>
