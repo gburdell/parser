@@ -70,6 +70,7 @@ public class Messages {
         addMessage('E', "VPP-STRING", "%s: unterminated string (started at %d:%d (line:col))");
         addMessage('E', "VPP-SYNTAX-1", "%s: unexpected '%s'");
         addMessage('E', "VPP-SYNTAX-2", "%s: '%s' syntax error at '%s'");
+        addMessage('E', "VPP-SYNTAX-3", "%s: syntax error after '%s'");
         addMessage('E', "VPP-UNDEF-1", "%s: '`undef %s' has no effect since macro '%s' was never defined");
         return true;
     }

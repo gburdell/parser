@@ -54,18 +54,28 @@ public class TicMacro {
         return ticDefn;
     }
 
+    static void processMacroUse(final SourceFile src) throws ParseError {
+        TicMacro macroUse = new TicMacro(src, false);
+        //TODO:
+    }
+
     MacroDefns.Defn getDefn() {
         return new MacroDefns.Defn(m_loc, m_macroName, m_formalArgs, m_macroText);
     }
 
     private static final String stNCWS = SourceFile.stNCWS;
     static final Pattern stPatt = Pattern.compile("(`define(?=\\W))(" + stNCWS + "([a-zA-Z_]\\w*)(?=\\W))?");
-    static final Pattern stMacroUsage = 
-            Pattern.compile("(`[a-zA-Z_]\\w*)(("+stNCWS+"\\()|(?=\\W))?");
+    static final Pattern stMacroUsage
+            = Pattern.compile("(`[a-zA-Z_]\\w*)((" + stNCWS + "\\()|(?=\\W))?");
 
-    private TicMacro(final SourceFile src) throws ParseError {
+    private TicMacro(final SourceFile src, final boolean isDefn) throws ParseError {
         m_src = src;
         m_echoOn = m_src.setEchoOn(false);
+        m_isDefn = isDefn;
+    }
+
+    private TicMacro(final SourceFile src) throws ParseError {
+        this(src, true);
     }
 
     private int[] m_started;
@@ -76,6 +86,8 @@ public class TicMacro {
     private String m_macroText;
     // Where `define begins
     private FileLocation m_loc;
+    // true on define, false on usage.
+    private final boolean m_isDefn;
 
     private void parse() throws ParseError {
         m_started = m_src.getMatched().remove().e1.getLineColNum();

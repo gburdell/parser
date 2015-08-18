@@ -47,7 +47,7 @@ public class SourceFileTest {
     }
 
     static {
-        /*
+        /**/
         add("f1.v", false);
         add("f2.v", true);
         add("f3.v", false);
@@ -58,9 +58,9 @@ public class SourceFileTest {
         
         add("f6.v", false);
         add("f7.v", true);
-        */
+        /**/
         add("f8.v", true);
-        /*
+        /**/
         add("f9.v", true);
         add("f10.v", true);
         add("f11.v", true);

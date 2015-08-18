@@ -171,7 +171,7 @@ public class SourceFile {
                             //do nothing
                         } //very last to check for macro usage
                         else if (matchSaveAccept(TicMacro.stMacroUsage, 2)) {
-                            //TODO
+                            TicMacro.processMacroUse(this);
                         } else {
                             next();
                         }
@@ -180,8 +180,8 @@ public class SourceFile {
                     error = pe;
                     break;
                 } catch (FileCharReader.ParseError ex) {
-                    //todo: error = ...
-                    assert false; //todo
+                    error = reErrorize(ex);
+                    break;
                 }
             }
             try {
@@ -198,6 +198,22 @@ public class SourceFile {
         return ok;
     }
 
+    /**
+     * Convert error.
+     */
+    private ParseError reErrorize(FileCharReader.ParseError from) {
+        ParseError err = null;
+        switch(from.getType()) {
+            case eGroupCnt:
+                assert null != from.getDoing();
+                err = new ParseError("VPP-SYNTAX-3", from.getLocation(), from.getDoing());
+                break;
+            default:
+                Util.invariant(false);
+        }
+        return err;
+    }
+    
     Pair<FileLocation, String> removeMatched(int n) {
         assert 0 < n;
         Pair<FileLocation, String> r = null;
