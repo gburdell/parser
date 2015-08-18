@@ -1,0 +1,11 @@
+#!/bin/csh -f
+
+set cmd=$0
+if (1 > `echo $cmd | egrep -c '^/'`) then
+	set cmd=$PWD/${cmd}
+endif
+set rdir=$cmd:h:h
+
+set cls="parser.vlogpp2.SourceFile"
+set jars=${rdir}/dist/lib/gblib.jar:${rdir}/dist/vlogpp2.jar
+exec java -Xms2G -ea -cp ${jars} ${cls} ${*}

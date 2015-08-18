@@ -1,0 +1,326 @@
+Testsuite: apfe.v2.vlogpp.SourceFileTest
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v:5:1: unexpected end-of-file while processing '<block-comment>'  (VPP-EOF-1)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v:3:18: nested block comment  (VPP-CMNT-2)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v:4:35: unterminated string (started at 1:3 (line:col))  (VPP-STRING)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v:3:8: '`define' syntax error at ' (foo\n'  (VPP-SYNTAX-2)
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v" 0
+
+/* a block comment
+which is *
+missing a close
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f2.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f2.v" 0
+
+/* block
+comment
+*/
+
+/* and another one ***
+* /
+here */
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v" 0
+
+/* block comment which
+becomes nested /*parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f4.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f4.v" 0
+module foo; i
+/* block comment
+with //line comment
+*/
+	"string literal"
+input foo; //line comment /*block comment*/
+endmodule
+
+	"string which \
+	spans multiple lines \"\
+	"
+
+	/*block comment with "string"
+	*/
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v" 0
+	"string with block comment /*here \
+	and goes on \
+	and on \
+	but we forgot to escape this lineparse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v" 0
+
+/*comment */
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f7.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f7.v" 0
+//line comment
+
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v:16:1: unexpected end-of-file while processing '`protected' (started at 9:1 (line:col))  (VPP-EOF-2)
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f8.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f8.v" 0
+
+//a conditional with dangling after endif.  OK?
+ bar
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f9.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f9.v" 0
+
+
+
+module mac3(); endmodule
+	//!MAC3
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f10.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f10.v" 0
+
+
+PASS_not_M2_code
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" 0
+
+//comment1
+
+"/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v"
+  "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" //comment2
+
+/**another
+comment3
+*/
+
+    "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" 11
+    12
+
+/*comment4*/ 
+
+
+
+
+
+PASS1
+
+
+
+PASS2
+
+
+Warn : /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v:41:8: macro ' M4' redefined.
+       /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v:32:8: previously defined  (VPP-REDEFN-1)
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v" 0
+
+/* a very simple test of `protect missing an eof */
+
+
+PASS1
+PASS2
+
+
+
+
+
+
+
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f13.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f13.v" 0
+
+/* simple test of `protect */
+
+/*allow prefix comment*/ 
+
+
+
+
+ 
+PASS1
+PASS2
+
+PASS3
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f14.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f14.v" 0
+//1 Use to validate correct line numbers
+//2
+//10
+PASS1//11
+//12
+13
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f15.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f15.v" 0
+
+//comment
+
+
+
+PASS1
+
+
+
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 sec
+
+------------- Standard Output ---------------
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v" 0
+
+/* a block comment
+which is *
+missing a close
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f2.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f2.v" 0
+
+/* block
+comment
+*/
+
+/* and another one ***
+* /
+here */
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v" 0
+
+/* block comment which
+becomes nested /*parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f4.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f4.v" 0
+module foo; i
+/* block comment
+with //line comment
+*/
+	"string literal"
+input foo; //line comment /*block comment*/
+endmodule
+
+	"string which \
+	spans multiple lines \"\
+	"
+
+	/*block comment with "string"
+	*/
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v" 0
+	"string with block comment /*here \
+	and goes on \
+	and on \
+	but we forgot to escape this lineparse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v" 0
+
+/*comment */
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f7.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f7.v" 0
+//line comment
+
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f8.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f8.v" 0
+
+//a conditional with dangling after endif.  OK?
+ bar
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f9.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f9.v" 0
+
+
+
+module mac3(); endmodule
+	//!MAC3
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f10.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f10.v" 0
+
+
+PASS_not_M2_code
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" 0
+
+//comment1
+
+"/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v"
+  "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" //comment2
+
+/**another
+comment3
+*/
+
+    "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v" 11
+    12
+
+/*comment4*/ 
+
+
+
+
+
+PASS1
+
+
+
+PASS2
+
+
+Warn : /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v:41:8: macro ' M4' redefined.
+       /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f11.v:32:8: previously defined  (VPP-REDEFN-1)
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v" 0
+
+/* a very simple test of `protect missing an eof */
+
+
+PASS1
+PASS2
+
+
+
+
+
+
+
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f13.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f13.v" 0
+
+/* simple test of `protect */
+
+/*allow prefix comment*/ 
+
+
+
+
+ 
+PASS1
+PASS2
+
+PASS3
+
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f14.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f14.v" 0
+//1 Use to validate correct line numbers
+//2
+//10
+PASS1//11
+//12
+13
+parse: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f15.v
+`line 1 "/home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f15.v" 0
+
+//comment
+
+
+
+PASS1
+
+
+
+
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f1.v:5:1: unexpected end-of-file while processing '<block-comment>'  (VPP-EOF-1)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f3.v:3:18: nested block comment  (VPP-CMNT-2)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f5.v:4:35: unterminated string (started at 1:3 (line:col))  (VPP-STRING)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f6.v:3:8: '`define' syntax error at ' (foo\n'  (VPP-SYNTAX-2)
+apfe.v2.vlogpp.ParseError: Error: /home/gburdell/projects/apfe/v2/vlogppv2/test/apfe/v2/vlogpp/f12.v:16:1: unexpected end-of-file while processing '`protected' (started at 9:1 (line:col))  (VPP-EOF-2)
+------------- ---------------- ---------------
+test:
+Deleting: /tmp/TEST-apfe.v2.vlogpp.SourceFileTest.xml
+BUILD SUCCESSFUL (total time: 0 seconds)
