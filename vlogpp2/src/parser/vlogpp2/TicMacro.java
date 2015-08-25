@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import static gblib.FileCharReader.EOF;
 import static gblib.FileCharReader.NL;
 import gblib.Pair;
+import java.util.regex.Matcher;
 
 /**
  * Handle `define and `macroUsage.
@@ -56,7 +57,9 @@ public class TicMacro {
 
     static void processMacroUse(final SourceFile src) throws ParseError {
         TicMacro macroUse = new TicMacro(src, false);
-        //TODO:
+        macroUse.parseMacroUsage();
+        src.getMatched().clear();        
+        //todo: return?
     }
 
     MacroDefns.Defn getDefn() {
@@ -64,9 +67,15 @@ public class TicMacro {
     }
 
     private static final String stNCWS = SourceFile.stNCWS;
-    static final Pattern stPatt = Pattern.compile("(`define(?=\\W))(" + stNCWS + "([a-zA-Z_]\\w*)(?=\\W))?");
+    static final Pattern stDefine
+            = Pattern.compile("(`define(?=\\W))(" + stNCWS + "([a-zA-Z_]\\w*)(?=\\W))?");
+
+    //LRM: White space shall be allowed between the text macro name 
+    //and the left parenthesis in the macro usage.
     static final Pattern stMacroUsage
-            = Pattern.compile("(`[a-zA-Z_]\\w*)((" + stNCWS + "\\()|(?=\\W))?");
+            = Pattern.compile(
+                    "(`[a-zA-Z_]\\w*)(((?:[ \t]|/\\*.*?\\*/)*\\()|(?=\\W))");
+                    
 
     private TicMacro(final SourceFile src, final boolean isDefn) throws ParseError {
         m_src = src;
@@ -89,6 +98,20 @@ public class TicMacro {
     // true on define, false on usage.
     private final boolean m_isDefn;
 
+    private void parseMacroUsage() {
+        m_loc = m_src.getMatched().peek().e1;
+        //drop leading `
+        m_macroName = m_src.getMatched().remove().e2.trim().substring(1);
+        final boolean hasParams;
+        if (m_src.getMatched().isEmpty()) {
+            hasParams = false;
+        } else {
+            final String s = m_src.getMatched().remove().e2.trim();
+            hasParams = s.isEmpty() ? false : (s.charAt(0)=='(');
+        }
+        assert m_src.getMatched().isEmpty();
+    }
+    
     private void parse() throws ParseError {
         m_started = m_src.getMatched().remove().e1.getLineColNum();
         m_loc = m_src.getMatched().peek().e1;

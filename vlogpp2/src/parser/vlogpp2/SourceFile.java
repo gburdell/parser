@@ -89,6 +89,10 @@ public class SourceFile {
         return m_is.matchSaveAccept(patt, cnt);
     }
 
+    boolean matchSaveAccept(final Pattern patt, final int... cnt) throws FileCharReader.ParseError {
+        return m_is.matchSaveAccept(patt, cnt);
+    }
+
     boolean matchSaveAccept(final Pattern patt) {
         return m_is.matchSaveAccept(patt);
     }
@@ -135,7 +139,7 @@ public class SourceFile {
                         setRemainder();
                         if (matchSaveAccept(stSpacePatt)) {
                             printMatch(1);
-                        } else if (matchSaveAccept(TicMacro.stPatt, 3)) {
+                        } else if (matchSaveAccept(TicMacro.stDefine, 3)) {
                             final TicMacro defn = TicMacro.processDefn(this);
                             if (getEchoOn()) {
                                 addDefn(defn);
@@ -170,7 +174,7 @@ public class SourceFile {
                         } else if (TicDirective.process(this)) {
                             //do nothing
                         } //very last to check for macro usage
-                        else if (matchSaveAccept(TicMacro.stMacroUsage, 2)) {
+                        else if (matchSaveAccept(TicMacro.stMacroUsage, 2, 3)) {
                             TicMacro.processMacroUse(this);
                         } else {
                             next();
@@ -203,7 +207,7 @@ public class SourceFile {
      */
     private ParseError reErrorize(FileCharReader.ParseError from) {
         ParseError err = null;
-        switch(from.getType()) {
+        switch (from.getType()) {
             case eGroupCnt:
                 assert null != from.getDoing();
                 err = new ParseError("VPP-SYNTAX-3", from.getLocation(), from.getDoing());
@@ -213,7 +217,7 @@ public class SourceFile {
         }
         return err;
     }
-    
+
     Pair<FileLocation, String> removeMatched(int n) {
         assert 0 < n;
         Pair<FileLocation, String> r = null;
@@ -374,7 +378,7 @@ public class SourceFile {
     }
 
     private void print(final char c) {
-        if (m_echoOn || (c==NL)) {
+        if (m_echoOn || (c == NL)) {
             m_os.print(c);
         }
     }
