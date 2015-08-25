@@ -266,6 +266,10 @@ public class SourceFile {
         return (null == m_macros) ? false : m_macros.hasDefn(macroNm);
     }
 
+    MacroDefns.Defn getDefn(final String macroNm) {
+        return hasDefn(macroNm) ? m_macros.getDefn(macroNm) : null;
+    }
+    
     void accept(final int n) {
         m_is.accept(n);
     }

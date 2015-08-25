@@ -110,6 +110,14 @@ public class MacroDefns {
             this(null, macroNm, null, null);
         }
 
+        FileLocation getLocation() {
+            return m_loc;
+        }
+        
+        int getNumFormalArgs() {
+            return (null != m_formalArgs) ? m_formalArgs.size() : 0;
+        }
+        
         // Location where defined.  null if cmdline.
         private final FileLocation m_loc;
         private final String m_macroNm;
@@ -117,6 +125,10 @@ public class MacroDefns {
         private final String m_macroText;
     }
 
+    public Defn getDefn(final String macNm) {
+        return hasDefn(macNm) ? m_defns.get(macNm) : null;
+    }
+    
     public void addDefn(final TicMacro defn) throws ParseError {
         addDefn(defn.getDefn());
     }

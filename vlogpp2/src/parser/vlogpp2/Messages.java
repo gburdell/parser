@@ -64,6 +64,7 @@ public class Messages {
         addMessage('E', "VPP-EXIT", "Exiting due to previous error(s)");
         addMessage('E', "VPP-FARG-1", "%s: empty formal arg. while processing '`define' (started at %d:%d (line:col))");
         addMessage('E', "VPP-NETTYPE-1", "%s: '%s' invalid value for `default_nettype");
+        addMessage('E', "VPP-NODEFN", "%s: no definition for '`%s'");
         addMessage('E', "VPP-REDEFN-1", "%s: macro '%s' redefined.\n       %s: previously defined");
         addMessage('E', "VPP-REDEFN-2", "%s: macro '%s' redefined with different value.\n       %s: previously defined");
         addMessage('E', "VPP-REDEFN-3", "%s: macro '%s' redefined at different location.\n       %s: previously defined");

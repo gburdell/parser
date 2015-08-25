@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 import static gblib.FileCharReader.EOF;
 import static gblib.FileCharReader.NL;
 import gblib.Pair;
-import java.util.regex.Matcher;
 
 /**
  * Handle `define and `macroUsage.
@@ -57,15 +56,15 @@ public class TicMacro {
 
     static void processMacroUse(final SourceFile src) throws ParseError {
         TicMacro macroUse = new TicMacro(src, false);
-        macroUse.parseMacroUsage();
+        macroUse.processMacroUse();
         src.getMatched().clear();        
-        //todo: return?
     }
 
     MacroDefns.Defn getDefn() {
         return new MacroDefns.Defn(m_loc, m_macroName, m_formalArgs, m_macroText);
     }
 
+    
     private static final String stNCWS = SourceFile.stNCWS;
     static final Pattern stDefine
             = Pattern.compile("(`define(?=\\W))(" + stNCWS + "([a-zA-Z_]\\w*)(?=\\W))?");
@@ -98,10 +97,14 @@ public class TicMacro {
     // true on define, false on usage.
     private final boolean m_isDefn;
 
-    private void parseMacroUsage() {
+    private void processMacroUse() throws ParseError {
         m_loc = m_src.getMatched().peek().e1;
         //drop leading `
         m_macroName = m_src.getMatched().remove().e2.trim().substring(1);
+        final MacroDefns.Defn defn = m_src.getDefn(m_macroName);
+        if (null == defn) {
+            throw new ParseError("VPP-NODEFN", m_loc, m_macroName);
+        }
         final boolean hasParams;
         if (m_src.getMatched().isEmpty()) {
             hasParams = false;
@@ -110,6 +113,11 @@ public class TicMacro {
             hasParams = s.isEmpty() ? false : (s.charAt(0)=='(');
         }
         assert m_src.getMatched().isEmpty();
+        if (hasParams) {
+            formalArguments();
+        } else {
+            //todo
+        }        
     }
     
     private void parse() throws ParseError {
@@ -120,6 +128,7 @@ public class TicMacro {
         //The left parenthesis shall follow the text macro name immediately
         //The `define macro text can also include `", `\`", and ``
         if ('(' == la()) {
+            next();
             formalArguments();
         }
         m_arg.setLength(0);
@@ -166,7 +175,6 @@ public class TicMacro {
         char c;
         String arg;
         boolean loop = true;
-        next(); // (.
         while (loop) {
             c = parse(new char[]{',', ')'}, 0);
             arg = m_arg.toString().trim();
