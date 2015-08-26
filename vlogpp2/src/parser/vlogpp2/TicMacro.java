@@ -115,15 +115,19 @@ public class TicMacro {
         assert m_src.getMatched().isEmpty();
         if (hasParams) {
             formalArguments();
+        } else if (0 < defn.getNumFormalArgs()) {
+            //For a macro with arguments, the parentheses are always required 
+            //in the macro call, even if all the arguments have defaults
+            throw new ParseError("VPP-ARGS-1", m_loc, m_macroName);
         } else {
-            //todo
+            //no args, todo
         }        
     }
     
     private void parse() throws ParseError {
         m_started = m_src.getMatched().remove().e1.getLineColNum();
         m_loc = m_src.getMatched().peek().e1;
-        m_macroName = m_src.getMatched().remove().e2;
+        m_macroName = m_src.getMatched().remove().e2.trim();
         //we are just past macroNm
         //The left parenthesis shall follow the text macro name immediately
         //The `define macro text can also include `", `\`", and ``

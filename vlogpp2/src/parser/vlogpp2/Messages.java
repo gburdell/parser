@@ -53,6 +53,7 @@ public class Messages {
     }
 
     private static boolean init() {
+        addMessage('E', "VPP-ARGS-1", "%s: macro '%s' definition specified arguments. '()' required");
         addMessage('E', "VPP-CMNT-2", "%s: nested block comment");
         addMessage('E', "VPP-COND-1", "%s: malformed '<tic-conditional>'");
         addMessage('E', "VPP-COND-2", "%s: unexpected '%s' after '%s'");
