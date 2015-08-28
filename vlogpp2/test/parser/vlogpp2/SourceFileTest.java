@@ -68,7 +68,8 @@ public class SourceFileTest {
         add("f15.v", true);
         add("f16.v", true);
         */
-        add("f17.v", true);
+        add("f17.v", false);
+        add("f18.v", false);
     }
 
     /**

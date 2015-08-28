@@ -3,6 +3,6 @@
 `define M2(_d,_e) always @(_d) _e <= 1'b0
 
 `MACRO_USAGE here and there
-`M1(p1,p2) and used here
+`M1(p1+4,p2) and used here
 `M2     (p3,p4)
-`PIx2
+`PIx2	//not defined error

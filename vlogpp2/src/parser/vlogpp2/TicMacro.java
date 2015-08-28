@@ -49,7 +49,7 @@ public class TicMacro {
      */
     static TicMacro processDefn(final SourceFile src) throws ParseError {
         TicMacro ticDefn = new TicMacro(src);
-        ticDefn.parse();
+        ticDefn.parse(true);
         src.getMatched().clear();
         return ticDefn;
     }
@@ -114,7 +114,12 @@ public class TicMacro {
         }
         assert m_src.getMatched().isEmpty();
         if (hasParams) {
-            formalArguments();
+            formalArguments(false);
+            final int numActualArgs = m_formalArgs.size();
+            final int numFormalArgs = defn.getNumFormalArgs();
+            if (numActualArgs > numFormalArgs) {
+                throw new ParseError("VPP-ARGS-2", m_loc, m_macroName, numFormalArgs, numActualArgs);
+            }
         } else if (0 < defn.getNumFormalArgs()) {
             //For a macro with arguments, the parentheses are always required 
             //in the macro call, even if all the arguments have defaults
@@ -124,7 +129,7 @@ public class TicMacro {
         }        
     }
     
-    private void parse() throws ParseError {
+    private void parse(final boolean isDefn) throws ParseError {
         m_started = m_src.getMatched().remove().e1.getLineColNum();
         m_loc = m_src.getMatched().peek().e1;
         m_macroName = m_src.getMatched().remove().e2.trim();
@@ -133,7 +138,7 @@ public class TicMacro {
         //The `define macro text can also include `", `\`", and ``
         if ('(' == la()) {
             next();
-            formalArguments();
+            formalArguments(isDefn);
         }
         m_arg.setLength(0);
         boolean loop = true;
@@ -174,7 +179,7 @@ public class TicMacro {
     /**
      * Split (...) contents at commas.
      */
-    private void formalArguments() throws ParseError {
+    private void formalArguments(final boolean isDefn) throws ParseError {
         List<String> args = new LinkedList<>();
         char c;
         String arg;
@@ -182,7 +187,7 @@ public class TicMacro {
         while (loop) {
             c = parse(new char[]{',', ')'}, 0);
             arg = m_arg.toString().trim();
-            if (arg.isEmpty()) {
+            if (isDefn && arg.isEmpty()) {
                 throw new ParseError("VPP-FARG-1", getLocation(), m_started);
             }
             args.add(arg);

@@ -113,11 +113,30 @@ public class MacroDefns {
         FileLocation getLocation() {
             return m_loc;
         }
-        
+
         int getNumFormalArgs() {
             return (null != m_formalArgs) ? m_formalArgs.size() : 0;
         }
-        
+
+        /**
+         * Get indicators of which arguments have default values.
+         *
+         * @return true if argument has default.
+         */
+        BitSet hasDefaultValue() {
+            BitSet has = new BitSet(getNumFormalArgs());
+            if (!has.isEmpty()) {
+                int i = 0;
+                for (final FormalArg arg : m_formalArgs) {
+                    if (arg.hasDefaultText()) {
+                        has.set(i);
+                    }
+                    i++;
+                }
+            }
+            return has;
+        }
+
         // Location where defined.  null if cmdline.
         private final FileLocation m_loc;
         private final String m_macroNm;
@@ -128,7 +147,7 @@ public class MacroDefns {
     public Defn getDefn(final String macNm) {
         return hasDefn(macNm) ? m_defns.get(macNm) : null;
     }
-    
+
     public void addDefn(final TicMacro defn) throws ParseError {
         addDefn(defn.getDefn());
     }
