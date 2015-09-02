@@ -99,6 +99,7 @@ public class TicMacro {
 
     private void processMacroUse() throws ParseError {
         m_loc = m_src.getMatched().peek().e1;
+        m_started = m_loc.getLineColNum();
         //drop leading `
         m_macroName = m_src.getMatched().remove().e2.trim().substring(1);
         final MacroDefns.Defn defn = m_src.getDefn(m_macroName);
@@ -126,7 +127,10 @@ public class TicMacro {
             throw new ParseError("VPP-ARGS-1", m_loc, m_macroName);
         } else {
             //no args, todo
-        }        
+        }
+        final int end[] = m_src.getLineColNum();
+        assert m_started[0]==end[0];//expect same line
+        //TODO: m_started[1] and end[1] have col nums of span; so -1 before use
     }
     
     private void parse(final boolean isDefn) throws ParseError {

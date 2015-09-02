@@ -5,4 +5,5 @@
 `MACRO_USAGE here and there
 `M1(p1+4,p2) and used here
 `M2     (p3,p4)
+here is a usage of `M1(`MACRO_USAGE,4)but not here
 `PIx2	//not defined error

@@ -371,6 +371,10 @@ public class SourceFile {
         return c;
     }
 
+    int[] getLineColNum() {
+        return m_is.getLineColNum();
+    }
+    
     private void push(final String fname, final int lvl) throws FileNotFoundException, IOException {
         m_is = new FileCharReader(fname);
         if (0 <= lvl) {
