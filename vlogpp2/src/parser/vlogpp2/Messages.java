@@ -61,6 +61,7 @@ public class Messages {
         addMessage('E', "VPP-COND-3", "%s: depth of nested conditional directives > %d");
         addMessage('E', "VPP-COND-4", "%s: unexpected '%s' conditional directive.\n       %s: start of `if(n)def");
         addMessage('E', "VPP-COND-5", "%s: '`endif' without opening '`ifdef' or '`ifndef'");
+        addMessage('E', "VPP-DFLT-1", "%s: '`%s' instance missing value for formal argument '%s' (which has no default)");
         addMessage('E', "VPP-EOF-1", "%s: unexpected end-of-file while processing '%s'");
         addMessage('E', "VPP-EOF-2", "%s: unexpected end-of-file while processing '%s' (started at %d:%d (line:col))");
         addMessage('E', "VPP-EXIT", "Exiting due to previous error(s)");

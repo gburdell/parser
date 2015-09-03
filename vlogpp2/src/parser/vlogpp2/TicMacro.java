@@ -114,6 +114,7 @@ public class TicMacro {
             hasParams = s.isEmpty() ? false : (s.charAt(0)=='(');
         }
         assert m_src.getMatched().isEmpty();
+        String expanded = null;
         if (hasParams) {
             formalArguments(false);
             final int numActualArgs = m_formalArgs.size();
@@ -121,6 +122,7 @@ public class TicMacro {
             if (numActualArgs > numFormalArgs) {
                 throw new ParseError("VPP-ARGS-2", m_loc, m_macroName, numFormalArgs, numActualArgs);
             }
+            expanded = expand(defn);
         } else if (0 < defn.getNumFormalArgs()) {
             //For a macro with arguments, the parentheses are always required 
             //in the macro call, even if all the arguments have defaults
@@ -131,6 +133,33 @@ public class TicMacro {
         final int end[] = m_src.getLineColNum();
         assert m_started[0]==end[0];//expect same line
         //TODO: m_started[1] and end[1] have col nums of span; so -1 before use
+    }
+    
+    /**
+     * Expand macro instance with parameters.
+     * @param defn macro definition.
+     * @return expanded macro.
+     */
+    private String expand(final MacroDefns.Defn defn) throws ParseError {
+        String repl = defn.getText();
+        int nextPos = 1;
+        for (final FormalArg arg : m_formalArgs) {
+            String text = arg.getText();
+            if ((null == text) || text.isEmpty()) {
+                text = defn.getDefaultValue(nextPos-1);
+                if (null == text) {
+                    throw new ParseError("VPP-DFLT-1", m_loc, m_macroName, defn.getFormalArg(nextPos-1));
+                }
+                repl = replace(repl, nextPos, text);
+                //todo/continue
+            }
+        }
+        return repl;
+    }
+    
+    private static String replace(final String val, final int pos, final String repl) {
+        final String find = stParmMarks[0] + pos + stParmMarks[1];
+        return val.replace(find, repl);
     }
     
     private void parse(final boolean isDefn) throws ParseError {

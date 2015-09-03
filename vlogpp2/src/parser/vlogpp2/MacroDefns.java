@@ -74,6 +74,14 @@ public class MacroDefns {
             return m_arg.v1;
         }
 
+        /**
+         * Return text when FormalArg used during macro instance.
+         * @return text from macro instance.
+         */
+        public String getText() {
+            return m_arg.v1;
+        }
+        
         public boolean hasDefaultText() {
             return (null != getDefaultText());
         }
@@ -119,24 +127,29 @@ public class MacroDefns {
         }
 
         /**
-         * Get indicators of which arguments have default values.
-         *
-         * @return true if argument has default.
+         * Get default text for formal argument.
+         * @param pos index of formal argument (0 origin).
+         * @return default text or null.
          */
-        BitSet hasDefaultValue() {
-            BitSet has = new BitSet(getNumFormalArgs());
-            if (!has.isEmpty()) {
-                int i = 0;
-                for (final FormalArg arg : m_formalArgs) {
-                    if (arg.hasDefaultText()) {
-                        has.set(i);
-                    }
-                    i++;
+        String getDefaultValue(final int pos) {
+            String dflt = null;
+            if ((0 < getNumFormalArgs()) && (pos < getNumFormalArgs())) {
+                final FormalArg farg = m_formalArgs.get(pos);
+                if (farg.hasDefaultText()) {
+                    dflt = farg.getDefaultText();
                 }
             }
-            return has;
+            return dflt;
         }
-
+        
+        String getFormalArg(final int pos) {
+            return m_formalArgs.get(pos).getIdent();
+        }
+        
+        String getText() {
+            return m_macroText;
+        }
+        
         // Location where defined.  null if cmdline.
         private final FileLocation m_loc;
         private final String m_macroNm;
