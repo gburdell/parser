@@ -57,14 +57,13 @@ public class TicMacro {
     static void processMacroUse(final SourceFile src) throws ParseError {
         TicMacro macroUse = new TicMacro(src, false);
         macroUse.processMacroUse();
-        src.getMatched().clear();        
+        src.getMatched().clear();
     }
 
     MacroDefns.Defn getDefn() {
         return new MacroDefns.Defn(m_loc, m_macroName, m_formalArgs, m_macroText);
     }
 
-    
     private static final String stNCWS = SourceFile.stNCWS;
     static final Pattern stDefine
             = Pattern.compile("(`define(?=\\W))(" + stNCWS + "([a-zA-Z_]\\w*)(?=\\W))?");
@@ -74,7 +73,6 @@ public class TicMacro {
     static final Pattern stMacroUsage
             = Pattern.compile(
                     "(`[a-zA-Z_]\\w*)(((?:[ \t]|/\\*.*?\\*/)*\\()|(?=\\W))");
-                    
 
     private TicMacro(final SourceFile src, final boolean isDefn) throws ParseError {
         m_src = src;
@@ -111,7 +109,7 @@ public class TicMacro {
             hasParams = false;
         } else {
             final String s = m_src.getMatched().remove().e2.trim();
-            hasParams = s.isEmpty() ? false : (s.charAt(0)=='(');
+            hasParams = s.isEmpty() ? false : (s.charAt(0) == '(');
         }
         assert m_src.getMatched().isEmpty();
         String expanded = null;
@@ -128,40 +126,45 @@ public class TicMacro {
             //in the macro call, even if all the arguments have defaults
             throw new ParseError("VPP-ARGS-1", m_loc, m_macroName);
         } else {
-            //no args, todo
+            //no args
+            expanded = defn.getText();
         }
         final int end[] = m_src.getLineColNum();
-        assert m_started[0]==end[0];//expect same line
+        assert m_started[0] == end[0];//expect same line
         //TODO: m_started[1] and end[1] have col nums of span; so -1 before use
     }
-    
+
     /**
      * Expand macro instance with parameters.
+     *
      * @param defn macro definition.
      * @return expanded macro.
      */
     private String expand(final MacroDefns.Defn defn) throws ParseError {
         String repl = defn.getText();
-        int nextPos = 1;
-        for (final FormalArg arg : m_formalArgs) {
-            String text = arg.getText();
-            if ((null == text) || text.isEmpty()) {
-                text = defn.getDefaultValue(nextPos-1);
-                if (null == text) {
-                    throw new ParseError("VPP-DFLT-1", m_loc, m_macroName, defn.getFormalArg(nextPos-1));
-                }
-                repl = replace(repl, nextPos, text);
-                //todo/continue
+        //
+        //NOTE: the formalArgs here are actuals
+        for (int nextPos = 0; nextPos < defn.getNumFormalArgs(); nextPos++) {
+            String text = null;
+            if (nextPos < m_formalArgs.size()) {
+                text = m_formalArgs.get(nextPos).getText();
             }
+            if ((null == text) || text.isEmpty()) {
+                text = defn.getDefaultValue(nextPos);
+                if (null == text) {
+                    throw new ParseError("VPP-DFLT-1", m_loc, m_macroName, defn.getFormalArg(nextPos));
+                }
+            }
+            repl = replace(repl, nextPos + 1, text);
         }
         return repl;
     }
-    
+
     private static String replace(final String val, final int pos, final String repl) {
         final String find = stParmMarks[0] + pos + stParmMarks[1];
         return val.replace(find, repl);
     }
-    
+
     private void parse(final boolean isDefn) throws ParseError {
         m_started = m_src.getMatched().remove().e1.getLineColNum();
         m_loc = m_src.getMatched().peek().e1;
