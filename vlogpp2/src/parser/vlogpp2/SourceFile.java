@@ -34,7 +34,9 @@ import java.util.logging.Logger;
 import static gblib.FileCharReader.NL;
 import gblib.Util;
 import gblib.Util.Pair;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -227,8 +229,8 @@ public class SourceFile {
         return r;
     }
 
-    void replace(final int[] span, final String repl) {
-        m_is.replace(span, repl);
+    void replace(final int beg, final int end, final String repl, final boolean rewind) {
+        m_is.replace(beg, end, repl, rewind);
     }
 
     String getRemainder() {
@@ -364,10 +366,21 @@ public class SourceFile {
         }
         return match;
     }
-
+    
+    // Track infinite loop of macro instance
+    private final Set<String>   m_macroInstInProcess = new HashSet<>();
+    
+    boolean setProcessingMacroInstance(final String mac) {
+        return m_macroInstInProcess.add(mac);
+    }
+    
     int next() {
-        final int c = (char) m_is.next();
-        print((char) c);
+        final int c = m_is.next();
+        final char asChar = (char)c;
+        if (asChar == NL) {
+            m_macroInstInProcess.clear();
+        }
+        print(asChar);
         return c;
     }
 

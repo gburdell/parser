@@ -100,6 +100,9 @@ public class TicMacro {
         m_started = m_loc.getLineColNum();
         //drop leading `
         m_macroName = m_src.getMatched().remove().e2.trim().substring(1);
+        if (!m_src.setProcessingMacroInstance(m_macroName)) {
+            throw new ParseError("VPP-RECURSE-1", m_loc, m_macroName);
+        }
         final MacroDefns.Defn defn = m_src.getDefn(m_macroName);
         if (null == defn) {
             throw new ParseError("VPP-NODEFN", m_loc, m_macroName);
@@ -132,6 +135,7 @@ public class TicMacro {
         final int end[] = m_src.getLineColNum();
         assert m_started[0] == end[0];//expect same line
         //TODO: m_started[1] and end[1] have col nums of span; so -1 before use
+        m_src.replace(m_started[1]-1, end[1]-1, expanded, true);
     }
 
     /**

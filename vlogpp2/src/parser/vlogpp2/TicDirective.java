@@ -108,7 +108,7 @@ public class TicDirective {
     private static void update(final SourceFile src, final int[] span,
             final String repl) {
         if (src.getEchoOn()) {
-            src.replace(span, repl);
+            src.replace(span[0], span[1], repl, false);
         } else {
             src.accept(span[1]);
         }
