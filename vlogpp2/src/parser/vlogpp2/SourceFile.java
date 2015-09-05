@@ -82,6 +82,10 @@ public class SourceFile {
     private static final Pattern stTicInclude
             = Pattern.compile("(`include(?=\\W))(" + stNCWS
                     + "(\\\"([^\\\"]+)(\\\"))|(<[^>]+(>)))?");
+    // `line 1 "/media/sf_karlp_Documents/altera/proj1/s1_core/hdl/s1_top.flat.v" 0
+    private static final Pattern stTicLine 
+            = Pattern.compile("(`line(?=\\W))(" + stNCWS + "\\d+" + stNCWS
+                    + "(\\\"([^\\\"]+)(\\\"))" + stNCWS + "\\d" + "(?=\\W))?");
 
     boolean matches(final Pattern patt) {
         return m_is.matches(patt);
@@ -173,6 +177,8 @@ public class SourceFile {
                             }
                             //do nothing
                             getMatched().clear();
+                        } else if (matchAccept(stTicLine)) {
+                            printMatch(0);
                         } else if (TicDirective.process(this)) {
                             //do nothing
                         } //very last to check for macro usage
@@ -359,6 +365,10 @@ public class SourceFile {
         }
     }
 
+    private boolean matchAccept(final Pattern patt) {
+        return m_is.matchAccept(patt);
+    }
+    
     private boolean acceptOnMatch(final String s) {
         final boolean match = m_is.acceptOnMatch(s);
         if (match) {
