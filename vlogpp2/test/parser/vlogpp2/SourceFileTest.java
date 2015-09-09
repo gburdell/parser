@@ -48,26 +48,24 @@ public class SourceFileTest {
 
     static {
         /*
-        add("f1.v", false);
-        add("f2.v", true);
-        add("f3.v", false);
-        add("f4.v", true);
-        
-        add("f5.v", false);
-        
-        add("f6.v", false);
-        add("f7.v", true);       
-        add("f8.v", true);
-        add("f9.v", true);
-        add("f10.v", true);
-        add("f11.v", true);
-        add("f12.v", false);
-        add("f13.v", true);
-        add("f14.v", true);
-        add("f15.v", true);
+         add("f1.v", false);
+         add("f2.v", true);
+         add("f3.v", false);
+         add("f4.v", true);        
+         add("f5.v", false);        
+         add("f6.v", false);
+         add("f7.v", true);       
+         add("f8.v", true);
+         add("f9.v", true);
+         add("f10.v", true);
+         add("f11.v", true);
+         add("f12.v", false);
+         add("f13.v", true);
+         add("f14.v", true);
+         add("f15.v", true);
+         */
         add("f16.v", true);
-        */
-        add("sparc.v", true);
+        //add("sparc.v", true);
         add("f17.v", false);
         add("f18.v", false);
     }
@@ -76,7 +74,8 @@ public class SourceFileTest {
      * Test of parse method, of class SourceFile.
      */
     @Test
-    public void testParse() {
+    public void testParse() throws Incdir.Invalid {
+        Global.stSearchPath.add(stDir);
         SourceFile instance;
         boolean expResult;
         boolean result;

@@ -23,6 +23,7 @@
  */
 package parser.vlogpp2;
 
+import gblib.File;
 import gblib.FileLocation;
 import gblib.FileCharReader;
 import java.io.FileNotFoundException;
@@ -35,6 +36,7 @@ import static gblib.FileCharReader.NL;
 import gblib.Util;
 import gblib.Util.Pair;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -47,8 +49,13 @@ import java.util.regex.Pattern;
 public class SourceFile {
 
     public static void main(final String argv[]) throws IOException {
-        for (final String arg : argv) {
-            process(arg);
+        try {
+            Global.stSearchPath.add(".");
+            for (final String arg : argv) {
+                process(arg);
+            }
+        } catch (Incdir.Invalid ex) {
+            Logger.getLogger(SourceFile.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -69,6 +76,7 @@ public class SourceFile {
     private static final Pattern stSpacePatt = Pattern.compile("([ \t]+)(?=[^ \t])");
     //reuse non-capturing whitespace w/ block-comment
     static final String stNCWS = "(?:[ \t]|/\\*.*?\\*/)+";
+    private static final Pattern stAfterTicInclude = Pattern.compile("(?:[ \t]|/\\*.*?\\*/|//[^\n]*)*");
     //reuse time unit
     private static final String stTU = "(10?0?\\s*[munpf]s)";
     private static final Pattern stUndef
@@ -83,7 +91,7 @@ public class SourceFile {
             = Pattern.compile("(`include(?=\\W))(" + stNCWS
                     + "(\\\"([^\\\"]+)(\\\"))|(<[^>]+(>)))?");
     // `line 1 "/media/sf_karlp_Documents/altera/proj1/s1_core/hdl/s1_top.flat.v" 0
-    private static final Pattern stTicLine 
+    private static final Pattern stTicLine
             = Pattern.compile("(`line(?=\\W))(" + stNCWS + "\\d+" + stNCWS
                     + "(\\\"([^\\\"]+)(\\\"))" + stNCWS + "\\d" + "(?=\\W))?");
 
@@ -127,7 +135,7 @@ public class SourceFile {
         return m_is.getSpan(grp);
     }
 
-    public boolean parse() throws ParseError {
+    public boolean parse() throws ParseError, IOException {
         boolean ok = true;
         char c;
         ParseError error = null;
@@ -157,9 +165,20 @@ public class SourceFile {
                             final boolean echo = TicConditional.process(this);
                             setEchoOn(echo);
                         } else if (matchSaveAccept(stTicInclude, 5)) {
-                            final String fileNm = removeMatched(4).e2;
+                            final Pair<FileLocation, String> incl = removeMatched(4);
                             getMatched().clear();
-                            //TODO
+                            setRemainder();
+                            final FileLocation where = getFileLocation();
+                            //Only white space or a comment may appear 
+                            //on the same line as the `include compiler directive.
+                            boolean pass = false;
+                            if (matchAccept(stAfterTicInclude)) {
+                                pass = (NL == (char) next());
+                            }
+                            if (!pass) {
+                                throw new ParseError("VPP-INCL-2", where);
+                            }
+                            ticInclude(incl);
                         } else if (matchSaveAccept(stUndef, 3)) {
                             final String macNm = removeMatched(2).e2;
                             getMatched().clear();
@@ -205,7 +224,7 @@ public class SourceFile {
             if (null != error) {
                 throw error;
             }
-            m_is = m_files.empty() ? null : m_files.pop();
+            pop();
         }
         return ok;
     }
@@ -277,7 +296,7 @@ public class SourceFile {
     MacroDefns.Defn getDefn(final String macroNm) {
         return hasDefn(macroNm) ? m_macros.getDefn(macroNm) : null;
     }
-    
+
     void accept(final int n) {
         m_is.accept(n);
     }
@@ -368,7 +387,7 @@ public class SourceFile {
     private boolean matchAccept(final Pattern patt) {
         return m_is.matchAccept(patt);
     }
-    
+
     private boolean acceptOnMatch(final String s) {
         final boolean match = m_is.acceptOnMatch(s);
         if (match) {
@@ -376,17 +395,17 @@ public class SourceFile {
         }
         return match;
     }
-    
+
     // Track infinite loop of macro instance
-    private final Set<String>   m_macroInstInProcess = new HashSet<>();
-    
+    private final Set<String> m_macroInstInProcess = new HashSet<>();
+
     boolean setProcessingMacroInstance(final String mac) {
         return m_macroInstInProcess.add(mac);
     }
-    
+
     int next() {
         final int c = m_is.next();
-        final char asChar = (char)c;
+        final char asChar = (char) c;
         if (asChar == NL) {
             m_macroInstInProcess.clear();
         }
@@ -397,15 +416,38 @@ public class SourceFile {
     int[] getLineColNum() {
         return m_is.getLineColNum();
     }
-    
+
+    private void ticInclude(final Pair<FileLocation, String> incl) throws ParseError, IOException {
+        final List<File> found = Global.stSearchPath.find(incl.e2);
+        if (found.isEmpty()) {
+            throw new ParseError("VPP-INCL-1", incl.e1, incl.e2);
+        }
+        final File first = found.get(0);
+        push(first.getAbsolutePath(), 1);
+    }
+
     private void push(final String fname, final int lvl) throws FileNotFoundException, IOException {
         m_is = new FileCharReader(fname);
         if (0 <= lvl) {
             assert 2 >= lvl;
             //include file would be on non-empty stack
-            m_os.printf("`line %d \"%s\" %d\n", m_is.getLineNum(), m_is.getFile().getCanonicalPath(), lvl);
+            printTicLine(lvl);
         }
-        m_files.push(m_is);
+        m_files.push(new StackEntry(m_is, lvl));
+    }
+
+    private void pop() {
+        if (m_files.empty()) {
+            m_is = null;
+        } else {
+            final StackEntry top = m_files.pop();
+            m_is = top.e1;
+            printTicLine((1 == top.e2) ? 2 : 0);
+        }
+    }
+
+    private void printTicLine(final int lvl) {
+        m_os.printf("`line %d \"%s\" %d\n", m_is.getLineNum(), m_is.getFile().getAbsolutePath(), lvl);
     }
 
     private void print(final char c) {
@@ -460,7 +502,14 @@ public class SourceFile {
         return m_echoOn;
     }
 
-    private final Stack<FileCharReader> m_files = new Stack<>();
+    private static class StackEntry extends Pair<FileCharReader, Integer> {
+
+        private StackEntry(final FileCharReader file, int level) {
+            super(file, level);
+        }
+    }
+
+    private final Stack<StackEntry> m_files = new Stack<>();
     private final PrintStream m_os;
     private FileCharReader m_is;
     private boolean m_echoOn = true;

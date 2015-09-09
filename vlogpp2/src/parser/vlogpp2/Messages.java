@@ -62,10 +62,15 @@ public class Messages {
         addMessage('E', "VPP-COND-4", "%s: unexpected '%s' conditional directive.\n       %s: start of `if(n)def");
         addMessage('E', "VPP-COND-5", "%s: '`endif' without opening '`ifdef' or '`ifndef'");
         addMessage('E', "VPP-DFLT-1", "%s: '`%s' instance missing value for formal argument '%s' (which has no default)");
+        addMessage('E', "VPP-DIR-1", "%s: directory does not exist");
+        addMessage('E', "VPP-DIR-2", "%s: cannot read directory");
         addMessage('E', "VPP-EOF-1", "%s: unexpected end-of-file while processing '%s'");
         addMessage('E', "VPP-EOF-2", "%s: unexpected end-of-file while processing '%s' (started at %d:%d (line:col))");
         addMessage('E', "VPP-EXIT", "Exiting due to previous error(s)");
         addMessage('E', "VPP-FARG-1", "%s: empty formal arg. while processing '`define' (started at %d:%d (line:col))");
+        addMessage('W', "VPP-FILE-1", "%s: file found using search path entry '%s', but cannot read");
+        addMessage('E', "VPP-INCL-1", "%s: could not find `include file '%s' on search path");
+        addMessage('E', "VPP-INCL-2", "%s: expected comment(s) and/or whitespace after `include");
         addMessage('E', "VPP-NETTYPE-1", "%s: '%s' invalid value for `default_nettype");
         addMessage('E', "VPP-NODEFN", "%s: no definition for '`%s'");
         addMessage('E', "VPP-RECURSE-1", "%s: macro '%s' recursion detected");

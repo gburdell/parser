@@ -23,36 +23,15 @@
  */
 package parser.vlogpp2;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Track global state here.
+ *
  * @author gburdell
  */
 public class Global {
-    private Global() {        
+
+    private Global() {
     }
-    
-    public static Global getTheOne() {
-        return stTheOne;
-    }
-    
-    public List<Incdir> addInclDir(final String dirName) throws Incdir.Invalid {
-        m_inclDirs.add(new Incdir(dirName));
-        return getInclDirs();
-    }
-    
-    public List<Incdir> getInclDirs() {
-        return Collections.unmodifiableList(m_inclDirs);
-    }
-    
-    private final List<Incdir>    m_inclDirs = new LinkedList<>();
-    
-    private static final Global stTheOne = new Global();
-    
-    // Property values
-    public final static String stToolRoot = System.getProperty("tool.root", 
-                "/home/gburdell/projects/apfe/v2/vlogppv2");
+
+    public static final SearchPath  stSearchPath = new SearchPath();
 }

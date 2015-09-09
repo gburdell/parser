@@ -51,6 +51,7 @@ public class TicMacro {
         TicMacro ticDefn = new TicMacro(src);
         ticDefn.parse(true);
         src.getMatched().clear();
+        src.setEchoOn(ticDefn.m_echoOn);
         return ticDefn;
     }
 
@@ -58,6 +59,7 @@ public class TicMacro {
         TicMacro macroUse = new TicMacro(src, false);
         macroUse.processMacroUse();
         src.getMatched().clear();
+        src.setEchoOn(macroUse.m_echoOn);
     }
 
     MacroDefns.Defn getDefn() {
@@ -134,7 +136,6 @@ public class TicMacro {
         }
         final int end[] = m_src.getLineColNum();
         assert m_started[0] == end[0];//expect same line
-        //TODO: m_started[1] and end[1] have col nums of span; so -1 before use
         m_src.replace(m_started[1]-1, end[1]-1, expanded, true);
     }
 
@@ -207,7 +208,6 @@ public class TicMacro {
         if (null != m_formalArgs) {
             addMarkers();
         }
-        m_src.setEchoOn(m_echoOn);
     }
 
     private final StringBuilder m_arg = new StringBuilder();

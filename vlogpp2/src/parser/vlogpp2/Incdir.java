@@ -33,16 +33,30 @@ public class Incdir {
     public Incdir(final String dirName) throws Invalid {
         m_dir = new File(dirName);
         if (!m_dir.canRead()) {
-            throw new Invalid("cannot read.");
+            throw new Invalid("DIR-2");
         }
         if (!m_dir.isDirectory()) {
-            throw new Invalid("directory does not exist.");
+            throw new Invalid("DIR-1");
         }
     }
     
+    public File get() {
+        return m_dir;
+    }
+    
+    @Override
+    public boolean equals(final Object ele) {
+        return m_dir.equals(ele);
+    }
+
+    @Override
+    public int hashCode() {
+        return m_dir.hashCode();
+    }
+    
     public class Invalid extends Exception {
-        private Invalid(final String reason) {
-            super(m_dir.getName() + ": " + reason);
+        private Invalid(final String code) {
+            super(Messages.getMessage('E', code, m_dir.getFilename()).toString());
         }
     }
     
