@@ -66,6 +66,8 @@ public class Messages {
         addMessage('E', "VPP-DIR-2", "%s: cannot read directory");
         addMessage('E', "VPP-EOF-1", "%s: unexpected end-of-file while processing '%s'");
         addMessage('E', "VPP-EOF-2", "%s: unexpected end-of-file while processing '%s' (started at %d:%d (line:col))");
+        addMessage('E', "VPP-EOF-3", "%s: unexpected end-of-file");
+        addMessage('E', "VPP-EOLN-1", "%s: unexpected end-of-line");
         addMessage('E', "VPP-EXIT", "Exiting due to previous error(s)");
         addMessage('E', "VPP-FARG-1", "%s: empty formal arg. while processing '`define' (started at %d:%d (line:col))");
         addMessage('W', "VPP-FILE-1", "%s: file found using search path entry '%s', but cannot read");

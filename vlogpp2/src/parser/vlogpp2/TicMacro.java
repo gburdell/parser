@@ -154,7 +154,7 @@ public class TicMacro {
             if (nextPos < m_formalArgs.size()) {
                 text = m_formalArgs.get(nextPos).getText();
             }
-            if ((null == text) || text.isEmpty()) {
+            if (null == text) {
                 text = defn.getDefaultValue(nextPos);
                 if (null == text) {
                     throw new ParseError("VPP-DFLT-1", m_loc, m_macroName, defn.getFormalArg(nextPos));
@@ -261,17 +261,17 @@ public class TicMacro {
         return m_src.getLocation();
     }
 
-    private char parse(final char[] returnOn, final int depth) {
+    private char parse(final char[] returnOn, final int depth) throws ParseError {
         int c, n;
         while (true) {
             c = next();
             switch (c) {
                 case EOF:
-                    //todo: throw...
-                    break;
+                    throw new ParseError("VPP-EOF-3", m_src);
+                    //break;
                 case NL:
-                    //todo: throw...
-                    break;
+                    throw new ParseError("VPP-EOLN-1", m_src);
+                    //break;
                 case '\\':
                     append(c).append(next());
                     break;
@@ -293,8 +293,8 @@ public class TicMacro {
                     append(c);
                     n = stBalanced[0].indexOf(c);
                     if (0 <= n) {
-                        parse(new char[]{stBalanced[1].charAt(n)}, depth + 1);
-                        append(next());
+                        c = parse(new char[]{stBalanced[1].charAt(n)}, depth + 1);
+                        append(c);
                     }
             }
         }
@@ -332,9 +332,11 @@ public class TicMacro {
         //Go through macroText by parms (longest to shortest).
         String replaced = m_macroText;
         String repl;
+        String regex;
         for (final Pair<String, Integer> ele : nmPos) {
             repl = stParmMarks[0] + ele.v2.toString() + stParmMarks[1];
-            replaced = replaced.replace(ele.v1, repl);
+            regex = "(?<=\\W)"+ele.v1+"(?=\\W)";
+            replaced = replaced.replaceAll(regex, repl);
         }
         m_macroText = replaced;
     }

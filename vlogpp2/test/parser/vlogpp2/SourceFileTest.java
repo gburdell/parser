@@ -63,11 +63,12 @@ public class SourceFileTest {
          add("f13.v", true);
          add("f14.v", true);
          add("f15.v", true);
+         add("f16.v", true);
+         //add("sparc.v", true);
+         add("f17.v", false);
+         add("f18.v", false);
          */
-        add("f16.v", true);
-        //add("sparc.v", true);
-        add("f17.v", false);
-        add("f18.v", false);
+        add("f19.v", false);
     }
 
     /**
