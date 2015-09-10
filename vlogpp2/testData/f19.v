@@ -11,7 +11,3 @@
 // expands to 'initial $display("start", , , "end");'
 `D("msg1")
 // illegal, only one argument
-`D()
-// illegal, only one empty argument
-`D(,,)
-// illegal, more actual than formal arguments
